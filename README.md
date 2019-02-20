@@ -9,13 +9,19 @@
 #### Atomic object
 단위, 포맷, 언어 
  
--[ ] a dom element
--[ ] a HTML entity
--[ ] a webObject3D (including three.js etc)
+- a dom element
+- a HTML entity
+- a webObject3D (including three.js etc)
 
 ### 2. Format
 
-#### WXR Object
+dom element 정보를 저장
+그러니까 html attribute랑 음 hierarchy 
+
+hierarchy 는 
+db type 에 따라 달라
+orbitdb - docs 
+gundb - graph : reference 해줘야함
 
 ```html
 <wxr-obj id="handle" mtl="handle.mtl" obj="handle.obj" 
@@ -42,6 +48,7 @@
 }
 ```
 
+
 ```html
 <a-entity position="-2.5 0 -1.5" player="soul:jsbj980g6Je2pqUVn4jU">
     <a-entity id="w5h3" mixin="grid-plane" seat="owner:멍청한 유병현" material="color:#ff5a30"></a-entity>
@@ -51,9 +58,13 @@
 </a-entity>
 ```
 
-## 3. Flow?  Scenario?
+
+## 3. Flow (Scenario)
 ### init
-1. Replicate db
+option 1 : drawing scene from a static html file provided by server. It is always loaded same. 
+When a user enters a workspace. Server provide a static html file.  
+
+1. **Replicate db**
 2. Create dom elements
 3. Draw a scene
 
