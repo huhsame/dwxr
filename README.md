@@ -2,16 +2,24 @@
 2019.02.21
 1. Term
 2. Format
-3. Flow?  Scenario?
+3. Flow?  Scenario? 
+
 ### 1. Term
-`TODO: define terms with Ko at 9:30 am`
+~~TODO: define terms with Ko at 9:30 am~~
+
+- atomic object
+- interaction
+    + to be synchronized for collaboration in the workspace.
+    + HCI
+- 
 
 #### Atomic object
-단위, 포맷, 언어 
- 
-- a dom element
-- a HTML entity
-- a webObject3D (including three.js etc)
+
+ It is logical unit that will be updated by interaction(HCI) of user. There are expressions( notation? type? ) by each side.  
+- dom element
+- HTML entity
+- webGLObject3D
+- data - _should it be named?_
 
 ### 2. Format
 
@@ -60,7 +68,11 @@ gundb - graph : reference 해줘야함
 
 
 ## 3. Flow (Scenario)
+
 ### init
+`TODO` It should be extended to manage workspace. (using pub-sub room)
+
+
 option 1 : drawing scene from a static html file provided by server. It is always loaded same. 
 When a user enters a workspace. Server provide a static html file.  
 
