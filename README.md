@@ -32,13 +32,13 @@
 ### 2. Format
 Data to be stored database can be expressed usng json. will develop to json-ld.
 
-dom element 정보를 저장
+_dom element 정보를 저장
 그러니까 html attribute랑 음 hierarchy 
 
 hierarchy 는 
 db type 에 따라 달라
 orbitdb - docs 
-gundb - graph : reference 해줘야함
+gundb - graph : reference 해줘야함_
 
 ```html
 <wxr-obj id="handle" mtl="handle.mtl" obj="handle.obj" 
