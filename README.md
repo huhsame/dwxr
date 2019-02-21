@@ -1,7 +1,7 @@
 # dwxr
 2019.02.21
 
-####TODO
+#### TODO
 - ~~define terms with Ko at 9:30 am~~
 - update whole document with Ko's advice. 
 
@@ -158,5 +158,6 @@ We need to save using room system including user management.
 
 reference: https://github.com/orbitdb/orbit-web
 
+![Alt text](/dwxr/images/orbit-web.png "orbit-web")
 
 ## (5. Condition for Grouping)    
