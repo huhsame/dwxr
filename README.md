@@ -1,11 +1,17 @@
 # dwxr
 2019.02.21
+
+####TODO
+- ~~define terms with Ko at 9:30 am~~
+- update whole document with Ko's advice. 
+
+## Contents
 1. Term
 2. Format
-3. Flow?  Scenario? 
+3. Flow?  Scenario?
+4. save
 
 ### 1. Term
-~~TODO: define terms with Ko at 9:30 am~~
 
 - atomic object
 - interaction
@@ -19,9 +25,12 @@
 - dom element
 - HTML entity
 - webGLObject3D
-- data - _should it be named?_
+- json - _should it be named?_
+
+
 
 ### 2. Format
+Data to be stored database can be expressed usng json. will develop to json-ld.
 
 dom element 정보를 저장
 그러니까 html attribute랑 음 hierarchy 
@@ -67,20 +76,24 @@ gundb - graph : reference 해줘야함
 ```
 
 
-## 3. Flow (Scenario)
+## 3. Flow (Scenario) + interaction(HCI)
 
-### init
+### 3.1 init
 `TODO` It should be extended to manage workspace. (using pub-sub room)
 
 
 option 1 : drawing scene from a static html file provided by server. It is always loaded same. 
-When a user enters a workspace. Server provide a static html file.  
+When a user enters a workspace. Server provide a static html file. 
+
+option 2 : from database
+
+Actually we have to do option2. No other choices. Because play mode and authoring mode should be integrated. Go HUH! 
 
 1. **Replicate db**
 2. Create dom elements
 3. Draw a scene
 
-##### Replicate db
+##### 1) Replicate db
 OrbitDB or GunDB replicate database from other peers. 
 ```javascript
 db.events.on('replicated', ( address )=>{
@@ -89,7 +102,7 @@ db.events.on('replicated', ( address )=>{
 ```
 
 
-##### Create dom elements
+##### 2) Create dom elements
 
 ```javascript
 let sceneEl = document.querySelector('wxr-space');
@@ -106,11 +119,11 @@ for(let attribute of handleData){
 // add to scene
 sceneEL.appendChild( handleEl );
 ```
-##### Draw a scene
-AFrame or WXR Library draws scene. 
+##### 3) Draw a scene
+AFrame or WXR Library draws scene. We don't need to do.
 
-### update
-It use pub-sub system to synchronize every single scene. There are two (or more) cases by **input behavior**. Regardless of case, **A publisher is one of subscribers.** Check out some examples.
+### 3.2 update
+It use pub-sub system to synchronize every single scene. There are two (or more) cases by **input behavior**.  It may be classified and called by `types of interation(HCI)`.Regardless of case, **A publisher is one of subscribers.** And each peer is publisher and subscriber. It need to keep in mind to implement the project. Check out some interaction(HCI) examples in the `aframe+gun demo` that you saw before.
 
 - moving avatar
     - publisher
@@ -129,4 +142,9 @@ It use pub-sub system to synchronize every single scene. There are two (or more)
         1. get data from db
         2. **update the dom element including publisher**
         3. redraw a webObject3D
-       
+        
+## 4. Save
+
+_This chapter name will be changed to management workspaces using pub-sub room_
+
+If     
