@@ -33,13 +33,10 @@
 ### 2. Format
 Data to be stored database can be expressed usng json. will develop to json-ld.
 
-_dom element 정보를 저장
-그러니까 html attribute랑 음 hierarchy 
+_dom element 정보를 저장_
+_그러니까 html attribute랑 음 hierarchy_
 
-hierarchy 는 
-db type 에 따라 달라
-orbitdb - docs 
-gundb - graph : reference 해줘야함_
+_hierarchy 는 db type 에 따라 달라 orbitdb - docs,  gundb - graph : reference 해줘야함_
 
 ```html
 <wxr-obj id="handle" mtl="handle.mtl" obj="handle.obj" 
@@ -66,6 +63,13 @@ gundb - graph : reference 해줘야함_
 }
 ```
 
+aframe
+```html
+    <a-entity id="w5h3" mixin="grid-plane" seat="owner:멍청한 유병현" material="color:#ff5a30"></a-entity>
+
+```
+
+
 
 ```html
 <a-entity position="-2.5 0 -1.5" player="soul:jsbj980g6Je2pqUVn4jU">
@@ -75,6 +79,8 @@ gundb - graph : reference 해줘야함_
     </a-entity>
 </a-entity>
 ```
+
+
 
 
 ## 3. Flow (Scenario) + interaction(HCI)
