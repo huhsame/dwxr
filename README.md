@@ -154,4 +154,9 @@ It use pub-sub system to synchronize every single scene. There are two (or more)
 
 _This chapter name will be changed to management workspaces using pub-sub room_
 
+We need to save using room system including user management.
+
+reference: https://github.com/orbitdb/orbit-web
+
+
 ## (5. Condition for Grouping)    
