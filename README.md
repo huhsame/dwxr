@@ -10,6 +10,7 @@
 2. Format
 3. Flow?  Scenario?
 4. save
+5. (Condition for Grouping)   
 
 ### 1. Term
 
@@ -147,4 +148,4 @@ It use pub-sub system to synchronize every single scene. There are two (or more)
 
 _This chapter name will be changed to management workspaces using pub-sub room_
 
-If     
+## (5. Condition for Grouping)    
