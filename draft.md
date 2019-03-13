@@ -79,7 +79,7 @@ In server-client system, although using publish-subscribe pattern, roles of publ
 Developer sets data to share as topic and roles of the topic who publish or subscribe.
 _// should be search pub-sub system and dds._
 Otherwise, In decentralized or distributed database system, each peer which is connected by gun-db or orbit-db is both publisher and subscriber.
-And due to every data which is stored can be a topic, developer does not need to additional effort to set certain data as a topic.
+Because every stored data can be a topic, developer does not need to additional effort to set certain data as a topic.
 
 ### atomic data
 In this paper we propose a designing method that defines room data and object data (where is user?) as atomic data to share for a 3D scene in webXR.
@@ -102,8 +102,17 @@ A-Frame renders 3D scene in this room from DOM tree.
 Peers publish or subscribe data based on these atomic data.
 
 
-#### 3 cases by HCI types
+---
+### cases by HCI types - object data 만 ㅋ 
+The proposed method classifies independent two sides on single peer because a peer is both a publisher and subscriber.
+_(figure)_
+Behaviors to change data status are publish-side and behaviors to apply updated data to application status or rendering status are subscribe-side.
 
+#### pub-side
+아 그림으로 설명하자.  용어 적어놨으니까. 
+- object data
+- dom element
+- 3d object
 
 
 
