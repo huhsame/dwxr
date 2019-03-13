@@ -158,6 +158,6 @@ We need to save using room system including user management.
 
 reference: https://github.com/orbitdb/orbit-web
 
-![Alt text](/dwxr/images/orbit-web.png "orbit-web")
+
 
 ## (5. Condition for Grouping)    
