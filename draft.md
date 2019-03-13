@@ -60,10 +60,10 @@
        + for continual change or not
            - howling
 ### Flow 
-// it need to extend to general framework including A-Frame, WXR, babylon.js etc
+_// it need to extend to general framework including A-Frame, WXR, babylon.js etc_
 
 A-Frame is based on top of HTML. 
-While A-Frame uses the DOM, its elements don't touch the browser layout engine.
+While A-Frame uses the DOM, its elements do not touch the browser layout engine.
 When creating or updating its elements, 3D object updates in 3D scene are all done in memory by A-Frame.
 A-Frame provides not only DOM APIs but also direct access to underlying three.js scene and objects by mapping relationship between A-Frame and three.js scene graphs.
 
@@ -74,6 +74,14 @@ Depending on 특징 of updated data, the data change DOM tree or three.js scene 
 After rendering 3D object updates in the 3D scene by A-Frame with synchronized data, each peer shares the 3D scene.
 
 ### pub-sub
+
+In server-client system, although using publish-subscribe pattern, roles of publisher and subscriber are separated. distinguished on a certain topic. (아 문장이상해 ㅋ 특정데이터에 대해 누가 펍이고 섭인지 딱 정해져잇다.)
+Developer sets data to share as topic and roles of topic as publisher or subscriber.
+_// should be search pub-sub system and dds._
+Otherwise, In decentralized or distributed database system, each peer which is connected by gun-db or orbit-db is both publisher and subscriber.
+And due to every data which is stored can be a topic, developer does not need to additional effort to set certain data as a topic.
+
+
 
 
 
