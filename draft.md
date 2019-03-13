@@ -83,21 +83,26 @@ And due to every data which is stored can be a topic, developer does not need to
 
 ### atomic data
 In this paper we propose a designing method that defines room data and object data (where is user?) as atomic data to share for a 3D scene in webXR.
-#### room data? scene? workspace?
+#### -1. room data? scene? workspace?
 A room is a logical space based on a scene with users who have authority to access the scene.
-Room data includes information of the room such as id and information of name and users such as id, name and authority.
+A room data includes information of the room such as id and information of name and users such as id, name and authority.
 In room list page (which is rendered from rooms data), peer subscribes and replicates rooms data without objects data.
 User selects one of rooms with checking authority, and enters the selected room.
 If one or more user select same room, they enter the same room and share a 3D scene of the room. 
 
-#### object data 아 헷갈려 그림 필수
-Object means, in this paper, the unit of a 3D object in a 3D scene and a entity in A-Frame.
+#### -2. object data 아 헷갈려 그림 필수 _ status 정의
+Object means, in this paper, the unit of a 3D object in a 3D scene which is rendering status and a entity named by A-Frame in DOM tree which is application status.
 _// A 3D scene is composed of 3D objects, and each 3D object is composed of multiple types of object3D(THREE.Object3D) in three.js such as mesh and light.__
+Additionally object data is expression of object in data status.
+A object data includes information of the object to specify a entity by A-Frame such as tagName, id and attributes.
+3D scene is rendered from DOM tree objects data which belong to the room.
+When a user enters the selected room, the proposed method creates DOM elements from objects data.
+A-Frame renders 3D scene in this room from DOM tree.
+
+Peers publish or subscribe data based on these atomic data.
 
 
-
-
-When entering the selected room, the 3D scene is rendered from objects data which belong to the room.
+#### 3 cases by HCI types
 
 
 
