@@ -6,11 +6,11 @@
     + XR
     + WebXR
     + DWeb
-2. (2?) Decentralized Database
+2. (2?) Decentralized Database `<- 어디에`
     + classification by conflict-free replicated data type (CRDT)
         - Operation-based CRDTs
         - State-based CRDTs
-    + publication - subscription system
+    + publication - subscription system 을 `사용하는 ddb에 대해`
     + delete
 3. design (name ..)
     + flow (about A-Frame)
@@ -50,14 +50,14 @@
 + flow
 + pub-sub
 + room
-+ ~~object~~ entity
++ object
    - pub perspective. classification by HCI type
-       + data
+       + object data
        + dom element
-       + ~~webGLObject3d~~ three.js object 
+       + ~~webGLObject3d~~ 3d object 
    - sub perspective
-       + from data
-       + for continual change or not
+       + from object data
+       + for `continual change or not`
            - howling
 ### Flow 
 _// it need to extend to general framework including A-Frame, WXR, babylon.js etc_
@@ -83,7 +83,7 @@ Because every stored data can be a topic, developer does not need to additional 
 
 ### atomic data
 In this paper we propose a designing method that defines room data and object data (where is user?) as atomic data to share for a 3D scene in webXR.
-#### -1. room data? scene? workspace?
+#### -1. room data? ~~scene? workspace?~~
 A room is a logical space based on a scene with users who have authority to access the scene.
 A room data includes information of the room such as id and information of name and users such as id, name and authority.
 In room list page (which is rendered from rooms data), peer subscribes and replicates rooms data without objects data.
@@ -109,7 +109,7 @@ _(figure)_
 Behaviors to change data status are publish-side and behaviors to apply updated data to application status or rendering status are subscribe-side.
 
 #### pub-side
-아 그림으로 설명하자.  용어 적어놨으니까. 
+아 그림으로 설명하자.  용어 적어놨으니까. 정말 미치겠네
 - object data
 - dom element
 - 3d object
