@@ -86,6 +86,18 @@ Furthermore, in order to share 3D scene with interaction, each peer also should 
 Individual data is derived from synchronized data with logged in user data or interaction in each peer.
 We call 'base data' in this paper as means of data to share with other peers by DDB and 'derived data' as means of data not to share for making 3D scene different.
 For example, as data of user's name or camera's position should be different individually, it is derived data.
+
+#### 구현시 차이점 -> 이거 설계에 안쓰고 구현에 써야하나 ?
+Depending on WebXR project to design (구현할 웹엑살 프로그램에 따라), to classify data is required into two types: base data and derived data.
+// 왜냐면 각케이스마다 씬에 반영하기위해 변경해야할 스테이트가 다르기때문이
+In case of derived data, change it in application state or scene graph state directly.
+In another case, base data should be changed in data state which DDB automatically makes peers publish and subscribe this base data.
+// data state를 건드려야한다 까지만 이야기하고 / 그뒤에 어떻게 할지는 펍섭쪽에 가서 다시 설명
+
+// 예를들어 박스의 색을 바꿀때, 내 화면에만 어플리케이션스테이트나 씬그래프 스테이트를 변경하면 내꺼만 변하고, 
+// 모든 피어에게 박스 색 바꾸려면 내꺼 안건드리고 데이터스테이트를 변경한다. 그러면 나또한 섭스크라이버니까 변경된 데이터의 섭스크라이브를 통해 어플리테이션스테이트나 신그래프스테이트를 변경한다.
+
+
 // 예를 들어 카메라의 포지션은, 처음 씬이 로드될때만 베이스데이타로부터 모든 피어들이 디폴트값으로 같은 포지션으로 이니셜라이즈되지만, 그 이후에는 유저의 인터랙션에 따라 각각 독립적인 포지션값을 가진다.
 // 그러니까 원하는 씬의 목적에 맞게 이 두가지를 잘 구분해야한다. 
 
@@ -105,11 +117,14 @@ _// should be search pub-sub system and dds._
 Otherwise, In decentralized or distributed database system, each peer which is connected by gun-db or orbit-db is both publisher and subscriber.
 Because every stored data can be a topic, developer does not need to additional effort to set certain data as a topic.
 
-#### pubsub에서 고려해야할 점 그거 동시에 두개다라는거
+#### pubsub에서 고려해야할 점 그거 동시에 두개다라는거 ? 뒤에써야하나 ?
+`// 표현을 못하겠어. 진짜 허승연아 아오정말`
+In DDB, as every peer is both publisher and subscriber which has same script
+a peer update publisher is also subscriber.
+when a peer update 
 
 
-
-### atomic data
+### atomic data -> 아이거 그냥 4 임플리멘테이션에 써야할지도
 
 In this paper we propose a designing method that defines room data and object data (where is user?) as atomic data to share for a 3D scene in webXR.
 #### -1. room data? ~~scene? workspace?~~
@@ -132,14 +147,21 @@ Peers publish or subscribe data based on these atomic data.
 
 
 ---
-### 
-In order to synchronize base data with every peer, 
-In order to compose 3D scene using webXR like A-Frame, 
-### cases by HCI types - object data 만 ㅋ 
-The proposed method classifies independent two sides on single peer because **a peer is both a publisher and subscriber**.
-_(figure)_
-Behaviors to change data state are publish-side and behaviors to apply updated data to application state or rendering state are subscribe-side.
+
+### update object data on pubside - subside 
+//- sub side 랑 pub side랑 두개를 나눠섯 생각해야한다 ?
+In order to synchronize base data in peers, it should be changed in data state.
+To change base data in data state lets DDB publish it to other peers.
+After publishing, peers get a event which notices update of base data.
+Subscribers listen this event and update their 3D scene by updated base data respectively.
+In this paper, we propose classifying independent two sides which is publish side and subscribe side.
+Figure n shows an overview of the proposed designing method for webxr with ddb. 
 
 #### pub-side
-In publish side, data state is changed from three ways which are data state, application state, and scene graph state.
+
+On publish side, data state is changed from three ways which are data state, application state, and scene graph state, as shown in Figure n(a).
+Human-computer interactions in webxr can be sorted by perspective of which state is changed
+
+#### sub-side
+on the other hand, figure n(b) shows that updated base data in data state applies to application state or scene graph state on subscribe side.
 
