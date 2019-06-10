@@ -2,12 +2,30 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="/js/bundle.js"></script>
-
+    <link rel='stylesheet' href='/bundle.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <script src="/bundle.js" async></script>
+
+    <header class="mdc-top-app-bar">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <a href="#" class="material-icons mdc-top-app-bar__navigation-icon">menu</a>
+          <span class="mdc-top-app-bar__title">Title</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Download">file_download</a>
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page">print</a>
+          <a href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page">bookmark</a>
+        </section>
+      </div>
+    </header>
+    <button class="mdc-button">
+      <span class="mdc-button__label">Button</span>
+    </button>
   </body>
 </html>
+
+<script>
+</script>
