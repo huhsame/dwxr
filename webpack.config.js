@@ -1,11 +1,12 @@
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
     // enntry file
-    entry: './src/js/index.js',
+    entry: ['@babel/polyfill', './src/js/index.js', './src/scss/app.scss'],
     // 컴파일 + 번들링된 js 파일이 저장될 경로와 이름 지정
     output: {
-        path: path.resolve(__dirname, 'dist/js'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
     module: {
@@ -23,6 +24,31 @@ module.exports = {
                         plugins: ['@babel/plugin-proposal-class-properties']
                     }
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: 'bundle.css',
+                        },
+                    },
+                    { loader: 'extract-loader' },
+                    { loader: 'css-loader' },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: () => [autoprefixer()]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            includePaths: ['./node_modules']
+                        }
+                    }
+                ],
             }
         ]
     },
