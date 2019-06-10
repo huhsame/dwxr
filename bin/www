@@ -8,6 +8,11 @@ var app = require('../app');
 var debug = require('debug')('dwxr:server');
 var http = require('http');
 var Gun = require('gun');
+//
+// var Radix = require('gun/lib/radix');
+// var Radisk = require('gun/lib/radisk');
+// var Store = require('gun/lib/store');
+// var RindexedDB = require('gun/lib/rindexed');
 
 app.use(Gun.serve);
 
@@ -29,9 +34,7 @@ var server = http.createServer(app);
  */
 
 server.listen(port)
-
 var gun = Gun({	file: 'data', web: server });
-
 
 server.on('error', onError);
 server.on('listening', onListening);

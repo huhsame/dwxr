@@ -53,7 +53,7 @@ module.exports = {
                 ],
             },
         ],
-        noParse: /gun\.js$/
+        noParse: [/gun\.js$/, /sea\.js$/]
     },
     devtool: 'source-map',
     // https://webpack.js.org/concepts/mode/#mode-development
