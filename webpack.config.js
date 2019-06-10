@@ -14,9 +14,11 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.resolve(__dirname, 'src/js')
+                    path.resolve(__dirname, 'src/js'),
+                    // path.resolve(__dirname, 'node_modules/gun'),
+                    // path.resolve(__dirname, 'node_modules/aframe')
                 ],
-                exclude: /node_modules/,
+                // exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -49,10 +51,14 @@ module.exports = {
                         }
                     }
                 ],
-            }
-        ]
+            },
+        ],
+        noParse: /gun\.js$/
     },
     devtool: 'source-map',
     // https://webpack.js.org/concepts/mode/#mode-development
-    mode: 'development'
+    mode: 'development',
+    node: {
+        fs: 'empty'
+    }
 };
