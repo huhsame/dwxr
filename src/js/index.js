@@ -7,12 +7,6 @@ import 'gun/lib/radisk';
 import 'gun/lib/store';
 import 'gun/lib/rindexed'
 
-
-
-
-import {MDCRipple} from '@material/ripple';
-import {MDCTopAppBar} from '@material/top-app-bar';
-
 ;(() => {
     function S(){};
     window.S = S;
@@ -35,10 +29,4 @@ import {MDCTopAppBar} from '@material/top-app-bar';
 
 S.gun.get('root').once(console.log);
 // gun.get('root').get('where').put('here');
-
-// Instantiation
-const topAppBarElement = document.querySelector('.mdc-top-app-bar');
-const topAppBar = new MDCTopAppBar(topAppBarElement);
-
-
 

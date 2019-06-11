@@ -3,7 +3,7 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
     // enntry file
-    entry: ['@babel/polyfill', './src/js/index.js', './src/scss/app.scss'],
+    entry: ['@babel/polyfill', './src/js/index.js'], //, './src/scss/app.scss'],
     // 컴파일 + 번들링된 js 파일이 저장될 경로와 이름 지정
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -38,12 +38,12 @@ module.exports = {
                     },
                     { loader: 'extract-loader' },
                     { loader: 'css-loader' },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            plugins: () => [autoprefixer()]
-                        }
-                    },
+                    // {
+                    //     loader: 'postcss-loader',
+                    //     options: {
+                    //         plugins: () => [autoprefixer()]
+                    //     }
+                    // },
                     {
                         loader: 'sass-loader',
                         options: {
