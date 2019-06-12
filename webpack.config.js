@@ -1,14 +1,20 @@
 const path = require('path');
-const autoprefixer = require('autoprefixer');
+// const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 module.exports = {
     // enntry file
-    entry: ['@babel/polyfill', './src/js/index.js'], //, './src/scss/app.scss'],
+    entry: ['@babel/polyfill', './src/js/app.js', './src/scss/app.scss'],
     // 컴파일 + 번들링된 js 파일이 저장될 경로와 이름 지정
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
+    plugins: [
+        // 컴파일 + 번들링 CSS 파일이 저장될 경로와 이름 지정
+        new MiniCssExtractPlugin({ filename: 'bundle.css' })
+    ],
     module: {
         rules: [
             {
@@ -28,29 +34,33 @@ module.exports = {
                 }
             },
             {
-                test: /\.scss$/,
+                test: /\.(scss)$/,
                 use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'bundle.css',
-                        },
-                    },
-                    { loader: 'extract-loader' },
-                    { loader: 'css-loader' },
+                    MiniCssExtractPlugin.loader,
                     // {
-                    //     loader: 'postcss-loader',
-                    //     options: {
-                    //         plugins: () => [autoprefixer()]
-                    //     }
+                    //     // Adds CSS to the DOM by injecting a `<style>` tag
+                    //     loader: 'style-loader'
                     // },
                     {
-                        loader: 'sass-loader',
+                        // Interprets `@import` and `url()` like `import/require()` and will resolve them
+                        loader: 'css-loader'
+                    },
+                    {
+                        // Loader for webpack to process CSS with PostCSS
+                        loader: 'postcss-loader',
                         options: {
-                            includePaths: ['./node_modules']
+                            plugins: function () {
+                                return [
+                                    require('autoprefixer')
+                                ];
+                            }
                         }
+                    },
+                    {
+                        // Loads a SASS/SCSS file and compiles it to CSS
+                        loader: 'sass-loader'
                     }
-                ],
+                ]
             },
         ],
         noParse: [/gun\.js$/, /sea\.js$/]
