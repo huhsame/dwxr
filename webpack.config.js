@@ -61,7 +61,7 @@ module.exports = {
                         loader: 'sass-loader'
                     }
                 ]
-            },
+            }
         ],
         noParse: [/gun\.js$/, /sea\.js$/]
     },

@@ -2,14 +2,111 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link href="/bundle.css" rel="stylesheet"/>
         <script src="/bundle.js" async></script>
+        <link href="/bundle.css" rel="stylesheet" />
         <title><%= title %></title>
     </head>
     <body>
+
+
     <div class="container">
-        <h1>DWXR</h1>
-        <p>hey</p>
+        <div class="row justify-content-center">
+            <div class="col-sm">
+                <form>
+                    <div class="form-group">
+                        <label for="alias">Username</label>
+                        <input id="alias" type="text" class="form-control"  placeholder="Enter username">
+                        <small id="passHelp" class="form-text text-muted">Your username needs to be longer than 5 letters.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass">Passphrase</label>
+                        <input id="pass" type="password" class="form-control" aria-describedby="passHelp" placeholder="Passphrase">
+                        <small id="passHelp" class="form-text text-muted">Your passphrase needs to be longer than 9 letters.</small>
+                    </div>
+                    <button id="up" type="button" class="btn btn-outline-primary">Sign Up</button>
+                    <button id="in" type="button" class="btn btn-primary">Sign In</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <div class="container">
+        <div class="row">
+            <h2>Space List</h2>
+        </div>
+        <div class="row">
+            <ul>
+                <li>space 1</li>
+                <li>space 2</li>
+                <li>space 3</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal for tell -->
+    <div class="modal fade" id="tell" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" >DWXR</h5>
+                </div>
+                <div class="modal-body" id="tell-what"></div>
+            </div>
+        </div>
+    </div>
+
     </body>
+
+
 </html>
+
+<script>
+
+
+    S.gun.get('root').once(console.log);
+    // gun.get('root').get('where').put('here');
+
+    ;(() => {
+        jq('#up').on('click', (e) => {
+            let form = check();
+            if(!form){ return }
+            S.user.create(form.alias, form.pass, (ack) => {
+                if(ack.err){ return S.tell(ack.err) }
+                check.up = true;
+                S.user.auth(form.alias, form.pass, logined);
+            });
+        });
+        jq('#in').on('click', (e) => {
+            let form = check();
+            if(!form){ return }
+            S.user.auth(form.alias, form.pass, logined);
+        });
+
+        let check = () => {
+            let form = {alias: (jq('#alias').val()||'').toLowerCase(), pass: jq("#pass").val()||''};
+            if(6 > form.alias.length){
+                S.tell("Your username needs to be longer than 5 letters.");
+                return;
+            }
+            if(9 > form.pass.length){
+                S.tell("Your passphrase needs to be longer than 9 letters.");
+                return;
+            }
+            return form;
+        }
+
+        let logined = (ack) =>{
+            if(ack.err){ return S.tell(ack.err) }
+            console.log(ack);
+            S.user.recall({sessionStorage: true}); // 세션에 로그인 정보 저장
+            S.tell( 'welcome, '+ S.user.is.alias +'!');
+        }
+
+        // on login
+        S.gun.on('auth', (ack) => {
+
+        });
+    })();
+
+</script>
+
