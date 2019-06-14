@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev" : "node ./bin/dev",
+    "dev": "node ./bin/dev",
     "build": "webpack -w",
     "start": "node ./bin/www"
   },
@@ -18,7 +18,9 @@
     "gun": "^0.2019.515",
     "http-errors": "~1.6.3",
     "jquery": "^3.4.1",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "node-webcrypto-ossl": "^1.0.47",
+    "text-encoding": "^0.7.0"
   },
   "main": "app.js",
   "devDependencies": {
