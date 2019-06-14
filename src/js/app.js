@@ -32,7 +32,7 @@ import 'bootstrap';
     S.tell = (what, n) => {
         let e = jq('#tell');
         jq('#tell').find('.modal-body').text( what );
-        console.log(jq('#tell').find('.modal-body'));
+        // console.log(jq('#tell').find('.modal-body'));
         e.modal('show');
         clearTimeout(S.tell.to);
         S.tell.to = setTimeout(() => { e.modal('hide') }, n || 2500);
