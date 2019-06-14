@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 let app = require('../app');
-let path = require('path');
 let debug = require('debug')('dwxr:server');
 let http = require('http');
 let Gun = require('gun');
