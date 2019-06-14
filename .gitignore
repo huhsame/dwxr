@@ -1,4 +1,8 @@
 .idea/
+.dist/
+.data/
+.bin/key/
+.bin/www
 
 # Logs
 logs
