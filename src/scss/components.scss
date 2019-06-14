@@ -1,0 +1,39 @@
+
+
+.icon-btn {
+  display: inline-block;
+  color: $body-color;
+  //text-align: center;
+  //vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+
+  @include transition($btn-transition);
+
+  @include hover {
+    color:              theme-color("primary");
+    text-decoration:    none;
+  }
+
+  &:focus,
+  &.focus {
+    outline: 0;
+    box-shadow: $btn-focus-box-shadow;
+  }
+
+  // Disabled comes first so active can properly restyle
+  &.disabled,
+  &:disabled {
+    opacity: $btn-disabled-opacity;
+    @include box-shadow(none);
+  }
+
+  &:not(:disabled):not(.disabled):active,
+  &:not(:disabled):not(.disabled).active {
+    @include box-shadow($btn-active-box-shadow);
+
+    &:focus {
+      @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
+    }
+  }
+}
