@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/user/:userid', function(req, res, next) {
+router.get('/:userid', function(req, res, next) {
   res.render('user', { userid: req.params.userid });
 });
 
