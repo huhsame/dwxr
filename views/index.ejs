@@ -67,15 +67,16 @@
     </nav>
 
     <div class="container">
-        <div class="row">
-            <h2>Space List <i class="fas fa-camera"></i></h2>
+        <div class="row justify-content-center">
+            <button id="create-space-btn" type="button" class="btn btn-outline-primary"> <i class="fas fa-plus"></i> New</button>
         </div>
         <div class="row">
-            <ul>
-                <li>space 1</li>
-                <li>space 2</li>
-                <li>space 3</li>
-            </ul>
+            <h2><i class="fas fa-cubes"></i> Space List</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div id="space-list" class="card-columns">
+
         </div>
     </div>
 
@@ -134,9 +135,104 @@
 
 <script>
 
+    ;(() => {
+        S.app.once(console.log);
+        let getSpace = function(data){
+            let space = {
+                'title': data.title,
+            }
+            space.owner = data.owner;
 
-    S.gun.get('root').once(console.log);
-    // gun.get('root').get('where').put('here');
+            if( data.description !== undefined){
+                space.description = data.description;
+            }else{
+                space.description = 'This space is created by ' + space.owner + '!';
+            }
+
+            space.ago = '3 hours';
+            // 이거 쓰자 https://www.npmjs.com/package/javascript-time-ago
+            // let start;
+            // if(data['opened-at'] !== undefined){
+            //     start = data['created-at'];
+            // }else{
+            //     start = data['opened-at'];
+            // }
+            // let time = Data.now() - start;
+
+            return space;
+        };
+        let createCard = function( space ){
+
+            let card = document.createElement('div')
+            card.classList.add('card');
+            card.classList.add('border-secondary');
+            let cardBody = document.createElement('div');
+            cardBody.classList.add('card-body');
+            card.appendChild(cardBody);
+
+            let cardTitle = document.createElement('h5');
+            cardTitle.classList.add('card-title');
+            cardTitle.textContent = space.title;
+            let cardSubtitle = document.createElement('h6');
+            cardSubtitle.classList.add('card-subtitle');
+            cardSubtitle.classList.add('mb-2');
+            cardSubtitle.classList.add('text-muted');
+            cardSubtitle.textContent = '@'+space.owner;
+            let cardText = document.createElement('p');
+            cardText.classList.add('card-text');
+            cardText.textContent = space.description ;
+            let cardAgo = document.createElement('p');
+            cardAgo.classList.add('card-text');
+                let small = document.createElement('small');
+                small.classList.add('text-muted')
+                small.textContent = 'Last opened ' + space.ago + 'ago';
+                cardAgo.appendChild( small );
+            let btn = document.createElement('a');
+            btn.classList.add('btn');
+            btn.classList.add('btn-primary');
+            btn.textContent = 'Enter';
+            btn.setAttribute('href',window.location.href + 'space/'+ space.id)
+
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(cardSubtitle);
+            cardBody.appendChild(cardText);
+            cardBody.appendChild(cardAgo);
+            cardBody.appendChild(btn);
+
+            return card;
+        };
+        S.app.get('spaces').map().once(function(data, key){
+            let space = getSpace(data);
+            space.id = key;
+            document.getElementById('space-list').appendChild(createCard( space ));
+        })
+
+        jq('#create-space-btn').on('click', function(){
+            if(sessionStorage.recall === undefined){
+                S.tell('Sign in before creating space !')
+                return;
+            }
+
+            let uuid = S.generateUUID()
+            let space = S.gun.get( uuid );
+
+            space.get('created-at').put(Date.now());
+
+            space.get('owner').put(S.user.is.alias);
+            space.get('title').put('Untitled space');
+            space.get('lock').put(false);
+
+            let enter = function(ack){
+                if(ack.err){}
+                else{
+                    let url = window.location.href + 'space/' + uuid;
+                    let tab = window.open(url, '_blank');
+                    tab.focus();
+                }
+            }
+            S.app.get('spaces').set(space, enter);
+        })
+    })();
 
     ;(() => {
 
@@ -145,7 +241,7 @@
             m.modal('show')
         });
 
-        jq('#up').on('click', (e) => {
+        jq('#up').on('click', function(){
             let form = check();
             if(!form){ return }
             S.user.create(form.alias, form.pass, (ack) => {
@@ -155,7 +251,7 @@
             });
         });
 
-        jq('#in').on('click', (e) => {
+        jq('#in').on('click', function(){
             let form = check();
             if(!form){ return }
             S.user.auth(form.alias, form.pass, logined);
@@ -199,6 +295,8 @@
             S.tell( 'welcome, '+ alias +'!');
 
         }
+
+
 
 
 
