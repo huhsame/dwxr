@@ -22,57 +22,11 @@
     <meta name="theme-color" content="#ffffff">
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
 
-    <script src="/bundle.js" async></script>
+    <script src="/bundle.js" ></script>
     <link href="/bundle.css" rel="stylesheet" />
     <title>DWXR</title>
 </head>
 <body>
-<style>
-    html, body {
-        height: 100%;
-    }
-</style>
-
-
-<nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
-    <a class="navbar-brand" href="#">
-        <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        DWXR
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <ul class="navbar-nav mr-auto  my-2 my-lg-0">-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="#">Link</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                    Dropdown-->
-<!--                </a>-->
-<!--                <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <a class="dropdown-item" href="#">Action</a>-->
-<!--                    <a class="dropdown-item" href="#">Another action</a>-->
-<!--                    <div class="dropdown-divider"></div>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                </div>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-<!--            </li>-->
-<!--        </ul>-->
-        <div id="sign" class="my-2 my-lg-0">
-            <button id="sign-btn" class="btn btn-outline-primary my-2 my-sm-0">
-                <i class="fas fa-user-circle"></i> Sign In
-            </button>
-        </div>
-<!--    </div>-->
-</nav>
 
 <div class="scene-container fixed-top">
     <a-scene class="scene" embedded >
@@ -84,6 +38,25 @@
     </a-scene>
 
 </div>
+
+<nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
+    <a class="navbar-brand" href="#">
+        <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        DWXR
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id = 'nav-user'>
+        <div id="sign" class="my-2 my-lg-0">
+            <button id="sign-btn" class="btn btn-outline-primary my-2 my-sm-0">
+                <i class="fas fa-user-circle"></i> Sign In
+            </button>
+        </div>
+    </div>
+
+</nav>
 
 
 <!--    Modal for login-->
@@ -131,9 +104,30 @@
         </div>
     </div>
 </div>
+<script>
+    ;(()=>{
+        document.addEventListener('sslogin', function(){
+            let alias = S.getMyName();
+            let navUser = jq('#nav-user');
+            navUser.html(
+                '<div class="dropdown">' +
+                '        <a class="dropdown-toggle" href="#" rid="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                '        </a>' +
+                '        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">' +
+                '            <a class="dropdown-item" href="#">My spaces</a>' +
+                '            <a class="dropdown-item" href="#">Setting</a>' +
+                '            <div class="dropdown-divider"></div>' +
+                '            <a class="dropdown-item" href="#">Sign out</a>' +
+                '        </div>' +
+                '    </div>'
+            );
+            navUser.find('.dropdown-toggle').text( alias );
+        });
+    })();
 
+</script>
 </body>
-
-
 </html>
+
+
 
