@@ -1,5 +1,7 @@
 // src/js/main.js
 import "@babel/polyfill";
+
+
 import $ from 'jquery';
 let jq = $.noConflict();
 window.jq = jq;
@@ -12,7 +14,11 @@ import 'gun/lib/store';
 import 'gun/lib/rindexed';
 import 'gun/lib/open';
 
+
 import 'bootstrap';
+
+// import 'aframe';
+
 
     ;(() => {
     function S(){};
