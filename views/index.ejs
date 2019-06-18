@@ -26,7 +26,7 @@
     </head>
     <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-white">
         <a class="navbar-brand" href="#">
             <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
             DWXR
@@ -185,7 +185,7 @@
             cardAgo.classList.add('card-text');
                 let small = document.createElement('small');
                 small.classList.add('text-muted')
-                small.textContent = 'Last opened ' + space.ago + 'ago';
+                small.textContent = 'Last opened ' + space.ago + ' ago';
                 cardAgo.appendChild( small );
             let btn = document.createElement('a');
             btn.classList.add('btn');
