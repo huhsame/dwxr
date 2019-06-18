@@ -1,4 +1,7 @@
 
+html, body {
+  height: 100%;
+}
 
 .scene {
   width: 100%;
@@ -7,7 +10,7 @@
 }
 
 .scene-container{
-  z-index: -100;
+  z-index: 1020;
   min-height: 100%;
   height: 100%;
 }
