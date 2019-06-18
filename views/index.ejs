@@ -20,7 +20,7 @@
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
-        <script src="/bundle.js" async></script>
+        <script src="/bundle.js" ></script>
         <link href="/bundle.css" rel="stylesheet" />
         <title><%= title %></title>
     </head>
@@ -137,6 +137,7 @@
 
     ;(() => {
         S.app.once(console.log);
+
         let getSpace = function(data){
             let space = {
                 'title': data.title,
@@ -151,16 +152,11 @@
 
             space.ago = '3 hours';
             // 이거 쓰자 https://www.npmjs.com/package/javascript-time-ago
-            // let start;
-            // if(data['opened-at'] !== undefined){
-            //     start = data['created-at'];
-            // }else{
-            //     start = data['opened-at'];
-            // }
-            // let time = Data.now() - start;
+
 
             return space;
         };
+
         let createCard = function( space ){
 
             let card = document.createElement('div')
@@ -241,66 +237,52 @@
             m.modal('show')
         });
 
-        jq('#up').on('click', function(){
+        jq('#up').on('click', function () {
             let form = check();
-            if(!form){ return }
-            S.user.create(form.alias, form.pass, (ack) => {
-                if(ack.err){ return S.tell(ack.err) }
+            if (!form) {
+                return
+            }
+            S.user.create(form.alias, form.pass, async (ack) => {
+                if (ack.err) {
+                    return S.tell(ack.err)
+                }
                 check.up = true;
-                S.user.auth(form.alias, form.pass, logined);
+                await S.user.auth(form.alias, form.pass, logined);
             });
         });
 
-        jq('#in').on('click', function(){
+        jq('#in').on('click', async function () {
             let form = check();
-            if(!form){ return }
-            S.user.auth(form.alias, form.pass, logined);
+            if (!form) {
+                return
+            }
+            await S.user.auth(form.alias, form.pass, logined);
         });
 
-
         let check = () => {
-            let form = {alias: (jq('#alias').val()||'').toLowerCase(), pass: jq("#pass").val()||''};
-            if(6 > form.alias.length){
+            let form = {alias: (jq('#alias').val() || '').toLowerCase(), pass: jq("#pass").val() || ''};
+            if (6 > form.alias.length) {
                 S.tell("Your username needs to be longer than 5 letters.");
                 return;
             }
-            if(9 > form.pass.length){
+            if (9 > form.pass.length) {
                 S.tell("Your passphrase needs to be longer than 9 letters.");
                 return;
             }
             return form;
         }
 
-        let logined = (ack) =>{
-            if(ack.err){ return S.tell(ack.err) }
+        let logined = (ack) => {
+            if (ack.err) {
+                return S.tell(ack.err)
+            }
             console.log(ack);
             jq('#modal-sign').modal('hide');
             let e = jq('#sign');
             let alias = S.user.is.alias;
-
-            // let dropdown = ' <div class="dropdown">\n' +
-            //     '                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n' +
-            //     '                        <i class="fas fa-user-circle"></i>\n' + alias
-            // '                    </a>\n' +
-            // '                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">\n' +
-            // '                        <a class="dropdown-item" href="#">Action</a>\n' +
-            // '                        <a class="dropdown-item" href="#">Another action</a>\n' +
-            // '                        <div class="dropdown-divider"></div>\n' +
-            // '                        <a class="dropdown-item" href="#">Something else here</a>\n' +
-            // '                    </div>\n' +
-            // '                </div>'
-            // e.html(dropdown);
-
             S.user.recall({sessionStorage: true}); // 세션에 로그인 정보 저장
-            S.tell( 'welcome, '+ alias +'!');
-
+            S.tell('welcome, ' + alias + '!');
         }
-
-
-
-
-
-
     })();
 
 </script>
