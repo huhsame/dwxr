@@ -44,10 +44,6 @@
         <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
         DWXR
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
     <div id = 'nav-user'>
         <div id="sign" class="my-2 my-lg-0">
             <button id="sign-btn" class="btn btn-outline-primary my-2 my-sm-0">
@@ -55,7 +51,6 @@
             </button>
         </div>
     </div>
-
 </nav>
 
 
@@ -104,25 +99,10 @@
         </div>
     </div>
 </div>
+
 <script>
     ;(()=>{
-        document.addEventListener('sslogin', function(){
-            let alias = S.getMyName();
-            let navUser = jq('#nav-user');
-            navUser.html(
-                '<div class="dropdown">' +
-                '        <a class="dropdown-toggle" href="#" rid="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                '        </a>' +
-                '        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">' +
-                '            <a class="dropdown-item" href="#">My spaces</a>' +
-                '            <a class="dropdown-item" href="#">Setting</a>' +
-                '            <div class="dropdown-divider"></div>' +
-                '            <a class="dropdown-item" href="#">Sign out</a>' +
-                '        </div>' +
-                '    </div>'
-            );
-            navUser.find('.dropdown-toggle').text( alias );
-        });
+
     })();
 
 </script>

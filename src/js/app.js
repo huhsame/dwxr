@@ -39,6 +39,23 @@ import 'bootstrap';
         console.log(S.user.is.alias +' is here!');
         document.dispatchEvent(sslogin);
     });
+    document.addEventListener('sslogin', function(){
+        let alias = S.getMyName();
+        let navUser = jq('#nav-user');
+        navUser.html(
+            '<div class="dropdown">' +
+            '        <a class="dropdown-toggle" href="#" rid="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+            '        </a>' +
+            '        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">' +
+            '            <a class="dropdown-item" href="#">My spaces</a>' +
+            '            <a class="dropdown-item" href="#">Setting</a>' +
+            '            <div class="dropdown-divider"></div>' +
+            '            <a class="dropdown-item" href="#">Sign out</a>' +
+            '        </div>' +
+            '    </div>'
+        );
+        navUser.find('.dropdown-toggle').text( alias );
+    });
 
     S.tell = (what, n) => {
     let e = jq('#tell');
