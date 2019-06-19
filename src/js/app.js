@@ -17,6 +17,9 @@ import 'gun/lib/open';
 
 
 import 'bootstrap';
+import 'aframe';
+import './three/TransformControls'
+import './aframe-components/transformControls';
 
 
 ;(() => {

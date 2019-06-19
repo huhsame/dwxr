@@ -53,7 +53,7 @@ AFRAME.registerComponent('transform-controls', {
 
     _change : function(){
         let id = this.el.getAttribute('id');
-        objectsG.get(id).get('attributes').get('position').put( this.object.position );
+        G.objects.get(id).get('attributes').get('position').put( this.object.position );
 
         // 이벤트를 보내야하나? hmm..
 

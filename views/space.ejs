@@ -20,7 +20,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+<!--    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>-->
 
     <script src="/bundle.js" ></script>
     <link href="/bundle.css" rel="stylesheet" />
@@ -108,7 +108,7 @@
 
     let G = {};
     let sceneEl = document.querySelector('a-scene');
-    let assetsEl = document.createElement('a-aseets');
+    let assetsEl = document.createElement('a-assets');
 
     let getSpaceID = function() {
         // return path.basename(location.pathname);
@@ -166,6 +166,7 @@
             this.once( createEl );
             if(data.children !== undefined){
                 this.get('children').map().once( initChildren )
+                // 누가 또 put 되면 자동으로 엘리먼트 생성해줌 계속 리슨
             }
         };
 
@@ -179,18 +180,14 @@
     function testJsonToGun(){
 
         let obj = {
-            // for identity and attribute name
-            id: 'gift',
-            // for create DOM element
+            id: 'gift2',
             tagName: 'a-box',
             parent: 'scene',
-            // Attributes except id that is specified at top of this object.
-            // One attribute is expressed by one component
             attributes:{
-                position: {x:0, y:2, z:-3},
+                position: {x:1, y:2, z:-3},
                 rotation: {x:0, y:45, z:45},
                 scale: {x:1, y:1, z:1},
-                color: 'red',
+                color: 'blue',
                 // custom attribute name by aframe custom component
                 // 'transform-controls' : { activated: false },
             }
@@ -199,14 +196,17 @@
         // <a-box id='gift' position="x:0; y:0; z:0" rotation="x:0; y:45; z:45" scale="x:1; y:1; z:1" color=red" transform-controls={activated: false}>
 
         G.objects.get( obj.id ).put(obj);
-        // G.scene.get('children').set( G.objects.get( obj.id ) );
+        G.scene.get('children').set( G.objects.get( obj.id ) );
 
 
     }
 
+    // initialize and subscribe
     ;(()=>{
         I();
+
     })();
+
     // sign in and up
     ;(() => {
 
