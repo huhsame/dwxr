@@ -24,6 +24,7 @@ import 'bootstrap';
     try{localStorage.clear(); // sessionStorage.clear();
     }catch(e){}
 
+    // create gun instance and make it global
     let opt = {};
     opt.store = RindexedDB(opt);
     opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
@@ -34,6 +35,7 @@ import 'bootstrap';
     S.app = S.gun.get('root/test03');
     S.user = S.gun.user();
 
+    // for session login
     let sslogin = new Event('sslogin');
     S.user.recall({sessionStorage: true},()=>{
         console.log(S.user.is.alias +' is here!');
@@ -57,14 +59,15 @@ import 'bootstrap';
         navUser.find('.dropdown-toggle').text( alias );
     });
 
+    /* global functions */
+    // modal message
     S.tell = (what, n) => {
-    let e = jq('#tell');
-    jq('#tell').find('.modal-body').text( what );
-    // console.log(jq('#tell').find('.modal-body'));
-    e.modal('show');
-    clearTimeout(S.tell.to);
-    S.tell.to = setTimeout(() => { e.modal('hide') }, n || 2500);
-    return what;
+        let e = jq('#tell');
+        jq('#tell').find('.modal-body').text( what );
+        e.modal('show');
+        clearTimeout(S.tell.to);
+        S.tell.to = setTimeout(() => { e.modal('hide') }, n || 2500);
+        return what;
     };
 
     S.generateUUID = () => {
