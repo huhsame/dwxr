@@ -266,10 +266,28 @@
     })();
 
     ;(() => {
+        let syncPosition = function ( data, key ){
+            let el = document.querySelector('#'+key);
+            console.log( 'updated position of '+ key );
+            if(el){
+                let object = el.object3D;
+                if( object !== undefined ) {
+                    this.get('attributes').get('position').once(function (data) {
+                        // console.log(data);
+                        if(data !== undefined){
+                            object.position.copy(data);
+                            // 이렇거ㅔ 안하고 돔엘리먼트를 바꿔?
+                            // 아니면 그러면 하울링이지
+                        }
+                    });
+                }
+            }
+        }
 
-
-
-
+        G.objects.map().get('attributes').get('position').on(function(data, key){
+            console.log('subscribe: position');
+            this.back(2).once( syncPosition )
+        });
 
     })();
 
