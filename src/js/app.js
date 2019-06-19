@@ -1,7 +1,8 @@
 // src/js/main.js
 import "@babel/polyfill";
-
-
+import path from 'path'; // ㅋ...
+// import * as path from 'path';
+// const path = require('path');
 import $ from 'jquery';
 let jq = $.noConflict();
 window.jq = jq;
@@ -18,7 +19,7 @@ import 'gun/lib/open';
 import 'bootstrap';
 
 
-    ;(() => {
+;(() => {
     function S(){};
     window.S = S;
     try{localStorage.clear(); // sessionStorage.clear();

@@ -29,20 +29,24 @@
 <body>
 
 <div class="scene-container fixed-top">
-    <a-scene class="scene" embedded >
-        <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-        <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-        <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-        <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
+    <a-scene id="scene" cursor="rayOrigin: mouse" embedded>
+        <a-assets id="assets">
+        </a-assets>
 
+        <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
+        <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
+
+
+        <a-entity id ='camera' position = '0 0 5' rotation="-25 0 0">
+            <a-camera></a-camera>
+        </a-entity>
+    </a-scene>
 </div>
 
 <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
     <a class="navbar-brand" href="#">
         <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        DWXR
+        <%= spaceid %>
     </a>
     <div id = 'nav-user'>
         <div id="sign" class="my-2 my-lg-0">
@@ -101,7 +105,166 @@
 </div>
 
 <script>
+
+    let G = {};
+    let sceneEl = document.querySelector('a-scene');
+    let assetsEl = document.createElement('a-aseets');
+
+    let getSpaceID = function() {
+        // return path.basename(location.pathname);
+        return location.pathname.substring('/space/'.length);
+    }
+
+    // callbacks of gun
+    let createEl = function(data, key){
+        // console.log( 'ctreateEl');
+        let el;
+        // if there is no dom element, create it.
+        if (document.querySelector('#' + data.id) === null) {
+            el = document.createElement(data.tagName);
+            console.log('creating dom element');
+            el.setAttribute('id', data.id);
+            this.get('attributes').map().once((data, key) => {
+                el.setAttribute(key, data);
+                console.log(key, data)
+            });
+            // console.log('before add : ' + el.getAttribute('position').x)
+
+            if (data.parent === undefined || data.parent === null || data.parent === '' || data.parent === 'scene') {
+                // console.log('parent is undefined', data);
+                sceneEl.appendChild( el );
+            } else {
+                let parentEl = document.querySelector('#' + data.parent);
+                parentEl.appendChild(el);
+            }
+        }
+    }
+
+    // Initialize space
+    let I = function(){
+
+        let initPath = function(){
+            G.space = S.app.get('spaces').get( getSpaceID() );
+            G.space.open( console.log );
+            G.scene = G.space.get('scene');
+            G.assets = G.space.get('assets');
+            G.objects = G.space.get('objects');
+        }
+
+        let initAssets= function(){
+            G.assets.map().once( createEl );
+        }
+
+        let initObjects = function(){
+            G.scene.get('children').map().once( initChildren );
+        }
+
+        // recursive
+        let initChildren = function(data, key){
+            console.log('initChildren : ' + key)
+            console.log(data);
+            this.once( createEl );
+            if(data.children !== undefined){
+                this.get('children').map().once( initChildren )
+            }
+        };
+
+
+
+        initPath();
+        initAssets();
+        initObjects();
+    }
+
+    function testJsonToGun(){
+
+        let obj = {
+            // for identity and attribute name
+            id: 'gift',
+            // for create DOM element
+            tagName: 'a-box',
+            parent: 'scene',
+            // Attributes except id that is specified at top of this object.
+            // One attribute is expressed by one component
+            attributes:{
+                position: {x:0, y:2, z:-3},
+                rotation: {x:0, y:45, z:45},
+                scale: {x:1, y:1, z:1},
+                color: 'red',
+                // custom attribute name by aframe custom component
+                // 'transform-controls' : { activated: false },
+            }
+        };
+
+        // <a-box id='gift' position="x:0; y:0; z:0" rotation="x:0; y:45; z:45" scale="x:1; y:1; z:1" color=red" transform-controls={activated: false}>
+
+        G.objects.get( obj.id ).put(obj);
+        // G.scene.get('children').set( G.objects.get( obj.id ) );
+
+
+    }
+
     ;(()=>{
+        I();
+    })();
+    // sign in and up
+    ;(() => {
+
+        jq('#sign-btn').on('click', (e) => {
+            let m = jq('#modal-sign');
+            m.modal('show')
+        });
+
+        jq('#up').on('click', function () {
+            let form = check();
+            if (!form) {
+                return
+            }
+            S.user.create(form.alias, form.pass, async (ack) => {
+                if (ack.err) {
+                    return S.tell(ack.err)
+                }
+                check.up = true;
+                await S.user.auth(form.alias, form.pass, logined);
+            });
+        });
+
+        jq('#in').on('click', async function () {
+            let form = check();
+            if (!form) {
+                return
+            }
+            await S.user.auth(form.alias, form.pass, logined);
+        });
+
+        let check = () => {
+            let form = {alias: (jq('#alias').val() || '').toLowerCase(), pass: jq("#pass").val() || ''};
+            if (6 > form.alias.length) {
+                S.tell("Your username needs to be longer than 5 letters.");
+                return;
+            }
+            if (9 > form.pass.length) {
+                S.tell("Your passphrase needs to be longer than 9 letters.");
+                return;
+            }
+            return form;
+        }
+
+        let logined = (ack) => {
+            if (ack.err) {
+                return S.tell(ack.err)
+            }
+            console.log(ack);
+            jq('#modal-sign').modal('hide');
+            let e = jq('#sign');
+            let alias = S.user.is.alias;
+            S.user.recall({sessionStorage: true}); // 세션에 로그인 정보 저장
+            S.tell('welcome, ' + alias + '!');
+        }
+    })();
+
+    ;(() => {
+
 
     })();
 
