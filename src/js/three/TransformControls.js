@@ -577,6 +577,9 @@ THREE.TransformControls = function ( camera, domElement ) {
     }
 
     function onPointerMove( event ) {
+        
+        event.preventDefault();
+        event.stopPropagation();
 
         if ( ! scope.enabled ) return;
 
