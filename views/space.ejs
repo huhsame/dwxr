@@ -116,7 +116,7 @@
     }
 
     // callbacks of gun
-    let createEl = function(data, key){
+    let createEl = function (data, key) {
         // console.log( 'ctreateEl');
         let el;
         // if there is no dom element, create it.
@@ -124,7 +124,7 @@
             el = document.createElement(data.tagName);
             console.log('creating dom element');
             el.setAttribute('id', data.id);
-            this.get('attributes').map().once((data, key) => {
+            this.get('attributes').once().map().once((data, key) => {
                 el.setAttribute(key, data);
                 console.log(key, data)
             });
@@ -132,7 +132,7 @@
 
             if (data.parent === undefined || data.parent === null || data.parent === '' || data.parent === 'scene') {
                 // console.log('parent is undefined', data);
-                sceneEl.appendChild( el );
+                sceneEl.appendChild(el);
             } else {
                 let parentEl = document.querySelector('#' + data.parent);
                 parentEl.appendChild(el);
@@ -156,7 +156,7 @@
         }
 
         let initObjects = function(){
-            G.scene.get('children').map().once( initChildren );
+            G.scene.get('children').once().map().once( initChildren );
         }
 
         // recursive
@@ -165,8 +165,7 @@
             console.log(data);
             this.once( createEl );
             if(data.children !== undefined){
-                this.get('children').map().once( initChildren )
-                // 누가 또 put 되면 자동으로 엘리먼트 생성해줌 계속 리슨
+                this.get('children').once().map().once( initChildren )
             }
         };
 
@@ -264,6 +263,9 @@
     })();
 
     ;(() => {
+
+
+
 
 
     })();
