@@ -40,10 +40,10 @@ import './aframe-components/transformControls';
     S.user = S.gun.user();
 
     // for session login
-    let sslogin = new Event('sslogin');
+    S.sslogin = new Event('sslogin');
     S.user.recall({sessionStorage: true},()=>{
         console.log(S.user.is.alias +' is here!');
-        document.dispatchEvent(sslogin);
+        document.dispatchEvent(S.sslogin);
     });
     document.addEventListener('sslogin', function(){
         let alias = S.getMyName();
@@ -56,11 +56,18 @@ import './aframe-components/transformControls';
             '            <a class="dropdown-item" href="#">My spaces</a>' +
             '            <a class="dropdown-item" href="#">Setting</a>' +
             '            <div class="dropdown-divider"></div>' +
-            '            <a class="dropdown-item" href="#">Sign out</a>' +
+            '            <div id="out" class="dropdown-item" >Sign out</div>' +
             '        </div>' +
             '    </div>'
         );
         navUser.find('.dropdown-toggle').text( alias );
+        navUser.find('#out').on('click',function(){
+            let alias = S.getMyName();
+            S.user.leave();
+            console.log( alias + ' left.');
+            location.reload();
+            console.log( alias + ' leftttttttt.');
+        });
     });
 
     /* global functions */
