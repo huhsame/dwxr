@@ -27,8 +27,8 @@
     <body>
 
     <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
-        <a class="navbar-brand" href="#">
-            <img src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <a class="navbar-brand" >
+            <img  id='logo' src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
             DWXR
         </a>
         <div id = 'nav-user'>
@@ -250,72 +250,25 @@
             space.get('title').put('Untitled space');
             space.get('lock').put(false);
 
+            // 스페이스에 입장하는 건디비 콜백함수.
+            // 나중에 여기서 스페이스 - 유저 권한 체크 할것.
             let enter = function(ack){
                 if(ack.err){}
                 else{
                     let url = window.location.href + 'space/' + uuid;
-                    let tab = window.open(url, '_blank');
-                    tab.focus();
+                    // let tab = window.open(url, '_blank');
+                    // tab.focus();
+                    // 새탭에서 열면 세션로그인이 따로놀아 그냥 하나에서 계속하자
+                    window.location.href = url;
                 }
             }
+            S.user.get('own').set(space);
             S.app.get('spaces').set(space, enter);
+            // S.user.get('own').set(space);
         })
     })();
 
-    ;(() => {
 
-        jq('#sign-btn').on('click', (e) => {
-            let m = jq('#modal-sign');
-            m.modal('show')
-        });
-
-        jq('#up').on('click', function () {
-            let form = check();
-            if (!form) {
-                return
-            }
-            S.user.create(form.alias, form.pass, async (ack) => {
-                if (ack.err) {
-                    return S.tell(ack.err)
-                }
-                check.up = true;
-                await S.user.auth(form.alias, form.pass, logined);
-            });
-        });
-
-        jq('#in').on('click', async function () {
-            let form = check();
-            if (!form) {
-                return
-            }
-            await S.user.auth(form.alias, form.pass, logined);
-        });
-
-        let check = () => {
-            let form = {alias: (jq('#alias').val() || '').toLowerCase(), pass: jq("#pass").val() || ''};
-            if (6 > form.alias.length) {
-                S.tell("Your username needs to be longer than 5 letters.");
-                return;
-            }
-            if (9 > form.pass.length) {
-                S.tell("Your passphrase needs to be longer than 9 letters.");
-                return;
-            }
-            return form;
-        }
-
-        let logined = (ack) => {
-            if (ack.err) {
-                return S.tell(ack.err)
-            }
-            console.log(ack);
-            jq('#modal-sign').modal('hide');
-            let e = jq('#sign');
-            let alias = S.user.is.alias;
-            S.user.recall({sessionStorage: true}); // 세션에 로그인 정보 저장
-            S.tell('welcome, ' + alias + '!');
-        }
-    })();
 
 </script>
 
