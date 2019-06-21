@@ -36,7 +36,6 @@
         <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
         <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
 
-
         <a-entity id ='camera' position = '0 0 5' rotation="-25 0 0">
             <a-camera></a-camera>
         </a-entity>
@@ -50,7 +49,7 @@
 
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <div id="title" class="nav-link"><%= spaceid%></div>
+                <div id="title" class="nav-link">You cannot access this space.</div>
             </li>
         </ul>
         <div id = 'nav-user'>
@@ -172,7 +171,7 @@
             if (ack.err) {
                 return S.tell(ack.err)
             }
-            console.log(ack);
+            // console.log(ack);
             jq('#modal-sign').modal('hide');
             let e = jq('#sign');
             let alias = S.user.is.alias;
@@ -201,11 +200,11 @@
             if(data.tagName === 'a-asset-item'){
                 el.setAttribute('src','default');
             }
-            console.log('creating dom element');
+            // console.log('creating dom element');
             el.setAttribute('id', data.id);
             this.get('attributes').once().map().once((data, key) => {
                 el.setAttribute(key, data);
-                console.log(key, data)
+                // console.log(key, data)
             });
             // console.log('before add : ' + el.getAttribute('position').x)
 
@@ -220,49 +219,7 @@
     }
 
     // Initialize space
-    let I = function(){
 
-        let initPath = function(){
-            G.space = S.app.get('spaces').get( getSpaceID() );
-            G.space.open( console.log );
-            G.scene = G.space.get('scene');
-            G.assets = G.space.get('assets');
-            G.objects = G.space.get('objects');
-        }
-
-        let initTitle = function(){
-            let t = jq('#title');
-            G.space.once(function(data, key){
-                console.log(data.title);
-                t.text(data.title);
-            })
-        }
-
-        let initAssets= function(){
-            G.assets.map().once( createEl );
-        }
-
-        let initObjects = function(){
-            G.scene.get('children').once().map().once( initChildren );
-        }
-
-        // recursive
-        let initChildren = function(data, key){
-            console.log('initChildren : ' + key)
-            console.log(data);
-            this.once( createEl );
-            if(data.children !== undefined){
-                this.get('children').once().map().once( initChildren )
-            }
-        };
-
-
-
-        initPath();
-        initTitle();
-        initAssets();
-        initObjects();
-    }
 
     function testJsonToGun(){
 
@@ -285,19 +242,81 @@
         G.scene.get('children').set( G.objects.get( obj.id ) );
     }
 
-    // initialize and subscribe
-    ;(()=>{
-        I();
-    })();
+    let I = function(){
 
-    ;(() => {
+            let initPath = function(){
+                G.space = S.app.get('spaces').get( getSpaceID() );
+                // G.space.open( console.log );
+                G.scene = G.space.get('scene');
+                G.assets = G.space.get('assets');
+                G.objects = G.space.get('objects');
+            }
+
+            let joinSpace = function(){
+                console.log(S.myAlias + ' wanna join here!')
+
+                G.space.get('current').set( S.myData );
+                G.space.get('current').once().map().once( function(data, key){
+                    if(key === '~' + S.myPair.pub){
+                        this.get('now').put(true);
+                        G.me = this;
+                    }
+                });
+            }
+
+            let initCurrentParticipants = function(){
+                G.space.get('current').once().map().once( function(data, key){
+                    if(data.now === true){
+                        console.log(data.alias +' is current user')
+                    }
+                });
+            }
+
+            let initTitle = function(){
+                let t = jq('#title');
+                G.space.once(function(data, key){
+                    t.text(data.title);
+                })
+            }
+
+            let initAssets= function(){
+                G.assets.map().once( createEl );
+            }
+
+            let initObjects = function(){
+                G.scene.get('children').once().map().once( initChildren );
+            }
+
+            // recursive
+            let initChildren = function(data, key){
+                // console.log('initChildren : ' + key)
+                // console.log(data);
+                this.once( createEl );
+                if(data.children !== undefined){
+                    this.get('children').once().map().once( initChildren )
+                }
+            };
+
+
+
+            initPath();
+            joinSpace();
+            initCurrentParticipants();
+            initTitle();
+            initAssets();
+            initObjects();
+            subscribe();
+        }
+
+
+    let subscribe = function(){
         G.space.get('title').on( function(data){
             jq('#title').text(data);
         })
 
         let syncPosition = function ( data, key ){
             let el = document.querySelector('#'+key);
-            console.log( 'updated position of '+ key );
+            // console.log( 'updated position of '+ key );
             if(el){
                 let object = el.object3D;
                 if( object !== undefined ) {
@@ -314,10 +333,22 @@
         }
 
         G.objects.map().get('attributes').get('position').on(function(data, key){
-            console.log('subscribe: position');
+            // console.log('subscribe: position');
             this.back(2).once( syncPosition )
         });
 
+    };
+
+    // when user leaves this space, remove the user in participants list
+    ;(()=>{
+        document.addEventListener('sslogin', I)
+        S.spaceoff = new Event('spaceoff');
+        window.addEventListener('spaceoff', function(){
+            G.me.get('now').put(false);
+        })
+        window.onbeforeunload = function(e){
+            window.dispatchEvent(spaceoff);
+        }
     })();
 
 </script>

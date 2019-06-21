@@ -14,6 +14,7 @@ import 'gun/lib/radisk';
 import 'gun/lib/store';
 import 'gun/lib/rindexed';
 import 'gun/lib/open';
+import 'gun/lib/unset';
 
 
 import 'bootstrap';
@@ -32,8 +33,8 @@ import './aframe-components/transformControls';
     let opt = {};
     opt.store = RindexedDB(opt);
     opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-    // opt.peers = ['https://d.wxr.onl/gun'];
-    opt.peers = ['http://localhost:3000/gun'];
+    opt.peers = ['https://d.wxr.onl/gun'];
+    // opt.peers = ['http://localhost:3000/gun'];
     S.gun = Gun(opt);
 
     S.app = S.gun.get('root/test03');
@@ -46,7 +47,13 @@ import './aframe-components/transformControls';
         document.dispatchEvent(S.sslogin);
     });
     document.addEventListener('sslogin', function(){
-        let alias = S.getMyName();
+        S.myAlias = S.user.is.alias;
+        S.publicMyself = S.gun.user(S.user.is.pub);
+        S.gun.user(S.user.is.pub).once(function (data) {
+            S.myData = data;
+        });
+        S.myPair =  S.user._.sea;
+
         let navUser = jq('#nav-user');
         navUser.html(
             '<div class="dropdown">' +
@@ -60,9 +67,10 @@ import './aframe-components/transformControls';
             '        </div>' +
             '    </div>'
         );
-        navUser.find('.dropdown-toggle').text( alias );
+        navUser.find('.dropdown-toggle').text( S.myAlias );
         navUser.find('#out').on('click',function(){
-            let alias = S.getMyName();
+            let alias = S.myAlias;
+            window.dispatchEvent(S.spaceoff)
             S.user.leave();
             console.log( alias + ' left.');
             location.reload();
@@ -88,9 +96,8 @@ import './aframe-components/transformControls';
         });
     };
 
-    S.getMyName = () => {
-        return S.user.is.alias;
-    }
+
+
 })();
 
 
