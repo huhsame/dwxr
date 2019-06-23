@@ -20,7 +20,6 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-<!--    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>-->
 
     <script src="/bundle.js" ></script>
     <link href="/bundle.css" rel="stylesheet" />
@@ -47,18 +46,23 @@
         <img id='logo'src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
     </a>
 
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <div id="title" class="nav-link">You cannot access this space.</div>
-            </li>
-        </ul>
-        <div id = 'nav-user'>
-            <div id="sign" class="my-2 my-lg-0">
-                <button id="sign-btn" class="btn btn-outline-primary my-2 my-sm-0">
-                    <i class="fas fa-user-circle"></i> Sign In
-                </button>
-            </div>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <div id="title" class="nav-link">You cannot access this space.</div>
+        </li>
+    </ul>
+
+    <div id="nav-current" class="col-auto">
+
+    </div>
+
+    <div id = 'nav-user'>
+        <div id="sign" class="my-2 my-lg-0">
+            <button id="sign-btn" class="btn btn-outline-primary my-2 my-sm-0">
+                <i class="fas fa-user-circle"></i> Sign In
+            </button>
         </div>
+    </div>
 
 </nav>
 
@@ -192,7 +196,6 @@
 
     // callbacks of gun
     let createEl = function (data, key) {
-        // console.log( 'ctreateEl');
         let el;
         // if there is no dom element, create it.
         if (document.querySelector('#' + data.id) === null) {
@@ -200,16 +203,12 @@
             if(data.tagName === 'a-asset-item'){
                 el.setAttribute('src','default');
             }
-            // console.log('creating dom element');
             el.setAttribute('id', data.id);
             this.get('attributes').once().map().once((data, key) => {
                 el.setAttribute(key, data);
-                // console.log(key, data)
             });
-            // console.log('before add : ' + el.getAttribute('position').x)
 
             if (data.parent === undefined || data.parent === null || data.parent === '' || data.parent === 'scene') {
-                // console.log('parent is undefined', data);
                 sceneEl.appendChild(el);
             } else {
                 let parentEl = document.querySelector('#' + data.parent);
@@ -217,6 +216,30 @@
             }
         }
     }
+
+    let displayCurrentUser = function(data, key){
+        if(data){ // enter
+            this.back().once(function(data, key){
+                let el = document.querySelector('#'+'nav-' + data.alias);
+                if(el === null) {
+                    el = document.createElement('i');
+                    el.setAttribute('id', 'nav-' + data.alias)
+                    el.classList.add('fas');
+                    el.classList.add('fa-' + data.animal);
+                    el.classList.add('text-' + data.color);
+                    document.querySelector('#nav-current').appendChild(el);
+                }
+            })
+        } else { // exit
+            this.back().once(function(data, key){
+                let el = document.querySelector('#'+'nav-' + data.alias);
+                if(el !== null) {
+                    el.remove();
+                }
+            })
+        }
+    }
+
 
     // Initialize space
 
@@ -246,7 +269,6 @@
 
             let initPath = function(){
                 G.space = S.app.get('spaces').get( getSpaceID() );
-                // G.space.open( console.log );
                 G.scene = G.space.get('scene');
                 G.assets = G.space.get('assets');
                 G.objects = G.space.get('objects');
@@ -255,21 +277,26 @@
             let joinSpace = function(){
                 console.log(S.myAlias + ' wanna join here!')
 
-                G.space.get('current').set( S.myData );
-                G.space.get('current').once().map().once( function(data, key){
+                G.space.get('participants').set( S.myData );
+                G.space.get('participants').once().map().once( function(data, key){
                     if(key === '~' + S.myPair.pub){
+                        let animals = ['paw', 'hippo', 'dog', 'spider', 'kiwi-bird',
+                            'frog', 'fish', 'dragon', 'dove', 'cat'];
+                        let colors = ['blue', 'indigo', 'purple', 'pink', 'red',
+                            'orange', 'yellow', 'green', 'teal', 'cyan'];
+                        this.put({
+                            'animal': animals[Math.floor(Math.random() * animals.length)],
+                            'color': colors[Math.floor(Math.random() * colors.length)]
+                        })
+
                         this.get('now').put(true);
                         G.me = this;
                     }
                 });
             }
 
-            let initCurrentParticipants = function(){
-                G.space.get('current').once().map().once( function(data, key){
-                    if(data.now === true){
-                        console.log(data.alias +' is current user')
-                    }
-                });
+            let initCurrentParticipants = function () {
+                G.space.get('participants').once().map().get('now').once(displayCurrentUser);
             }
 
             let initTitle = function(){
@@ -289,15 +316,11 @@
 
             // recursive
             let initChildren = function(data, key){
-                // console.log('initChildren : ' + key)
-                // console.log(data);
                 this.once( createEl );
                 if(data.children !== undefined){
                     this.get('children').once().map().once( initChildren )
                 }
             };
-
-
 
             initPath();
             joinSpace();
@@ -313,6 +336,8 @@
         G.space.get('title').on( function(data){
             jq('#title').text(data);
         })
+
+        G.space.get('participants').map().get('now').on( displayCurrentUser );
 
         let syncPosition = function ( data, key ){
             let el = document.querySelector('#'+key);
@@ -333,7 +358,6 @@
         }
 
         G.objects.map().get('attributes').get('position').on(function(data, key){
-            // console.log('subscribe: position');
             this.back(2).once( syncPosition )
         });
 
