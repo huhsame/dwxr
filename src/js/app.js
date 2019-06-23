@@ -8,6 +8,7 @@ let jq = $.noConflict();
 window.jq = jq;
 
 import Gun from 'gun';
+import 'gun/nts';
 import 'gun/sea';
 import 'gun/lib/radix';
 import 'gun/lib/radisk';
