@@ -276,28 +276,30 @@
 
     let animalCurrentUser = function(data, key){
         let animal = data;
+        if(animal === false) return;
         this.back(2).once(function(data, key){
-            if(data.alias === undefined) return;
-            let el = document.querySelector('#'+'nav-' + data.alias);
-            if(el === null) {
-                el = document.createElement('i');
-                el.setAttribute('id', 'nav-' + data.alias);
-                el.classList.add('fas');
-            }
-            el.classList.add('fa-' + animal);
+                if(data.alias === undefined) return;
+                let el = document.querySelector('#'+'nav-' + data.alias);
+                if(el === null) {
+                    el = document.createElement('i');
+                    el.setAttribute('id', 'nav-' + data.alias);
+                    el.classList.add('fas');
+                }
+                el.classList.add('fa-' + animal);
         })
     }
     let colorCurrentUser = function(data, key){
         let color = data;
+        if(color === false) return;
         this.back(2).once(function(data, key){
-            if(data.alias === undefined) return;
-            let el = document.querySelector('#'+'nav-' + data.alias);
-            if(el === null) {
-                el = document.createElement('i');
-                el.setAttribute('id', 'nav-' + data.alias);
-                el.classList.add('fas');
-            }
-            el.classList.add('text-' + color);
+                if (data.alias === undefined) return;
+                let el = document.querySelector('#' + 'nav-' + data.alias);
+                if (el === null) {
+                    el = document.createElement('i');
+                    el.setAttribute('id', 'nav-' + data.alias);
+                    el.classList.add('fas');
+                }
+                el.classList.add('text-' + color);
         })
     }
 
@@ -430,6 +432,9 @@
         S.spaceoff = new Event('spaceoff');
         window.addEventListener('spaceoff', function(){
             G.me.get(getSpaceID()).get('now').put(false);
+            G.me.get(getSpaceID()).get('animal').put(false);
+            G.me.get(getSpaceID()).get('color').put(false);
+
         })
         window.onbeforeunload = function(e){
             window.dispatchEvent(S.spaceoff);
