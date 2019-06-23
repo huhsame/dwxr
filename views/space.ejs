@@ -216,21 +216,20 @@
             }
         }
     }
-
-    let displayCurrentUser = function(data, key){
-        if( data ){ // enter
+    let initCurrentUser = function(data, key){
+        if( data ){ // true
             this.back(2).once(function(data, key){
+                console.log(data.alias);
                 if(data.alias === undefined) return;
                 let el = document.querySelector('#'+'nav-' + data.alias);
                 if(el === null) {
                     el = document.createElement('i');
-                    el.setAttribute('id', 'nav-' + data.alias)
-                    this.get(getSpaceID()).once( function(data) {
-                        el.classList.add('fas');
+                    el.setAttribute('id', 'nav-' + data.alias);
+                    el.classList.add('fas');
+                    this.get(getSpaceID()).once(function(data){
                         el.classList.add('fa-' + data.animal);
                         el.classList.add('text-' + data.color);
                     });
-                    console.log(data.alias + ' is current user.')
                     document.querySelector('#nav-current').appendChild(el);
                 }
             })
@@ -241,14 +240,67 @@
                 if(el !== null) {
                     this.get(getSpaceID()).get('now').once(function(data){
                         if(data) return;
-                        console.log('remove')
                         el.remove();
                     })
-
                 }
             })
         }
+    };
+
+    let createCurrentUser = function(data, key){
+        if( data ){ // true
+            this.back(2).once(function(data, key){
+                console.log(data.alias);
+                if(data.alias === undefined) return;
+                let el = document.querySelector('#'+'nav-' + data.alias);
+                if(el === null) {
+                    el = document.createElement('i');
+                    el.setAttribute('id', 'nav-' + data.alias);
+                    el.classList.add('fas');
+                    document.querySelector('#nav-current').appendChild(el);
+                }
+            })
+        } else { // exit
+            this.back(2).once(function(data, key){
+                if(data.alias === undefined) return;
+                let el = document.querySelector('#'+'nav-' + data.alias);
+                if(el !== null) {
+                    this.get(getSpaceID()).get('now').once(function(data){
+                        if(data) return;
+                        el.remove();
+                    })
+                }
+            })
+        }
+    };
+
+    let animalCurrentUser = function(data, key){
+        let animal = data;
+        this.back(2).once(function(data, key){
+            if(data.alias === undefined) return;
+            let el = document.querySelector('#'+'nav-' + data.alias);
+            if(el === null) {
+                el = document.createElement('i');
+                el.setAttribute('id', 'nav-' + data.alias);
+                el.classList.add('fas');
+            }
+            el.classList.add('fa-' + animal);
+        })
     }
+    let colorCurrentUser = function(data, key){
+        let color = data;
+        this.back(2).once(function(data, key){
+            if(data.alias === undefined) return;
+            let el = document.querySelector('#'+'nav-' + data.alias);
+            if(el === null) {
+                el = document.createElement('i');
+                el.setAttribute('id', 'nav-' + data.alias);
+                el.classList.add('fas');
+            }
+            el.classList.add('text-' + color);
+        })
+    }
+
 
 
     // Initialize space
@@ -295,19 +347,22 @@
                             'frog', 'fish', 'dragon', 'dove', 'cat'];
                         let colors = ['blue', 'indigo', 'purple', 'pink', 'red',
                             'orange', 'yellow', 'green', 'teal', 'cyan'];
+                        this.get(getSpaceID()).get('now').put(true);
                         this.get(getSpaceID()).put({
                             'animal': animals[Math.floor(Math.random() * animals.length)],
-                            'color': colors[Math.floor(Math.random() * colors.length)]
-                        })
-
-                        this.get(getSpaceID()).get('now').put(true);
+                            'color': colors[Math.floor(Math.random() * colors.length)],
+                        });
                         G.me = this;
                     }
                 });
             }
 
             let initCurrentParticipants = function () {
-                G.space.get('participants').map().get(getSpaceID()).get('now').once(displayCurrentUser);
+                // let p = G.space.get('participants').once().map().get(getSpaceID());
+                G.space.get('participants').once().map().get(getSpaceID()).get('color').once(initCurrentUser);
+                // G.space.get('participants').once().map().get(getSpaceID()).get('animal').once(animalCurrentUser);
+                // G.space.get('participants').once().map().get(getSpaceID()).get('now').once(createCurrentUser);
+
             }
 
             let initTitle = function(){
@@ -348,7 +403,9 @@
             jq('#title').text(data);
         })
 
-        G.space.get('participants').map().get(getSpaceID()).get('now').on( displayCurrentUser );
+        G.space.get('participants').map().get(getSpaceID()).get('now').on( createCurrentUser );
+        G.space.get('participants').map().get(getSpaceID()).get('animal').on( animalCurrentUser );
+        G.space.get('participants').map().get(getSpaceID()).get('color').on( colorCurrentUser );
 
         let syncPosition = function ( data, key ){
             let el = document.querySelector('#'+key);
@@ -380,6 +437,9 @@
         S.spaceoff = new Event('spaceoff');
         window.addEventListener('spaceoff', function(){
             G.me.get(getSpaceID()).get('now').put(false);
+            // G.me.get(getSpaceID()).get('color').put(false);
+            // G.me.get(getSpaceID()).get('animal').put(false);
+
         })
         window.onbeforeunload = function(e){
             window.dispatchEvent(S.spaceoff);
