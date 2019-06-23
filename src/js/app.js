@@ -71,7 +71,9 @@ import './aframe-components/transformControls';
         navUser.find('.dropdown-toggle').text( S.myAlias );
         navUser.find('#out').on('click',function(){
             let alias = S.myAlias;
-            window.dispatchEvent(S.spaceoff)
+            if(S.spaceoff){
+                window.dispatchEvent(S.spaceoff);
+            }
             S.user.leave();
             console.log( alias + ' left.');
             location.reload();
