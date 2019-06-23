@@ -218,22 +218,27 @@
     }
 
     let displayCurrentUser = function(data, key){
-        if(data){ // enter
-            this.back().once(function(data, key){
+        if( data ){ // enter
+            this.back(2).once(function(data, key){
+                if(data.alias === undefined) return;
                 let el = document.querySelector('#'+'nav-' + data.alias);
                 if(el === null) {
                     el = document.createElement('i');
                     el.setAttribute('id', 'nav-' + data.alias)
-                    el.classList.add('fas');
-                    el.classList.add('fa-' + data.animal);
-                    el.classList.add('text-' + data.color);
+                    this.get(getSpaceID()).once( function() {
+                        el.classList.add('fas');
+                        el.classList.add('fa-' + data.animal);
+                        el.classList.add('text-' + data.color);
+                    });
                     document.querySelector('#nav-current').appendChild(el);
                 }
             })
         } else { // exit
-            this.back().once(function(data, key){
+            this.back(2).once(function(data, key){
+                if(data.alias === undefined) return;
                 let el = document.querySelector('#'+'nav-' + data.alias);
                 if(el !== null) {
+                    console.log('remove')
                     el.remove();
                 }
             })
@@ -284,19 +289,19 @@
                             'frog', 'fish', 'dragon', 'dove', 'cat'];
                         let colors = ['blue', 'indigo', 'purple', 'pink', 'red',
                             'orange', 'yellow', 'green', 'teal', 'cyan'];
-                        this.put({
+                        this.get(getSpaceID()).put({
                             'animal': animals[Math.floor(Math.random() * animals.length)],
                             'color': colors[Math.floor(Math.random() * colors.length)]
                         })
 
-                        this.get('now').put(true);
+                        this.get(getSpaceID()).get('now').put(true);
                         G.me = this;
                     }
                 });
             }
 
             let initCurrentParticipants = function () {
-                G.space.get('participants').once().map().get('now').once(displayCurrentUser);
+                G.space.get('participants').once().map().get(getSpaceID()).get('now').once(displayCurrentUser);
             }
 
             let initTitle = function(){
@@ -337,7 +342,7 @@
             jq('#title').text(data);
         })
 
-        G.space.get('participants').map().get('now').on( displayCurrentUser );
+        G.space.get('participants').map().get(getSpaceID()).get('now').on( displayCurrentUser );
 
         let syncPosition = function ( data, key ){
             let el = document.querySelector('#'+key);
@@ -368,7 +373,7 @@
         document.addEventListener('sslogin', I)
         S.spaceoff = new Event('spaceoff');
         window.addEventListener('spaceoff', function(){
-            G.me.get('now').put(false);
+            G.me.get(getSpaceID()).get('now').put(false);
         })
         window.onbeforeunload = function(e){
             window.dispatchEvent(S.spaceoff);
