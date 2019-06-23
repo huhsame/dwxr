@@ -75,9 +75,7 @@ import './aframe-components/transformControls';
                 window.dispatchEvent(S.spaceoff);
             }
             S.user.leave();
-            console.log( alias + ' left.');
             location.reload();
-            console.log( alias + ' leftttttttt.');
         });
     });
 

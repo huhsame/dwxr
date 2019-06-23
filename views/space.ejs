@@ -358,11 +358,7 @@
             }
 
             let initCurrentParticipants = function () {
-                // let p = G.space.get('participants').once().map().get(getSpaceID());
                 G.space.get('participants').once().map().get(getSpaceID()).get('color').once(initCurrentUser);
-                // G.space.get('participants').once().map().get(getSpaceID()).get('animal').once(animalCurrentUser);
-                // G.space.get('participants').once().map().get(getSpaceID()).get('now').once(createCurrentUser);
-
             }
 
             let initTitle = function(){
@@ -409,7 +405,6 @@
 
         let syncPosition = function ( data, key ){
             let el = document.querySelector('#'+key);
-            // console.log( 'updated position of '+ key );
             if(el){
                 let object = el.object3D;
                 if( object !== undefined ) {
@@ -417,8 +412,6 @@
                         // console.log(data);
                         if(data !== undefined){
                             object.position.copy(data);
-                            // 이렇거ㅔ 안하고 돔엘리먼트를 바꿔?
-                            // 아니면 그러면 하울링이지
                         }
                     });
                 }
@@ -437,9 +430,6 @@
         S.spaceoff = new Event('spaceoff');
         window.addEventListener('spaceoff', function(){
             G.me.get(getSpaceID()).get('now').put(false);
-            // G.me.get(getSpaceID()).get('color').put(false);
-            // G.me.get(getSpaceID()).get('animal').put(false);
-
         })
         window.onbeforeunload = function(e){
             window.dispatchEvent(S.spaceoff);
