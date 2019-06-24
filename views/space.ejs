@@ -216,61 +216,22 @@
             }
         }
     }
-    let initCurrentUser = function(data, key){
-        if( data ){ // true
-            this.back(2).once(function(data, key){
-                console.log(data.alias);
-                if(data.alias === undefined) return;
-                let el = document.querySelector('#'+'nav-' + data.alias);
-                if(el === null) {
-                    el = document.createElement('i');
-                    el.setAttribute('id', 'nav-' + data.alias);
-                    el.classList.add('fas');
-                    this.get(getSpaceID()).once(function(data){
-                        el.classList.add('fa-' + data.animal);
-                        el.classList.add('text-' + data.color);
-                    });
-                    document.querySelector('#nav-current').appendChild(el);
-                }
-            })
-        } else { // exit
-            this.back(2).once(function(data, key){
-                if(data.alias === undefined) return;
-                let el = document.querySelector('#'+'nav-' + data.alias);
-                if(el !== null) {
-                    this.get(getSpaceID()).get('now').once(function(data){
-                        if(data) return;
-                        el.remove();
-                    })
-                }
-            })
-        }
-    };
-
-    let createCurrentUser = function(data, key){
-        if( data ){ // true
-            this.back(2).once(function(data, key){
-                console.log(data.alias);
-                if(data.alias === undefined) return;
-                let el = document.querySelector('#'+'nav-' + data.alias);
-                if(el === null) {
-                    el = document.createElement('i');
-                    el.setAttribute('id', 'nav-' + data.alias);
-                    el.classList.add('fas');
-                    document.querySelector('#nav-current').appendChild(el);
-                }
-            })
-        } else { // exit
-            this.back(2).once(function(data, key){
-                if(data.alias === undefined) return;
-                let el = document.querySelector('#'+'nav-' + data.alias);
-                if(el !== null) {
-                    this.get(getSpaceID()).get('now').once(function(data){
-                        if(data) return;
-                        el.remove();
-                    })
-                }
-            })
+    let displayCurrentUser = function(data, key){
+        if(data.alias === undefined) return;
+        let el = document.querySelector('#'+'nav-' + data.alias);
+        if(el === null) {
+            el = document.createElement('i');
+            el.setAttribute('id', 'nav-' + data.alias);
+            el.classList.add('fas');
+            el.setAttribute('data-toggle', 'tooltip')
+            el.setAttribute('data-placement','bottom')
+            el.setAttribute('title',data.alias);
+            this.get(getSpaceID()).once(function(data){
+                el.classList.add('fa-' + data.animal);
+                el.classList.add('text-' + data.color);
+            });
+            document.querySelector('#nav-current').appendChild(el);
+            jq('#nav-'+data.alias).tooltip();
         }
     };
 
@@ -278,36 +239,30 @@
         let animal = data;
         if(animal === false) return;
         this.back(2).once(function(data, key){
-                if(data.alias === undefined) return;
-                let el = document.querySelector('#'+'nav-' + data.alias);
-                if(el === null) {
-                    el = document.createElement('i');
-                    el.setAttribute('id', 'nav-' + data.alias);
-                    el.classList.add('fas');
-                }
+            if(data.alias === undefined) return;
+            let el = document.querySelector('#'+'nav-' + data.alias);
+            if(el === null){
+                this.once(displayCurrentUser);
+            }else{
                 el.classList.add('fa-' + animal);
+            }
         })
     }
+
     let colorCurrentUser = function(data, key){
         let color = data;
         if(color === false) return;
         this.back(2).once(function(data, key){
-                if (data.alias === undefined) return;
-                let el = document.querySelector('#' + 'nav-' + data.alias);
-                if (el === null) {
-                    el = document.createElement('i');
-                    el.setAttribute('id', 'nav-' + data.alias);
-                    el.classList.add('fas');
-                }
+            if(data.alias === undefined) return;
+            let el = document.querySelector('#'+'nav-' + data.alias);
+            if(el === null){
+                this.once(displayCurrentUser);
+            }else{
                 el.classList.add('text-' + color);
-        })
+            }
+        });
     }
-
-
-
     // Initialize space
-
-
     function testJsonToGun(){
 
         let obj = {
@@ -360,8 +315,22 @@
             }
 
             let initCurrentParticipants = function () {
-                G.space.get('participants').once().map().get(getSpaceID()).get('color').once(initCurrentUser);
-            }
+                G.space.get('participants').once().map().get(getSpaceID()).get('now').once(function(data){
+                    if( data ){ // true
+                        this.back(2).once(displayCurrentUser);
+                    } else { // exit
+                        this.back(2).once(function(data, key){
+                            if(data.alias === undefined) return;
+                            let el = document.querySelector('#'+'nav-' + data.alias);
+                            if(el !== null) {
+                                this.get(getSpaceID()).get('now').once(function(data){
+                                    if(data) return;
+                                    el.remove();
+                                })
+                            }
+                        })
+                    }
+                });            }
 
             let initTitle = function(){
                 let t = jq('#title');
@@ -401,7 +370,22 @@
             jq('#title').text(data);
         })
 
-        G.space.get('participants').map().get(getSpaceID()).get('now').on( createCurrentUser );
+        G.space.get('participants').map().get(getSpaceID()).get('now').on(function(data){
+            if( data ){ // true
+                this.back(2).once(displayCurrentUser);
+            } else { // exit
+                this.back(2).once(function(data, key){
+                    if(data.alias === undefined) return;
+                    let el = document.querySelector('#'+'nav-' + data.alias);
+                    if(el !== null) {
+                        this.get(getSpaceID()).get('now').once(function(data){
+                            if(data) return;
+                            el.remove();
+                        })
+                    }
+                })
+            }
+        });
         G.space.get('participants').map().get(getSpaceID()).get('animal').on( animalCurrentUser );
         G.space.get('participants').map().get(getSpaceID()).get('color').on( colorCurrentUser );
 
