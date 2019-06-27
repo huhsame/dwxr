@@ -22,6 +22,8 @@
     <meta name="theme-color" content="#ffffff">
 
     <script src="/bundle.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/postprocessing@latest/build/postprocessing.min.js" ></script>
+
     <link href="/bundle.css" rel="stylesheet" />
     <title>DWXR</title>
 </head>
@@ -31,6 +33,15 @@
     <a-scene id="scene" cursor="rayOrigin: mouse" embedded>
         <a-assets id="assets">
         </a-assets>
+
+        <a-entity id='here'>
+            <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+            <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+            <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
+        </a-entity>
+
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        <a-sky color="#ECECEC"></a-sky>
 
         <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
         <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
@@ -425,6 +436,170 @@
     })();
 
 </script>
+
+
+<script>
+    const PP = POSTPROCESSING;
+
+    const postprocessingSystem = {
+
+        assets: null,
+        composer: null,
+        originalRenderMethod: null,
+
+        /**
+         * Sets the preloaded scene assets.
+         *
+         * @param {Map} assets - A collection of scene assets.
+         * @return {Object} This system.
+         */
+
+        setAssets(assets) {
+
+            this.assets = assets;
+            return this;
+
+        },
+
+        /**
+         * Initializes this system.
+         */
+
+        init() {
+
+            const sceneEl = this.sceneEl;
+
+            const scene = sceneEl.object3D;
+            const renderer = sceneEl.renderer;
+            const render = renderer.render;
+            const camera = sceneEl.camera;
+
+            const assets = this.assets;
+            const clock = new THREE.Clock();
+            const composer = new PP.EffectComposer(renderer);
+
+            this.composer = composer;
+            this.originalRenderMethod = render;
+
+            const smaaEffect = new PP.SMAAEffect(assets.get("smaa-search"), assets.get("smaa-area"));
+            const noiseEffect = new PP.NoiseEffect();
+            const sepiaEffect = new PP.SepiaEffect();
+            const vignetteEffect = new PP.VignetteEffect();
+
+            noiseEffect.blendMode.opacity.value = 0.6;
+            sepiaEffect.blendMode.opacity.value = 0.3;
+
+            const renderPass = new PP.RenderPass(scene, camera);
+            const effectPass = new PP.EffectPass(camera,
+                smaaEffect, noiseEffect, sepiaEffect, vignetteEffect);
+
+            effectPass.renderToScreen = true;
+
+            composer.addPass(renderPass);
+            composer.addPass(effectPass);
+
+            // Hijack the render method.
+            let calledByComposer = false;
+
+            renderer.render = function() {
+
+                if(calledByComposer) {
+
+                    render.apply(renderer, arguments);
+
+                } else {
+
+                    calledByComposer = true;
+                    composer.render(clock.getDelta());
+                    calledByComposer = false;
+
+                }
+
+            };
+
+        },
+
+        /**
+         * Clean up when the system gets removed.
+         */
+
+        remove() {
+
+            this.composer.renderer.render = this.originalRenderMethod;
+            this.composer.dispose();
+
+        }
+
+    };
+
+    /**
+     * Loads scene assets.
+     *
+     * @return {Promise} A promise that will be fulfilled as soon as all assets have been loaded.
+     */
+
+    function load() {
+
+        const assets = new Map();
+        const loadingManager = new THREE.LoadingManager();
+
+        return new Promise((resolve, reject) => {
+
+            let image;
+
+            loadingManager.onError = reject;
+            loadingManager.onProgress = (item, loaded, total) => {
+
+                if(loaded === total) {
+
+                    resolve(assets);
+
+                }
+
+            };
+
+            // Load the SMAA images.
+            image = new Image();
+            image.addEventListener("load", function() {
+
+                assets.set("smaa-search", this);
+                loadingManager.itemEnd("smaa-search");
+
+            });
+
+            loadingManager.itemStart("smaa-search");
+            image.src = PP.SMAAEffect.searchImageDataURL;
+
+            image = new Image();
+            image.addEventListener("load", function() {
+
+                assets.set("smaa-area", this);
+                loadingManager.itemEnd("smaa-area");
+
+            });
+
+            loadingManager.itemStart("smaa-area");
+            image.src = PP.SMAAEffect.areaImageDataURL;
+
+        });
+
+    }
+
+    // Wait until A-Frame is ready.
+    document.querySelector("a-scene").addEventListener("loaded", function() {
+        console.log('hello')
+
+        load().then((assets) => {
+
+            AFRAME.registerSystem("postprocessing", postprocessingSystem.setAssets(assets));
+            console.log('postprocessing')
+
+        }).catch(console.error);
+
+    });
+
+</script>
+
 </body>
 </html>
 
