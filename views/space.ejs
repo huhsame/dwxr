@@ -298,17 +298,16 @@
 
                 G.space.get('participants').set( S.myData );
                 G.space.get('participants').once().map().once( function(data, key){
-                    console.log(S.myAlias);
                     if(key === '~' + S.myPair.pub){
                         let animals = ['paw', 'hippo', 'dog', 'spider', 'kiwi-bird',
                             'frog', 'fish', 'dragon', 'dove', 'cat'];
                         let colors = ['blue', 'indigo', 'purple', 'pink', 'red',
                             'orange', 'yellow', 'green', 'teal', 'cyan'];
-                        this.get(getSpaceID()).get('now').put(true);
                         this.get(getSpaceID()).put({
                             'animal': animals[Math.floor(Math.random() * animals.length)],
                             'color': colors[Math.floor(Math.random() * colors.length)],
                         });
+                        this.get(getSpaceID()).get('now').put(true);
                         G.me = this;
                     }
                 });
