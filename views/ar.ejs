@@ -23,13 +23,14 @@
 
     <script src="/main.js" ></script>
     <script src="/space.js" ></script>
+    <script src="/aframe-ar.js"></script>
     <link href="/main.css" rel="stylesheet" />
     <title>DWXR</title>
 </head>
 <body>
 
 <div class="scene-container fixed-top">
-    <a-scene id="scene" cursor="rayOrigin: mouse" embedded>
+    <a-scene id="scene" cursor="rayOrigin: mouse" embedded arjs='sourceType: webcam;'>
         <a-assets id="assets">
         </a-assets>
 
@@ -39,15 +40,13 @@
         <a-entity id ='camera' position = '0 0 5' rotation="-25 0 0">
             <a-camera></a-camera>
         </a-entity>
+
+<!--        <div class="a-enter-vr" aframe-injected="">-->
+<!--            <button class="a-enter-vr-button" title="Enter VR mode with a headset or fullscreen mode on a desktop. Visit https://webvr.rocks or https://webvr.info for more information." aframe-injected=""></button>-->
+<!--        </div>-->
     </a-scene>
 
-    <button id="enter-ar" type="button" class="btn btn-light fixed-bottom right">AR</button>
-    <script>
-        jq('#enter-ar').on('click',function(){
-            let arUrl = window.location.origin + '/space/ar/' + getSpaceID();
-            window.location.href = arUrl;
-        })
-    </script>
+<!--    <button type="button" class="btn btn-light fixed-bottom ">AR</button>-->
 </div>
 
 
@@ -206,7 +205,7 @@
 
     let getSpaceID = function() {
         // return path.basename(location.pathname);
-        return location.pathname.substring('/space/'.length);
+        return location.pathname.substring('/space/ar/'.length);
     }
 
     // callbacks of gun

@@ -1,58 +1,103 @@
-//
-//
-// S.gun.get('root').once(console.log);
-// // gun.get('root').get('where').put('here');
-//
-// ;(() => {
-//     S.route = location.hash.slice(1);
-//     $('#up').on('click', (e) => {
-//         let form = check();
-//         if(!form){ return }
-//         // $("#up").addClass('pulse'); // 리플효과
-//         S.user.create(form.alias, form.pass, (ack) => {
-//             // if(!ack.wait){ $("#up").removeClass('pulse') }
-//             if(ack.err){ return S.tell(ack.err) }
-//             check.up = true;
-//             S.user.auth(form.alias, form.pass);
-//         });
-//     });
-//     $('#in').on('submit', (e) => {
-//         let form = check();
-//         if(!form){ return }
-//         // $("#in").addClass('pulse');
-//         S.user.auth(form.alias, form.pass, (ack) => {
-//             // if(!ack.wait){ $("#in").removeClass('pulse') }
-//             if(ack.err){ return S.tell(ack.err) }
-//         });
-//     });
-//     // $('#pass').on('focus', () => {
-//     //     $('#alias').addClass('pow');
-//     // });
-//     // $('#alias').on('focus', () => {
-//     //     $('#alias').removeClass('pow');
-//     // });
-//     $.as.route.page('sign', () => {
-//         if(!$('#alias').val()){
-//             setTimeout(() => { $('#alias').focus() },1);
-//         }
-//     });
-//     var check = () => {
-//         let form = {alias: ($('#alias').val()||'').toLowerCase(), pass: $("#pass").val()||''};
-//         if(6 > form.alias.length){
-//             S.tell("Your username needs to be longer than 5 letters.");
-//             return;
-//         }
-//         if(9 > form.pass.length){
-//             S.tell("Your passphrase needs to be longer than 9 letters.");
-//             return;
-//         }
-//         return form;
-//     }
-//     S.gun.on('auth', (ack) => {
-//         if('hi' === S.route){ S.route = '' }
-//         if('sign' === S.route){ S.route = '' }
-//         if(check.up){ S.route = 'settings' }
-//         $.as.route(S.route = S.route || 'draft');
-//     });
-//     S.user.recall({sessionStorage: 1});
-// })();
+// src/js/main.js
+import "@babel/polyfill";
+import path from 'path'; // ㅋ...
+// import * as path from 'path';
+// const path = require('path');
+import $ from 'jquery';
+let jq = $.noConflict();
+window.jq = jq;
+
+import Gun from 'gun';
+import 'gun/nts';
+import 'gun/sea';
+import 'gun/lib/radix';
+import 'gun/lib/radisk';
+import 'gun/lib/store';
+import 'gun/lib/rindexed';
+import 'gun/lib/open';
+import 'gun/lib/unset';
+
+
+import 'bootstrap';
+
+
+
+;(() => {
+    function S(){};
+    window.S = S;
+    try{localStorage.clear(); // sessionStorage.clear();
+    }catch(e){}
+
+    // create gun instance and make it global
+    let opt = {};
+    opt.store = RindexedDB(opt);
+    opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
+    opt.peers = ['https://d.wxr.onl/gun'];
+    // opt.peers = ['http://localhost:3000/gun'];
+    S.gun = Gun(opt);
+
+    S.app = S.gun.get('root/test03');
+    S.user = S.gun.user();
+
+    // for session login
+    S.sslogin = new Event('sslogin');
+    S.user.recall({sessionStorage: true},()=>{
+        console.log(S.user.is.alias +' is here!');
+        document.dispatchEvent(S.sslogin);
+    });
+    document.addEventListener('sslogin', function(){
+        S.myAlias = S.user.is.alias;
+        S.publicMyself = S.gun.user(S.user.is.pub);
+        S.gun.user(S.user.is.pub).once(function (data) {
+            S.myData = data;
+        });
+        S.myPair =  S.user._.sea;
+
+        let navUser = jq('#nav-user');
+        navUser.html(
+            '<div class="dropdown">' +
+            '        <a class="dropdown-toggle" href="#" rid="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+            '        </a>' +
+            '        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">' +
+            '            <a class="dropdown-item" href="#">My spaces</a>' +
+            '            <a class="dropdown-item" href="#">Setting</a>' +
+            '            <div class="dropdown-divider"></div>' +
+            '            <div id="out" class="dropdown-item" >Sign out</div>' +
+            '        </div>' +
+            '    </div>'
+        );
+        navUser.find('.dropdown-toggle').text( S.myAlias );
+        navUser.find('#out').on('click',function(){
+            let alias = S.myAlias;
+            if(S.spaceoff){
+                window.dispatchEvent(S.spaceoff);
+            }
+            S.user.leave();
+            location.reload();
+        });
+    });
+
+    /* global functions */
+    // modal message
+    S.tell = (what, n) => {
+        let e = jq('#tell');
+        jq('#tell').find('.modal-body').text( what );
+        e.modal('show');
+        clearTimeout(S.tell.to);
+        S.tell.to = setTimeout(() => { e.modal('hide') }, n || 2500);
+        return what;
+    };
+
+    S.generateUUID = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            let r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 3 | 8);
+            return v.toString(16);
+        });
+    };
+
+
+
+})();
+
+
+
