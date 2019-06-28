@@ -22,7 +22,8 @@ import 'bootstrap';
 import 'aframe';
 import './three/TransformControls'
 import './aframe-components/transformControls';
-
+import 'three';
+// import POSTPROCESSING from 'postprocessing';
 
 ;(() => {
     function S(){};
