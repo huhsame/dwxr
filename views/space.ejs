@@ -482,16 +482,13 @@
             this.originalRenderMethod = render;
 
             const smaaEffect = new PP.SMAAEffect(assets.get("smaa-search"), assets.get("smaa-area"));
-            const noiseEffect = new PP.NoiseEffect();
-            const sepiaEffect = new PP.SepiaEffect();
-            const vignetteEffect = new PP.VignetteEffect();
 
             const outlineEffect = new PP.OutlineEffect(scene, camera, {
                 blendFunction: PP.BlendFunction.ALPHA,
                 edgeStrength: 25,
                 pulseSpeed: 0.0,
                 resolutionScale: 0.7,
-                visibleEdgeColor: 0xffffff,
+                visibleEdgeColor: 0x000000,
                 hiddenEdgeColor: 0x22090a,
                 blur: true,
                 xRay: true
@@ -511,7 +508,6 @@
             composer.addPass(smaaPass);
 
             const box = document.querySelector('#box').object3D;
-            // const box = document.querySelector('#box').object3D;
             outlineEffect.setSelection(box.children);
 
             // Hijack the render method.
@@ -601,6 +597,7 @@
 
     }
 
+    // TODO create trigger after load the others
     // load().then((assets) => {
 
         // AFRAME.registerSystem("postprocessing", postprocessingSystem.setAssets(assets));
