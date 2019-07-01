@@ -21,8 +21,7 @@
     "morgan": "~1.9.1",
     "node-webcrypto-ossl": "^1.0.47",
     "postprocessing": "^6.5.1",
-    "text-encoding": "^0.7.0",
-    "three": "^0.106.1"
+    "text-encoding": "^0.7.0"
   },
   "main": "app.js",
   "devDependencies": {

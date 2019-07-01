@@ -30,12 +30,12 @@
 <body>
 
 <div class="scene-container fixed-top">
-    <a-scene id="scene" cursor="rayOrigin: mouse" embedded>
+    <a-scene id="scene" cursor="rayOrigin: mouse" renderer="antialias: false"  embedded>
         <a-assets id="assets">
         </a-assets>
 
-        <a-entity id='here'>
-            <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+        <a-entity>
+            <a-box id="box" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
             <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
             <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
         </a-entity>
@@ -486,32 +486,33 @@
             const sepiaEffect = new PP.SepiaEffect();
             const vignetteEffect = new PP.VignetteEffect();
 
-const outlineEffect = new PP.OutlineEffect(scene, camera, {
-    blendFunction: 16,
-    edgeStrength: 5,
-    pulseSpeed: 0.0,
-    resolution: 0.05,
-    visibleEdgeColor: 0xffffff,
-    hiddenEdgeColor: 0x22090a,
-    blur: false,
-    xRay: true,
-    opacity: 1
-});
+            const outlineEffect = new PP.OutlineEffect(scene, camera, {
+                blendFunction: PP.BlendFunction.ALPHA,
+                edgeStrength: 25,
+                pulseSpeed: 0.0,
+                resolutionScale: 0.7,
+                visibleEdgeColor: 0xffffff,
+                hiddenEdgeColor: 0x22090a,
+                blur: true,
+                xRay: true
+            });
 
-smaaEffect.colorEdgesMaterial.setEdgeDetectionThreshold(0.05);
-noiseEffect.blendMode.opacity.value = 0.6;
-sepiaEffect.blendMode.opacity.value = 0.3;
+            // noiseEffect.blendMode.opacity.value = 0.25;
+            // sepiaEffect.blendMode.opacity.value = 0.3;
 
-let here = document.querySelector('#here').object3D
-outlineEffect.setSelection(here.children);
+            const renderPass = new PP.RenderPass(scene, camera);
+            const effectPass = new PP.EffectPass(camera, outlineEffect);
+            const smaaPass = new PP.EffectPass(camera, smaaEffect);
 
-const renderPass = new PP.RenderPass(scene, camera);
-const effectPass = new PP.EffectPass(camera, outlineEffect,
-    smaaEffect,noiseEffect, sepiaEffect, vignetteEffect);
+            smaaPass.renderToScreen = true;
 
-effectPass.renderToScreen = true;
-composer.addPass(renderPass);
-composer.addPass(effectPass);
+            composer.addPass(renderPass);
+            composer.addPass(effectPass);
+            composer.addPass(smaaPass);
+
+            const box = document.querySelector('#box').object3D;
+            // const box = document.querySelector('#box').object3D;
+            outlineEffect.setSelection(box.children);
 
             // Hijack the render method.
             let calledByComposer = false;
@@ -523,15 +524,14 @@ composer.addPass(effectPass);
                     render.apply(renderer, arguments);
 
                 } else {
+
                     calledByComposer = true;
                     composer.render(clock.getDelta());
-
                     calledByComposer = false;
 
                 }
+
             };
-
-
 
         },
 
@@ -601,18 +601,11 @@ composer.addPass(effectPass);
 
     }
 
-    // Wait until A-Frame is ready.
-    document.querySelector("a-scene").addEventListener("loaded", function() {
-        console.log('hello')
+    // load().then((assets) => {
 
-        load().then((assets) => {
+        // AFRAME.registerSystem("postprocessing", postprocessingSystem.setAssets(assets));
 
-            AFRAME.registerSystem("postprocessing", postprocessingSystem.setAssets(assets));
-            console.log('postprocessing')
-
-        }).catch(console.error);
-
-    });
+    // }).catch(console.error);
 
 </script>
 
