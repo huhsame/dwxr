@@ -27,31 +27,21 @@
     <link href="/main.css" rel="stylesheet" />
     <title>DWXR</title>
 </head>
-<body>
+<body style='margin : 0px; overflow: hidden;'>
 
 <div class="scene-container fixed-top">
-    <a-scene id="scene" cursor="rayOrigin: mouse" embedded arjs='sourceType: webcam;'>
+    <a-scene id="scene" cursor="rayOrigin: mouse" embedded arjs='sourceType: webcam;' vr-mode-ui="enabled: false">
         <a-assets id="assets">
         </a-assets>
 
         <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
         <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
 
-        <a-entity id ='camera' position = '0 0 5' rotation="-25 0 0">
-            <a-camera></a-camera>
-        </a-entity>
+            <a-entity id="camera" camera></a-entity>
 
-<!--        <div class="a-enter-vr" aframe-injected="">-->
-<!--            <button class="a-enter-vr-button" title="Enter VR mode with a headset or fullscreen mode on a desktop. Visit https://webvr.rocks or https://webvr.info for more information." aframe-injected=""></button>-->
-<!--        </div>-->
     </a-scene>
 
-<!--    <button type="button" class="btn btn-light fixed-bottom ">AR</button>-->
 </div>
-
-
-
-
 
 
 

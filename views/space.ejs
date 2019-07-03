@@ -26,7 +26,7 @@
     <link href="/main.css" rel="stylesheet" />
     <title>DWXR</title>
 </head>
-<body>
+<body  style='margin : 0px; overflow: hidden;'>
 
 <div class="scene-container fixed-top">
     <a-scene id="scene" cursor="rayOrigin: mouse" embedded>
@@ -36,14 +36,16 @@
         <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
         <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
 
-        <a-entity id ='camera' position = '0 0 5' rotation="-25 0 0">
-            <a-camera></a-camera>
-        </a-entity>
+        <a-entity id="camera" camera></a-entity>
+
     </a-scene>
 
-    <button id="enter-ar" type="button" class="btn btn-light fixed-bottom right">AR</button>
+    <div class="a-enter-ar" >
+        <button class="a-enter-ar-button" title="Enter AR mode with a camera"></button>
+    </div>
+
     <script>
-        jq('#enter-ar').on('click',function(){
+        jq('.a-enter-ar-button').on('click',function(){
             let arUrl = window.location.origin + '/space/ar/' + getSpaceID();
             window.location.href = arUrl;
         })

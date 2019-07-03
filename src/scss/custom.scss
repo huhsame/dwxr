@@ -6,3 +6,45 @@ $theme-colors: (
   "secondary": #f3b861,
   "danger": #2a7b87
 );
+
+.a-enter-ar {
+
+  font-family: sans-serif, monospace;
+  font-size: 13px;
+  width: 100%;
+  font-weight: 200;
+  line-height: 16px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+
+}
+
+.a-enter-ar-button {
+  background: rgba(0, 0, 0, 0.35) url("data:image/svg+xml,%3Csvg height='100px' width='100px' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' x='0px' y='0px' viewBox='0 0 100 100' style='enable-background:new 0 0 100 100;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bdisplay:none;%7D .st1%7Bdisplay:inline;%7D .st2%7Bopacity:0.2;%7D .st3%7Bclip-path:url(%23f);%7D .st4%7Bclip-path:url(%23e);%7D .st5%7Bclip-path:url(%23d);%7D .st6%7Bdisplay:inline;fill:%23ffffff;%7D%0A%3C/style%3E%3Cg class='st0'%3E%3Cg class='st1'%3E%3Cg%3E%3Cg%3E%3Cpath d='M12.7,9.7L12.7,9.7L12,9.3l-0.7,0.4c-0.1,0-0.1,0-0.2,0c0-0.1,0-0.1,0-0.2l0,0L11.9,9H12l0.7,0.4c0.1,0,0.1,0.1,0,0.2 C12.8,9.6,12.8,9.7,12.7,9.7'%3E%3C/path%3E%3Cpath d='M12,13c-0.1,0-0.1-0.1-0.1-0.1l0,0V12c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1,0.1,0.1,0.1l0,0v0.8C12.1,12.9,12.1,13,12,13 L12,13'%3E%3C/path%3E%3Cpath d='M9.5,11.5c-0.1,0-0.1-0.1-0.1-0.1l0,0v-0.8c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1,0.1,0.1,0.1l0,0v0.8 C9.6,11.5,9.6,11.5,9.5,11.5L9.5,11.5'%3E%3C/path%3E%3Cpath d='M14.5,11.5c-0.1,0-0.1-0.1-0.1-0.1l0,0v-0.8c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1,0.1,0.1,0.1v0.8 C14.6,11.5,14.6,11.5,14.5,11.5L14.5,11.5'%3E%3C/path%3E%3Cpath d='M14.5,13.6c-0.1,0-0.1-0.1-0.1-0.1v-0.8c0-0.1,0.1-0.1,0.1-0.1l0,0l0,0c0.1,0,0.1,0.1,0.1,0.1l0,0v0.8 C14.6,13.5,14.6,13.6,14.5,13.6L14.5,13.6L14.5,13.6z'%3E%3C/path%3E%3Cpath d='M9.5,13.6c-0.1,0-0.1-0.1-0.1-0.1v-0.8c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1,0.1,0.1,0.1l0,0v0.8 C9.6,13.5,9.6,13.6,9.5,13.6L9.5,13.6'%3E%3C/path%3E%3Cpath d='M12,10.2c-0.1,0-0.1-0.1-0.1-0.1l0,0v-1C11.9,9,11.9,9,12,9s0.1,0.1,0.1,0.1l0,0V10C12.1,10.1,12.1,10.2,12,10.2 L12,10.2'%3E%3C/path%3E%3Cpath d='M12,15c-0.1,0-0.1-0.1-0.1-0.1l0,0V14c0-0.1,0.1-0.1,0.1-0.1c0.1,0,0.1,0.1,0.1,0.1l0,0v0.8C12.1,15,12.1,15,12,15'%3E%3C/path%3E%3Cpath d='M12,15L12,15l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2s0.1-0.1,0.2,0l0.7,0.4l0.7-0.4c0.1,0,0.1,0,0.2,0.1c0,0.1,0,0.1,0,0.1 L12,15L12,15'%3E%3C/path%3E%3Cpath d='M12,12.1L12,12.1l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2c0-0.1,0.1-0.1,0.2,0l0.7,0.4l0.7-0.4c0.1,0,0.1,0,0.2,0.1 c0,0.1,0,0.1,0,0.2L12,12.1L12,12.1'%3E%3C/path%3E%3Cpath d='M13.8,11.1c-0.1,0-0.1-0.1-0.1-0.1s0-0.1,0.1-0.1l0.7-0.4c0.1,0,0.1,0,0.2,0c0,0.1,0,0.1,0,0.2L13.8,11.1L13.8,11.1'%3E%3C/path%3E%3Cpath d='M14.5,10.7L14.5,10.7l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2c0-0.1,0.1-0.1,0.2,0l0.7,0.4C14.7,10.5,14.7,10.6,14.5,10.7 C14.6,10.7,14.5,10.7,14.5,10.7'%3E%3C/path%3E%3Cpath d='M10.2,11.1L10.2,11.1l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2c0-0.1,0.1-0.1,0.2,0l0.7,0.4C10.4,10.9,10.4,11,10.2,11.1 C10.3,11.1,10.3,11.1,10.2,11.1'%3E%3C/path%3E%3Cpath d='M9.5,10.7c-0.1,0-0.1-0.1-0.1-0.1s0-0.1,0.1-0.1l0.7-0.4c0.1,0,0.1,0,0.2,0c0,0.1,0,0.1,0,0.2l0,0L9.5,10.7L9.5,10.7'%3E%3C/path%3E%3Cpath d='M13.8,14c-0.1,0-0.1-0.1-0.1-0.1s0-0.1,0.1-0.1l0.7-0.4c0.1,0,0.1,0,0.2,0c0,0.1,0,0.1,0,0.2L13.8,14L13.8,14'%3E%3C/path%3E%3Cpath d='M14.5,13.6L14.5,13.6l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2s0.1-0.1,0.2,0l0,0l0.7,0.4C14.7,13.4,14.7,13.5,14.5,13.6 C14.6,13.5,14.5,13.6,14.5,13.6'%3E%3C/path%3E%3Cpath d='M10.2,14L10.2,14l-0.8-0.4c-0.1,0-0.1-0.1,0-0.2c0-0.1,0.1-0.1,0.2,0l0.7,0.4C10.4,13.8,10.4,13.9,10.2,14 C10.3,14,10.3,14,10.2,14'%3E%3C/path%3E%3Cpath d='M9.5,13.6c-0.1,0-0.1-0.1-0.1-0.1s0-0.1,0.1-0.1l0.7-0.4c0.1,0,0.1,0,0.2,0c0,0.1,0,0.1,0,0.2L9.5,13.6L9.5,13.6'%3E%3C/path%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M9.5,10.6C9.5,10.6,9.4,10.6,9.5,10.6c-0.1-0.1-0.1-0.1,0-0.1L12,9h0.1v0.1L9.5,10.6L9.5,10.6'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M9.5,13.5C9.5,13.5,9.4,13.5,9.5,13.5c-0.1-0.1-0.1-0.1,0-0.1l5-2.9h0.1v0.1L9.5,13.5L9.5,13.5'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M14.5,10.6L14.5,10.6L12,9.2V9.1C12,9,12,9,12,9l2.5,1.4C14.6,10.5,14.6,10.6,14.5,10.6L14.5,10.6'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M14.5,13.5L14.5,13.5l-5-2.9v-0.1h0.1l5,2.9C14.6,13.4,14.6,13.4,14.5,13.5L14.5,13.5'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M12,15L12,15l-2.5-1.5v-0.1h0.1l2.5,1.4C12.1,14.8,12.1,14.9,12,15C12,14.9,12,15,12,15'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cpath d='M12,15C12,15,11.9,14.9,12,15c-0.1-0.1-0.1-0.1,0-0.1l2.5-1.4h0.1v0.1L12,15L12,15'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cdefs%3E%3Crect id='c' x='9.4' y='10.5' width='0.1' height='3'%3E%3C/rect%3E%3C/defs%3E%3CclipPath id='f'%3E%3Cuse xlink:href='%23c' style='' overflow='visible'%3E%3C/use%3E%3C/clipPath%3E%3Cg class='st3'%3E%3Cpath d='M9.5,13.5C9.5,13.5,9.4,13.5,9.5,13.5l-0.1-3c0,0,0-0.1,0.1-0.1c0,0,0.1,0,0.1,0.1l0,0L9.5,13.5 C9.6,13.5,9.5,13.5,9.5,13.5'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cdefs%3E%3Crect id='b' x='14.4' y='10.5' width='0.1' height='3'%3E%3C/rect%3E%3C/defs%3E%3CclipPath id='e'%3E%3Cuse xlink:href='%23b' style='' overflow='visible'%3E%3C/use%3E%3C/clipPath%3E%3Cg class='st4'%3E%3Cpath d='M14.5,13.5C14.5,13.5,14.4,13.5,14.5,13.5l-0.1-3c0,0,0-0.1,0.1-0.1c0,0,0.1,0,0.1,0.1l0,0L14.5,13.5 C14.6,13.5,14.5,13.5,14.5,13.5L14.5,13.5'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg%3E%3Cg class='st2'%3E%3Cg%3E%3Cdefs%3E%3Crect id='a' x='11.9' y='9' width='0.1' height='5.9'%3E%3C/rect%3E%3C/defs%3E%3CclipPath id='d'%3E%3Cuse xlink:href='%23a' style='' overflow='visible'%3E%3C/use%3E%3C/clipPath%3E%3Cg class='st5'%3E%3Cpath d='M12,15C12,15,11.9,14.9,12,15l-0.1-5.8c0,0,0-0.1,0.1-0.1c0,0,0.1,0,0.1,0.1L12,15C12.1,14.9,12,15,12,15'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cpath d='M50,19.3C29.5,19.3,12,32,5,50c7,18,24.5,30.7,45,30.7S88,68,95,50C88,32,70.5,19.3,50,19.3z M50,70.5 c-11.5,0-20.5-9-20.5-20.5s9-20.5,20.5-20.5s20.5,9,20.5,20.5S61.5,70.5,50,70.5z M60.1,42.9l-10.2,5.7l-10.2-5.7l10.2-5.7 L60.1,42.9z M38.6,44.7l10.2,5.7v11.9l-10.2-5.7V44.7z M50.9,50.4l10.2-5.7v11.9l-10.2,5.7V50.4z'%3E%3C/path%3E%3Cg class='st0'%3E%3Cpath class='st1' d='M12,15L12,15L12,15z'%3E%3C/path%3E%3Cpath class='st6' d='M14.6,10.5L14.6,10.5C14.6,10.5,14.5,10.5,14.6,10.5C14.5,10.5,14.5,10.5,14.6,10.5L12,9l0,0l0,0l0,0l0,0 l-2.5,1.4l0,0l0,0l0,0l0,0l0,0v2.9l0,0l0,0l0,0L12,15l0,0l0,0l0,0l0,0l2.5-1.4l0,0l0,0l0,0l0,0L14.6,10.5 C14.6,10.6,14.6,10.6,14.6,10.5L14.6,10.5z'%3E%3C/path%3E%3Cpolygon class='st1' points='12,11.7 9.7,10.4 12,9.1 12,9.1 14.3,10.4 '%3E%3C/polygon%3E%3Cpolygon class='st1' points='9.6,13.3 9.6,10.7 11.9,12 11.9,12 11.9,14.6 '%3E%3C/polygon%3E%3Cpolygon class='st1' points='12.1,12 14.4,10.7 14.4,13.3 14.4,13.3 12.1,14.6 '%3E%3C/polygon%3E%3C/g%3E%3C/svg%3E") 50% 50% no-repeat;
+  background-size: 100% 100%;
+  border: 0;
+  bottom: 0;
+  cursor: pointer;
+  min-width: 50px;
+  min-height: 30px;
+  color: #fff;
+
+  /*
+    In order to keep the aspect ratio when resizing
+    padding-top percentages are relative to the containing block's width.
+    http://stackoverflow.com/questions/12121090/responsively-change-div-size-keeping-aspect-ratio
+  */
+  padding-right: 5%;
+  padding-top: 4%;
+  position: absolute;
+  left: 0;
+  transition: background-color .05s ease;
+  -webkit-transition: background-color .05s ease;
+  z-index: 9999;
+}
+
+.a-enter-ar-button:active,
+.a-enter-ar-button:hover {
+  background-color: #666;
+}
