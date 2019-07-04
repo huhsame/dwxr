@@ -216,7 +216,11 @@
         let el;
         // if there is no dom element, create it.
         if (document.querySelector('#' + data.id) === null) {
-            el = document.createElement(data.tagName);
+            if(data.tagName === 'a-marker'){
+                el = document.createElement('a-entity');
+            }else{
+                el = document.createElement(data.tagName);
+            }
             if(data.tagName === 'a-asset-item'){
                 el.setAttribute('src','default');
             }
