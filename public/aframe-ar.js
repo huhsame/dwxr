@@ -3866,7 +3866,7 @@ THREEx.ArucoMarkerGenerator.createCanvas = function(markerId, width){
 /**
  * @namespace
  */
-var THREE = THREE || require("three");
+var THREE = window.THREE// || require("three");
 
 /**
  * The WebAR namespace inside the THREE namespace. This namespace includes different utilities to be able to handle WebAR functionalities on top of the ThreeJS framework/engine in an easier way.
