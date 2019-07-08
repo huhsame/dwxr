@@ -47,64 +47,69 @@ const postprocessingSystem = {
 
         const smaaEffect = new PP.SMAAEffect(assets.get("smaa-search"), assets.get("smaa-area"));
 
-        const outlineEffect = new PP.OutlineEffect(scene, camera, {
-            blendFunction: PP.BlendFunction.ALPHA,
-            edgeStrength: 25,
-            pulseSpeed: 0.0,
-            resolutionScale: 0.75,
-            visibleEdgeColor: 0x000000,
-            hiddenEdgeColor: 0x22090a,
-            blur: true,
-            xRay: true
-        });
-
         const renderPass = new PP.RenderPass(scene, camera);
-        const effectPass = new PP.EffectPass(camera, outlineEffect);
         const smaaPass = new PP.EffectPass(camera, smaaEffect);
 
         smaaPass.renderToScreen = true;
 
         composer.addPass(renderPass);
-        composer.addPass(effectPass);
         composer.addPass(smaaPass);
-
-        const abc = document.querySelector('#abc').object3D;
-        outlineEffect.setSelection(abc.children);
-
-
 
         // Hijack the render method.
         let calledByComposer = false;
-
         renderer.render = function() {
-
             if(calledByComposer) {
-
                 render.apply(renderer, arguments);
-
             } else {
-
                 calledByComposer = true;
                 composer.render(clock.getDelta());
                 calledByComposer = false;
-
             }
-
         };
+        this._addOutlinePass = AFRAME.utils.bind(this._addOutlinePass, this);
+        window.addEventListener('nowuser', this._addOutlinePass);
 
     },
 
     /**
      * Clean up when the system gets removed.
      */
-
     remove() {
-
         this.composer.renderer.render = this.originalRenderMethod;
         this.composer.dispose();
+    },
 
+    _addOutlinePass(event){
+        if(event.detail.color === undefined) return;
+        let scene = this.sceneEl.object3D;
+        let camera = this.sceneEl.camera;
+        let layer = G.outlineLayerNumbers.pop();
+        let newEffect = new PP.OutlineEffect(scene, camera, {
+            blendFunction: 2,
+            edgeStrength: 5, // white outline
+            pulseSpeed: 0,
+            resolutionScale: 0.3,
+            visibleEdgeColor: event.detail.color,
+            hiddenEdgeColor: 0x121ee6,
+            blur: true,
+            blurriness: 2,
+            xRay: true,
+            opacity: 0.5,
+        });
+        newEffect.selectionLayer = layer;
+        let newPass =  new PP.EffectPass(camera, newEffect);
+        let oldPass = G.outlinePassMap.get(event.detail.alias);
+        if( oldPass !== undefined ){
+               this.composer.removePass(oldPass);
+        }
+        G.outlinePassMap.set(event.detail.alias, newPass);
+
+        newPass.renderToScreen = true;
+        this.composer.passes.forEach(function preventRenderToScreen(pass){
+            pass.renderToScreen = false;
+        });
+        this.composer.addPass(newPass);
     }
-
 };
 
 /**
@@ -168,6 +173,4 @@ window.addEventListener('loadscene',function(){
 
     }).catch(console.error);
 });
-
-
 
