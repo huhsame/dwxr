@@ -47,7 +47,9 @@ let createEl = function (data, key) {
 
 let displayCurrentUser = function(data, key){
     if(data.alias === undefined) return;
+    let detail = {}; // for event to create outline layer
     let el = document.querySelector('#'+'nav-' + data.alias);
+    detail.alias = data.alias;
     if(el === null) {
         el = document.createElement('i');
         el.setAttribute('id', 'nav-' + data.alias);
@@ -55,12 +57,15 @@ let displayCurrentUser = function(data, key){
         el.setAttribute('data-toggle', 'tooltip')
         el.setAttribute('data-placement','bottom')
         el.setAttribute('title',data.alias);
+
         this.get(getSpaceID()).once(function(data){
             el.classList.add('fa-' + data.animal);
             el.classList.add('text-' + data.color);
+            detail.color = getComputedStyle(el).color;
         });
         document.querySelector('#nav-current').appendChild(el);
         jq('#nav-'+data.alias).tooltip();
+        window.dispatchEvent( new CustomEvent('nowuser', {detail: detail}))
     }
 };
 
@@ -80,14 +85,18 @@ let animalCurrentUser = function(data, key){
 
 let colorCurrentUser = function(data, key){
     let color = data;
-    if(color === false) return;
+    let detail = {};
+    if(color === undefined || color === false) return;
     this.back(2).once(function(data, key){
         if(data.alias === undefined) return;
+        detail.alias = data.alias;
         let el = document.querySelector('#'+'nav-' + data.alias);
         if(el === null){
             this.once(displayCurrentUser);
         }else{
             el.classList.add('text-' + color);
+            detail.color = getComputedStyle(el).color;
+            window.dispatchEvent( new CustomEvent('nowuser', {detail: detail}));
         }
     });
 };
@@ -189,7 +198,7 @@ let I = function(){
     };
 
     let initCurrentParticipants = function () {
-        G.space.get('participants').once().map().get(getSpaceID()).get('now').once(function(data){
+        G.space.get('participants').once().map().get(getSpaceID()).get('now').once( function(data){
             if( data ){ // true
                 this.back(2).once(displayCurrentUser);
             } else { // exit
@@ -271,4 +280,3 @@ let I = function(){
         window.dispatchEvent(S.spaceoff);
     }
 })();
-
