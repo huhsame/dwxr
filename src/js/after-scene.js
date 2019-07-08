@@ -1,4 +1,4 @@
 import "@babel/polyfill";
 
-import './nav-spave';
+import './nav-space';
 import './init-space';
