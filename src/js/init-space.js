@@ -1,5 +1,11 @@
 
 window.G = function(){};
+G.outlinePassMap = new Map();
+G.outlineLayerNumbers = [];
+for(let i=100; i >0 ; i--){
+    G.outlineLayerNumbers.push(i);
+}
+
 let sceneEl = document.querySelector('a-scene');
 let loadscene = new Event('loadscene');
 window.dispatchEvent(loadscene);
