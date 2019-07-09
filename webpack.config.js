@@ -7,6 +7,7 @@ module.exports = {
     // enntry file
     entry: {
         space: ['@babel/polyfill', './src/js/space.js'],
+        'after-scene': ['@babel/polyfill', './src/js/after-scene.js'],
         main:['@babel/polyfill', './src/js/index.js','./src/scss/app.scss']
     },
     // 컴파일 + 번들링된 js 파일이 저장될 경로와 이름 지정
