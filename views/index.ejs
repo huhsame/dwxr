@@ -190,8 +190,10 @@
         };
 
         let createCard = function( space ){
+            if(document.getElementById(space.id) !== null) return;
 
             let card = document.createElement('div')
+            card.setAttribute('id', space.id);
             card.classList.add('card');
             card.classList.add('border-secondary');
             let cardBody = document.createElement('div');
@@ -232,7 +234,10 @@
         S.app.get('spaces').map().once(function(data, key){
             let space = getSpace(data);
             space.id = key;
-            document.getElementById('space-list').appendChild(createCard( space ));
+            let spaceCard = createCard( space);
+            if(spaceCard !== undefined){
+                document.getElementById('space-list').appendChild(spaceCard);
+            }
         })
 
         jq('#create-space-btn').on('click', function(){
