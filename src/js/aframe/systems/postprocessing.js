@@ -122,7 +122,7 @@ function load() {
 
     const assets = new Map();
     const loadingManager = new THREE.LoadingManager();
-
+    console.log('postprocessing is loading')
     return new Promise((resolve, reject) => {
 
         let image;
@@ -166,11 +166,11 @@ function load() {
 };
 
 window.addEventListener('loadscene',function(){
-    console.log('loadscene')
+    let sceneEl = document.querySelector('a-scene');
+    if(sceneEl.getAttribute('postprocessing') !== true) return;
+    console.log('postprocessing is true')
     load().then((assets) => {
-
         AFRAME.registerSystem("postprocessing", postprocessingSystem.setAssets(assets));
-
     }).catch(console.error);
 });
 
