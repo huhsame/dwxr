@@ -147,7 +147,7 @@ let subscribe = function(){
         }
     }
 
-    G.objects.map().get('attributes').get('position').on(function(data, key){
+    G.objects.once().map().get('attributes').get('position').on(function(data, key){
         this.back(2).once( syncPosition )
     });
 
