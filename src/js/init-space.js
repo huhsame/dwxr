@@ -13,8 +13,9 @@ let getSpaceID = function() {
 };
 
 // callbacks of gun
-let createEl = function (data, key) {
+let createElInit = function (data, key) {
     let el;
+    if (data === undefined) return;
     // if there is no dom element, create it.
     if (document.querySelector('#' + data.id) === null) {
         if(data.tagName === 'a-marker'){
@@ -109,6 +110,24 @@ function testJsonToGun(){
 
 let subscribe = function(){
 
+    G.objects.map().on(  function createEntity(data, key){
+        console.log('come on!!!!!!');
+
+        let el = checkElement(key);
+        this.get('attributes').once().map().once(function updateAttributes(data, key){
+            switch (key) {
+                case 'geometry': this.once( updateGeometry );
+                    break;
+                case 'color': this.once( updateColor );
+                    break;
+                case 'transform-controls': this.once( updateTransformControls );
+                    break;
+                default: el.setAttribute(key, data);
+            }
+        });
+     });
+
+
     G.space.get('title').on( function(data){
         jq('#title').text(data);
     });
@@ -147,9 +166,54 @@ let subscribe = function(){
         }
     }
 
-    G.objects.once().map().get('attributes').get('position').on(function(data, key){
+    G.objects.map().get('attributes').get('position').on(function(data, key){
         this.back(2).once( syncPosition )
     });
+
+
+
+    G.objects.map().get('attributes').get('geometry').on( updateGeometry );
+    G.objects.map().get('attributes').get('color').on( updateColor );
+
+    function checkElement( id ){
+        let el = document.querySelector('#'+id);
+        if( el !== null) return el;
+        el = document.createElement('a-entity');
+        el.setAttribute('id', id);
+        sceneEl.appendChild( el );
+        console.log(id + ' is created');
+        return el;
+    }
+
+    async function updateGeometry(data, key){
+        let primitive = data.primitive;
+        let id = await this.back(2).once().get('id').then();
+        let el = await checkElement(id);
+
+        // el.setAttribute(key, 'primitive:' + primitive);
+        el.setAttribute(key, {primitive: primitive});
+        el.components.geometry.flushToDOM();
+        // checkAndAppendElement(el);
+    }
+
+    async function updateColor(data, key){
+        let id = await this.back(2).once().get('id').then();
+        let el = await checkElement(id);
+
+        el.setAttribute('material', 'color', data);
+        el.components.material.flushToDOM();
+        // checkAndAppendElement(el);
+    }
+
+    async function updateTransformControls(data, key){
+        let id = await this.back(2).once().get('id').then();
+        let el = await checkElement(id);
+        let activated = data.activated;
+        el.setAttribute('transform-controls', {activated: activated});
+        // el.components['transform-controls'].flushToDOM();
+        // checkAndAppendElement(el);
+    }
+
 
 };
 
@@ -223,7 +287,7 @@ let I = function(){
     };
 
     let initAssets= function(){
-        G.assets.map().once( createEl );
+        G.assets.map().once( createElInit );
     };
 
     let initObjects = function(){
@@ -232,7 +296,7 @@ let I = function(){
 
     // recursive
     let initChildren = function(data, key){
-        this.once( createEl );
+        this.once( createElInit );
         if(data.children !== undefined){
             this.get('children').once().map().once( initChildren )
         }
@@ -243,8 +307,8 @@ let I = function(){
     initCurrentParticipants();
     initTitle();
     createEnterAR();
-    initAssets();
-    initObjects();
+    // initAssets();
+    // initObjects();
     subscribe();
 };
 
