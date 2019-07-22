@@ -1,4 +1,4 @@
-(function createCreateButton(){
+function createCreateButton(){
     let sceneEl = document.querySelector('a-scene');
 
     let ui = document.createElement('div');
@@ -74,4 +74,6 @@
 
     };
 
-})();
+}
+
+createCreateButton();

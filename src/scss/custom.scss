@@ -48,3 +48,11 @@ $theme-colors: (
 .a-enter-ar-button:hover {
   background-color: #666;
 }
+
+.create-random {
+  z-index: 9999;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+
+}
