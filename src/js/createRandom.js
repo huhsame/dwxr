@@ -52,7 +52,9 @@ function createCreateButton(){
                 geometry : {
                     primitive: geometries[Math.floor(Math.random()* geometries.length)]  // random geometries
                 },
-                color: '#'+toHex(rgb),
+                material : {
+                    color: '#'+toHex(rgb)
+                },
                 position : {
                     x : Math.random() * 16 - 8,
                     y : Math.random() * 10 - 3,
@@ -68,10 +70,18 @@ function createCreateButton(){
             }
         };
 
-        G.objects.get( object.id ).put(object);
+        let obj = G.objects.get( object.id );
+
+        obj.get('id').put(object.id);
+        obj.get('parent').put(object.parent);
+        obj.get('tagName').put('a-entity');
+        obj.get('attributes').get('geometry').put({primitive: object.attributes.geometry.primitive});
+        obj.get('attributes').get('material').put({color: object.attributes.material.color});
+        obj.get('attributes').get('position').put(object.attributes.position);
+        obj.get('attributes').get('rotation').put(object.attributes.rotation);
+        obj.get('attributes').get('transform-controls').put(object.attributes["transform-controls"]);
+
         G.scene.get('children').set( G.objects.get(object.id) )
-
-
     };
 
 }

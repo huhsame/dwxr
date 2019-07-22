@@ -118,7 +118,7 @@ let subscribe = function(){
             switch (key) {
                 case 'geometry': this.once( updateGeometry );
                     break;
-                case 'color': this.once( updateColor );
+                case 'material': this.once( updateMaterial );
                     break;
                 case 'transform-controls': this.once( updateTransformControls );
                     break;
@@ -173,7 +173,7 @@ let subscribe = function(){
 
 
     G.objects.map().get('attributes').get('geometry').on( updateGeometry );
-    G.objects.map().get('attributes').get('color').on( updateColor );
+    G.objects.map().get('attributes').get('material').on( updateMaterial );
 
     function checkElement( id ){
         let el = document.querySelector('#'+id);
@@ -181,7 +181,6 @@ let subscribe = function(){
         el = document.createElement('a-entity');
         el.setAttribute('id', id);
         sceneEl.appendChild( el );
-        console.log(id + ' is created');
         return el;
     }
 
@@ -196,11 +195,13 @@ let subscribe = function(){
         // checkAndAppendElement(el);
     }
 
-    async function updateColor(data, key){
+    async function updateMaterial(data, key){
+        let color = data.color;
+
         let id = await this.back(2).once().get('id').then();
         let el = await checkElement(id);
 
-        el.setAttribute('material', 'color', data);
+        el.setAttribute(key, 'color', color);
         el.components.material.flushToDOM();
         // checkAndAppendElement(el);
     }
