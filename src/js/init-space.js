@@ -174,6 +174,7 @@ let subscribe = function(){
 
     G.objects.map().get('attributes').get('geometry').on( updateGeometry );
     G.objects.map().get('attributes').get('material').on( updateMaterial );
+    G.objects.map().get('attributes').get('transform-controls').on( updateTransformControls );
 
     function checkElement( id ){
         let el = document.querySelector('#'+id);
@@ -210,7 +211,7 @@ let subscribe = function(){
         let id = await this.back(2).once().get('id').then();
         let el = await checkElement(id);
         let activated = data.activated;
-        el.setAttribute('transform-controls', {activated: activated});
+        el.setAttribute('transform-controls', 'activated', activated);
         // el.components['transform-controls'].flushToDOM();
         // checkAndAppendElement(el);
     }
