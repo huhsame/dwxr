@@ -317,7 +317,8 @@ let I = function(){
 ;(()=>{
     // when user leaves this space, remove the user in participants list
 
-    document.addEventListener('sslogin', I );
+    // document.addEventListener('sslogin', I );
+    I();
 
     S.spaceoff = new Event('spaceoff');
     window.addEventListener('spaceoff', function(){
