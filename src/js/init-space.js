@@ -111,10 +111,9 @@ function testJsonToGun(){
 let subscribe = function(){
 
     G.objects.map().on(  function createEntity(data, key){
-        console.log('come on!!!!!!');
 
         let el = checkElement(key);
-        this.get('attributes').once().map().once(function updateAttributes(data, key){
+        this.get('attributes').map().once(function updateAttributes(data, key){
             switch (key) {
                 case 'geometry': this.once( updateGeometry );
                     break;
