@@ -76,7 +76,7 @@ function createCreateButton(){
         obj.get('parent').put(object.parent);
         obj.get('tagName').put('a-entity');
         obj.get('attributes').get('geometry').put({primitive: object.attributes.geometry.primitive});
-        obj.get('attributes').get('material').put({color: object.attributes.material.color});
+        obj.get('attributes').get('material').get('color').put(object.attributes.material.color);
         obj.get('attributes').get('position').put(object.attributes.position);
         obj.get('attributes').get('rotation').put(object.attributes.rotation);
         obj.get('attributes').get('transform-controls').put(object.attributes["transform-controls"]);

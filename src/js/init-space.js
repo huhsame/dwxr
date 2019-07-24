@@ -173,6 +173,9 @@ let subscribe = function(){
 
     G.objects.map().get('attributes').get('geometry').on( updateGeometry );
     G.objects.map().get('attributes').get('material').on( updateMaterial );
+    G.objects.map().get('attributes').get('color').on( function goMaterial(data, key){
+        this.back().once(updateMaterial);
+    } );
     G.objects.map().get('attributes').get('transform-controls').on( updateTransformControls );
 
     function checkElement( id ){
