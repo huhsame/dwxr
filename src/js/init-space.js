@@ -304,10 +304,10 @@ let I = function(){
     };
 
     initPath();
-    joinSpace();
-    initCurrentParticipants();
+    // joinSpace();
+    // initCurrentParticipants();
     initTitle();
-    createEnterAR();
+    // createEnterAR();
     // initAssets();
     // initObjects();
     subscribe();
