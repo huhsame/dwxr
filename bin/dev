@@ -4,7 +4,7 @@ let app = require('../app');
 let debug = require('debug')('dwxr:server');
 let http = require('http');
 let Gun = require('gun');
-
+let string = require('../strings');
 
 app.use(Gun.serve);
 

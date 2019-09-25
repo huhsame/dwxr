@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="/test-survey.js" ></script>
+    <link href="/main.css" rel="stylesheet" />
+    <title>DWXR Survey</title>
+
+</head>
+<body>
+    <h2>Survey</h2>
+    <form action="/api/survey/create" method="post">
+        <div class="form-row">
+            <div class="col-auto form-group">
+                <label for="age">Age</label>
+                <input type="number" name='age' class="form-control" id="age">
+            </div>
+            <div class ='col-auto form-group'>
+                <label>Sex</label>
+                <div class="input-group">
+                    <div class="btn-group btn-group-toggle " data-toggle="buttons">
+                        <label class="btn btn-outline-secondary active">
+                            <input type="radio" name="sex" id="sex1"  value="female"  autocomplete="off" checked> Female
+                        </label>
+                        <label class="btn btn-outline-secondary">
+                            <input type="radio" name="sex" id="sex2" autocomplete="off" value="male"> Male
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" name='agree' class="form-check-input" id="agree">
+            <label class="form-check-label"  for="exampleCheck1">Do you agree?</label>
+        </div>
+        <div class = 'form-group'>
+            <label>사용성이 좋은가?</label>
+            <div class="input-group">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="option1" autocomplete="off" value="1"> 1
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="option2" autocomplete="off" value="2"> 2
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="option3" autocomplete="off" value="3"> 3
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="option4" autocomplete="off" value="4"> 4
+                    </label>
+                    <label class="btn btn-outline-secondary">
+                        <input type="radio" name="options" id="option5" autocomplete="off" value="5"> 5
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+<!--    <div class="input-group justify-content-center">-->
+<!--        <div class="input-group-prepend col-auto">-->
+<!--            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Button</button>-->
+<!--        </div>-->
+<!--        <input type="text" class="form-control col-auto" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">-->
+<!--    </div>-->
+
+<!--    <div class="input-group mb-3">-->
+<!--        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">-->
+<!--        <div class="input-group-append">-->
+<!--            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="input-group mb-3">-->
+<!--        <div class="input-group-prepend" id="button-addon3">-->
+<!--            <button class="btn btn-outline-secondary" type="button">Button</button>-->
+<!--            <button class="btn btn-outline-secondary" type="button">Button</button>-->
+<!--        </div>-->
+<!--        <input type="text" class="form-control" placeholder="" aria-label="Example text with two button addons" aria-describedby="button-addon3">-->
+<!--    </div>-->
+
+<!--    <div class="input-group">-->
+<!--        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">-->
+<!--        <div class="input-group-append" id="button-addon4">-->
+<!--            <button class="btn btn-outline-secondary" type="button">Button</button>-->
+<!--            <button class="btn btn-outline-secondary" type="button">Button</button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">-->
+<!--        <div class="btn-group mr-2" role="group" aria-label="First group">-->
+<!--            <button type="button" class="btn btn-secondary">1</button>-->
+<!--            <button type="button" class="btn btn-secondary">2</button>-->
+<!--            <button type="button" class="btn btn-secondary">3</button>-->
+<!--            <button type="button" class="btn btn-secondary">4</button>-->
+<!--        </div>-->
+<!--        <div class="input-group">-->
+<!--            <div class="input-group-prepend">-->
+<!--                <div class="input-group-text" id="btnGroupAddon">@</div>-->
+<!--            </div>-->
+<!--            <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">-->
+<!--        <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+<!--            <label class="btn btn-secondary active">-->
+<!--                <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
+<!--            </label>-->
+<!--            <label class="btn btn-secondary">-->
+<!--                <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
+<!--            </label>-->
+<!--            <label class="btn btn-secondary">-->
+<!--                <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
+<!--            </label>-->
+<!--        </div>-->
+
+<!--        <div class="input-group">-->
+<!--            <div class="input-group-prepend">-->
+<!--                <div class="input-group-text" id="btnGroupAddon2">@</div>-->
+<!--            </div>-->
+<!--            <div class="btn-group btn-group-toggle" data-toggle="buttons">-->
+<!--                <label class="btn btn-secondary active">-->
+<!--                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Active-->
+<!--                </label>-->
+<!--                <label class="btn btn-secondary">-->
+<!--                    <input type="radio" name="options" id="option2" autocomplete="off"> Radio-->
+<!--                </label>-->
+<!--                <label class="btn btn-secondary">-->
+<!--                    <input type="radio" name="options" id="option3" autocomplete="off"> Radio-->
+<!--                </label>-->
+<!--            </div>-->
+
+<!--            <input type="text" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon2">-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+</body>
+</html>

@@ -21,13 +21,16 @@
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <script src="https://kit.fontawesome.com/971af83d00.js"></script>
-    <script src="/main.js" ></script>
     <script src="/space.js" ></script>
     <link href="/main.css" rel="stylesheet" />
 
     <title>DWXR</title>
 </head>
 <body  style='margin : 0px; overflow: hidden;'>
+<script>
+
+    window.G.user = '<%=username%>';
+</script>
 
 
 <div class="scene-container fixed-top">
@@ -42,12 +45,25 @@
 
         <a-camera></a-camera>
 
+        <div class="a-enter-ar">
+            <button class="a-enter-ar-button" title="Enter AR mode with your camera"></button>
+        </div>
+        <script>
+            let btn = document.querySelector('.a-enter-ar-button');
+            btn.addEventListener('click',function(){
+                let pathname = location.pathname;
+                let middlePath;
+                if(pathname.startsWith('/space')){
+                    middlePath = '/space/ar/';
+                }else if( pathname.startsWith('/test')){
+                    middlePath = '/test/ar/'
+                }
+                window.location.href = window.location.origin + middlePath + getSpaceID();
+            });
+        </script>
     </a-scene>
 
 </div>
-
-
-
 
 
 

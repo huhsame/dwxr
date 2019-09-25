@@ -3,12 +3,17 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
+
 module.exports = {
     // enntry file
+    // target: "node",
     entry: {
         space: ['@babel/polyfill', './src/js/space.js'],
-        'after-scene': ['@babel/polyfill', './src/js/after-scene.js'],
-        main:['@babel/polyfill', './src/js/index.js','./src/scss/app.scss']
+        'test':['@babel/polyfill', './src/js/test-space.js','./src/scss/app.scss'],
+        'test-random':['@babel/polyfill', './src/js/test-space-random.js','./src/scss/app.scss'],
+        'test-auto':['./src/js/test-auto.js'],
+        main:['@babel/polyfill', './src/js/index.js','./src/scss/app.scss'],
+        'test-survey':['@babel/polyfill', './src/js/test-survey.js','./src/scss/app.scss']
     },
     // 컴파일 + 번들링된 js 파일이 저장될 경로와 이름 지정
     output: {
@@ -73,6 +78,7 @@ module.exports = {
     // https://webpack.js.org/concepts/mode/#mode-development
     mode: 'development',
     node: {
-        fs: 'empty'
+        fs: 'empty',
+        global: true
     }
 };

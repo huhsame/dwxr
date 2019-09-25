@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/manifest.json">
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <script src="/test.js" ></script>
+    <link href="/test.css" rel="stylesheet" />
+
+    <title>DWXR</title>
+</head>
+
+
+<body  style='margin : 0px; overflow: hidden;'>
+<script>
+    L.user = {};
+    L.user.name = '<%=user.name%>'
+    L.user.auto = '<%=user.auto%>'
+    L.user.local = '<%=user.local%>'
+    let order = '<%=user.order%>'
+    L.user.order = parseInt(order);
+
+    console.log(L.user);
+    let ongetuser = new Event('getuser');
+    window.dispatchEvent(ongetuser);
+</script>
+
+
+<div class="scene-container fixed-top">
+
+    <a-scene id="scene" cursor="rayOrigin: mouse" renderer="antialias: false"  postprocessing="false" ortho embedded>
+
+        <a-assets id="assets">
+            <a-mixin id="red" material ="color: red"></a-mixin>
+            <a-mixin id="green" material ="color: green"></a-mixin>
+            <a-mixin id="cone" geometry="primitive: cone" ></a-mixin>
+            <a-mixin id="half" scale="0.5 0.5 0.5"></a-mixin>
+        </a-assets>
+
+
+
+
+        <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
+        <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
+
+<!--        <a-entity rotation="90 0 0">-->
+            <a-camera ></a-camera>
+<!--        </a-entity>-->
+
+
+    </a-scene>
+
+</div>
+
+
+<nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
+    <a class="navbar-brand">
+        <img id='logo'src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <div id="title" class="nav-link"> <%=user.name%></div>
+        </li>
+    </ul>
+
+    <div id="nav-current" class="col-auto">
+
+    </div>
+
+    <div id = 'nav-user'>
+
+    </div>
+
+</nav>
+
+<div>
+    <button class="btn btn-primary complete-task" onclick="emitComplete()">Completed</button>
+</div>
+
+
+<script>
+
+
+    let onComplete = new Event('onComplete');
+    function emitComplete (){
+        console.log('emit complete');
+        document.dispatchEvent( onComplete );
+    }
+</script>
+</body>
+
+
+</html>
+
+
+

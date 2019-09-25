@@ -53,7 +53,37 @@ AFRAME.registerComponent('transform-controls', {
 
     _change : function(){
         let id = this.el.getAttribute('id');
+        let pubLog={};
         G.objects.get(id).get('attributes').get('position').put( this.object.position );
+        pubLog.transmittedAt = Date.now();
+        pubLog.data = {id: id, position: {
+                x : this.object.position.x,
+                y: this.object.position.y,
+                z: this.object.position.z
+            }};
+        pubLog.publisher = L.user;
+        // console.log( pubLog ); // TODO 디비에 저장
+        // window.bugout.log(pubLog);
+        L.pubLogs.push(pubLog);
+
+
+        // 에이잭스 왜안되냐???
+        // jq.ajax({
+        //     url: location.origin + '/api/pubLog/create',
+        //     type:'POST',
+        //     data: pubLog,
+        //     success: function(data){
+        //         // alert("완료!");
+        //         // window.opener.location.reload();
+        //         // self.close();
+        //         console.log('publish')
+        //         window.bugout.log('bugout test 2222222');
+        //
+        //     },
+        //     error: function(jqXHR, textStatus, errorThrown){
+        //         console.log("post failed - " + textStatus + ": " + errorThrown);
+        //     }
+        // });
 
         // 이벤트를 보내야하나? hmm..
 
