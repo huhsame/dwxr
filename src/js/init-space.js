@@ -80,10 +80,22 @@ G.objects.map().get('attributes').get('position').on( function receivePosition(d
         this.back(2).once( syncPosition );
         return;
     }
+
     let subLog = testLog.getSubLog( data );
-    this.back(2).once( syncPosition );
-    this.back(2).once(function pushSubLog(data, key){
-        subLog.data.id = key;
-        L.subLogs.push(subLog);
+    this.back(2).once(function pushSubLog(data, key) {
+        subLog.publisher = key;
     });
+    let id = subLog.publisher;
+    let el = document.querySelector('#'+id);
+    if(el){
+        let object = el.object3D;
+        if( object !== undefined ) {
+                object.position.copy(data);
+        }
+    }
+
+    // this.back(2).once( syncPosition );
+
+    L.subLogs.push(subLog);
+
 });

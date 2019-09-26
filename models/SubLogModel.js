@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 const SubLogSchema = new Schema({
     receivedAt: String,
     subscriber: String,
+    publisher: String,
     data: {
-        id: String,
+        id: String, // publisher
         position: {
             x: Number,
             y: Number,

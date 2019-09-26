@@ -28,6 +28,11 @@ require('gun/lib/unset');
 
     let node = 'root/test0925-01';
     G.app = G.gun.get(node);
+    // G.getTime = new Date(Gun.state()).getTime();
+    G.getTime = function(){
+        // return  new Date(Gun.state()).getTime();
+        return Gun.state() // 이거는 소수점까지 더 세세하게 맞추네
+    }
 })();
 
 

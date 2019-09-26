@@ -146,38 +146,47 @@ D.createMyObject = function ( i ){
 }
 
 function getRateByTime(){
-    return (Date.now() % 1000) / 1000;
+    let time = 2;
+    return (G.getTime() % (1000 * time)) / (1000* time);
 }
 function getValueByTime(){
     return (railWidth * getRateByTime()) - (railWidth/2);
 }
 function putLocation(){
     let obj = G.objects.get( L.user.name );
-    obj.get('attributes').get('position').get(axis).put(getValueByTime());
+    let position = getRailPosition(L.user.order);
+    position[axis] = getValueByTime();
+    obj.get('attributes').get('position').get(axis).put(position[axis]);
+
+    let pubLog = testLog.getPubLog( position );
+    L.pubLogs.push(pubLog);
 }
 function locateByTime(){
     console.log('start')
-    setInterval(putLocation, 20);
+    setInterval(putLocation, Math.ceil(1000 / 30));
 }
+
+function uploadLog(){
+    testLog.uploadLogs();
+}
+function logging(){
+    let sec = 10;
+    setInterval( uploadLog,  sec * 1000);
+}
+
+
+
 window.onload = async function () {
     await createRails(20);
-    console.log(L.user)
+    console.log(L.user);
     D.createMyObject(Number(L.user.order));
+
+    logging();
 
 };
 
 window.onbeforeunload = function(e){
     e.preventDefault();
-
-    // 서버 리스트에서 유저 지우고
-    // 내꺼는 안지워도 어차피 꺼지니까 상관없는데
-    // 다른애들한테서 지워야지..
-    // 건디비의 값을 수정해야함
-    // 어떻게 할것이냐
-    // 업데이트 하기전에, 리스트에 있는지 ? 확인하고 업데이트
-    // 그러면 이미 생성된거는 어떻게 지우냐
-    // 따로 이벤트를 받아야지뭐.. 해당 변수에 ..
-    // 메타데이터로 플래그를 세워야겠네
 
     let obj = G.objects.get( L.user.name );
     obj.get('visible').put(false);
@@ -193,23 +202,13 @@ window.onbeforeunload = function(e){
             console.log("POST Failed: " + textStatus + ": " + errorThrown);
         }
     });
-    console.log('whyy!!!!!!')
     // e.returnValue = 'asdfasdfas'
 
 }
 
 
 
-document.addEventListener( 'onComplete', submitAndNext);
-async function submitAndNext() {
-    console.log('submit and next');
-    // TODO 항상 sub->pub 순서로 할것
-    // pub 마지막 부분에서 페이지를 넘기기 때문에???
-    // 페이지 넘기는 부분 다시해야겠다. 지금 펍섭 메소드 합쳐놔서 그냥 넘어가겟는데
-
-    await testLog.logsUpload(L.subLogs, 'sub');
-    await testLog.logsUpload(L.pubLogs, 'pub');
-}
+document.addEventListener( 'onComplete', testLog.uploadLogs());
 
 window.addEventListener('getuser', function(){
 
