@@ -24,7 +24,7 @@
     "gun": "^0.2019.413",
     "http-errors": "~1.6.3",
     "jquery": "^3.4.1",
-    "mongoose": "^5.6.10",
+    "mongoose": "^5.7.5",
     "morgan": "~1.9.1",
     "node-webcrypto-ossl": "^1.0.47",
     "postprocessing": "^6.5.1",
