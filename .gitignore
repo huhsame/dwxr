@@ -40,6 +40,10 @@ build/Release
 
 # Dependency directories
 node_modules/
+!node_modules/gun/gun.js
+!node_modules/gun/lib/wire.js
+!node_modules/gun/lib/webrtc.js
+
 jspm_packages/
 
 # TypeScript v1 declaration files
