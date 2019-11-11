@@ -3,18 +3,23 @@ const SubLogModel = require('../models/SubLogModel');
 module.exports = {
     create: (req, res) => {
         let user = req.session.user? req.session.user.name: 'unknown';
+        let dataId = Date.now() + Math.floor(Math.random()*10000);
 
         let subLog = new SubLogModel({
+            // dataId: req.body.data,
             receivedAt: req.body.receivedAt,
             subscriber: user,
-            data: {
-                id: req.body.data.id,
-                position: {
-                    x: req.body.data.position.x,
-                    y: req.body.data.position.y,
-                    z: req.body.data.position.z
-                }
-            },
+            publisher: req.body.publisher,
+            // data: {
+            //     id: req.body.data.id,
+            //     position: {
+            //         x: req.body.data.position.x,
+            //         y: req.body.data.position.y,
+            //         z: req.body.data.position.z
+            //     }
+            // },
+            data: req.body.data,
+
         });
 
         subLog.save()

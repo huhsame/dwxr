@@ -1,5 +1,4 @@
 import "@babel/polyfill";
-import './events';
 import './utils';
 import './init-ddb'
 import 'bootstrap';

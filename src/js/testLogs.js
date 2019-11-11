@@ -18,11 +18,10 @@ module.exports = {
         let transmittedAt = G.getTime();
         let pubLog = {};
         pubLog.transmittedAt = transmittedAt;
-        pubLog.publisher = L.getName;
+        pubLog.publisher = L.user.name;
         pubLog.uuid = util.generateUUID();
-        pubLog.data = {};
-        pubLog.data.id = L.getName;
-        pubLog.data.position = {x: data.x, y: data.y, z: data.z};
+        pubLog.data = data.x;
+        // pubLog.data.position = {x: data.x, y: data.y, z: data.z};
 
         return pubLog;
     },
@@ -31,9 +30,9 @@ module.exports = {
         let receivedAt = G.getTime()
         let subLog = {};
         subLog.receivedAt = receivedAt;
-        subLog.subscriber = L.getName;
-        subLog.data = {};
-        subLog.data.position = {x: data.x, y: data.y, z: data.z};
+        subLog.subscriber = L.user.name;
+        subLog.data = data.x;
+        // subLog.data.position = {x: data.x, y: data.y, z: data.z};
 
         return subLog;
     },
@@ -47,6 +46,14 @@ module.exports = {
             let start = i*count;
             let end = start + count;
             let logs = array.slice( start, end);
+            // console.log(logs)
+            // array.splice(start, count);
+
+            // 그래서 데이터가 자꾸 늘어나느거였나? 이거랑 상관이 있는건가 인덱스드 디비랑? // slice 해도 원본은 변하지 않더군요
+            // 성공하고나면 splice 해줘야해
+
+            // 어차피 시간순으로 정렬할거아니야 ?
+            // 그래 그럼 그냥 다시 원래 어레이에 붙여버려 ㅋㅋ
             jq.ajax({
                 url: location.origin + '/api/'+kind+'Log/insertMany',
                 type: 'POST',
@@ -67,26 +74,50 @@ module.exports = {
 
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("POST Failed: " + textStatus + ": " + errorThrown);
+
+                    if (kind === 'sub') {
+                        L.subLogs = L.subLogs.concat(logs);
+                    }
+                    else if(kind === 'pub') {
+                        L.pubLogs = L.pubLogs.concat(logs)
+                    }
+                    let total =L.subLogs.length + L.pubLogs.length;
+                    console.log(total+' left.');
+
                 }
             });
         }
     },
     uploadLogs: function (){
+        console.log('-----------------------------------------');
         let subLogs = L.subLogs.slice();
-        L.subLogs = [];
+        L.subLogs.splice(0,subLogs.length);
+
         let pubLogs = L.pubLogs.slice();
-        L.pubLogs = [];
+        L.pubLogs.splice(0,pubLogs.length);
 
         let count = 100;
 
-        subLogs.splice(parseInt(subLogs.length / count)*count ,subLogs.length % count);
-        pubLogs.splice(parseInt(pubLogs.length / count)*count ,pubLogs.length % count);
-        L.total = subLogs.length + pubLogs.length;
+        // 아 너무 내스타일이다
+
+        let rSubStart = parseInt(subLogs.length / count)*count;
+        let rPubStart = parseInt(pubLogs.length / count)*count;
+        let rSubCount = subLogs.length % count;
+        let rPubCount = pubLogs.length % count;
+        let subRemainder = subLogs.slice(rSubStart,rSubStart + rSubCount);
+        let pubRemainder = pubLogs.slice(rPubStart,rPubStart + rPubCount);
+        subLogs.splice(rSubStart, rSubCount);
+        pubLogs.splice(rPubStart, rPubCount);
+
+        L.total = subLogs.length + pubLogs.length + subRemainder.length + pubRemainder.length;
         L.completed = 0;
+        console.log('total: ' + L.total);
 
         this.sendLogs(subLogs, 'sub', count);
+        this.sendLogs(subRemainder, 'sub', subRemainder.length);
         this.sendLogs(pubLogs, 'pub', count);
+        this.sendLogs(pubRemainder, 'pub', pubRemainder.length);
+
 
     }
 };

@@ -1,4 +1,3 @@
-import events from './events';
 import util from './utils';
 
 let sceneEl = document.querySelector('a-scene');
@@ -15,9 +14,41 @@ function setAttributeFromGunData(data, key){
     el.setAttribute(key, value);
 };
 // callbacks of gun
-async function createEl(data, key) {
+
+export function createMine(data, key){
     if (data.visible === false) return;
     if (data.id === L.user.id) return;
+    if (data.id === undefined) return;
+    if(data.id === 'temp') return;
+
+    let el = document.querySelector('#' + data.id);
+    if ((el === null) || (el === undefined)) {
+        el = document.createElement('a-cone');
+        el.setAttribute('id', data.id);
+        el.setAttribute('mixin', 'green cone half')
+        this.get('attributes').get('position').once(function setAttributeFromGunData(data, key) {
+            let value = data;
+            if (value === undefined) return;
+            if (value.hasOwnProperty('_')) {
+                delete value['_']; // 건디비 데이터에 삽입되어있는 _ 메타데이터 제거
+            }
+            if (util.checkEmpty(value)) {
+                console.log('value is empty');
+                return;
+            }
+            // console.log(key);
+            el.setAttribute(key, value);
+        });        el.setAttribute('text-label', {text: data.name})
+        document.querySelector('a-scene').appendChild(el);
+
+    }
+
+}
+export async function createEl(data, key) {
+    if (data.visible === false) return;
+    if (data.id === L.user.id) return;
+    if (data.id === undefined) return;
+
     let el = document.querySelector('#' + data.id);
     // if there is no dom element, create it.
     if ((el === null) || (el === undefined)) {
@@ -110,18 +141,20 @@ let initChildren = function(data, key){
     }
 };
 
-window.addEventListener('getuser', function(){
-    initAssets();
-    initObjects();
-    G.objects.map().once(createEl);
+window.addEventListener('onuser', function(){
+    // initAssets();
+    // initObjects();
 
-    G.objects.map().get('visible').on(function receiveVisible(data, key){
+    // G.mine.map().once(createEl);
+
+    G.mine.map().get('visible').on(function receiveVisible(data, key){
         if(data === true){
-            this.back().once(createEl);
+            this.back().once(createMine);
         }else{
             this.back().once(function removeEl(data, key){
-                let el =document.querySelector('#' + data.id);
+                let el = document.querySelector('#' + data.id);
                 if( (el !== null) && (el !== undefined) ){
+                    console.log(el)
                     el.remove();
                 }
             });

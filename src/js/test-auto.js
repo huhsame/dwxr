@@ -1,6 +1,5 @@
 import "@babel/polyfill";
 
-import './events';
 import './utils';
 
 import './init-ddb';
@@ -8,7 +7,7 @@ import 'bootstrap';
 import 'aframe';
 import testLog from './testLogs'
 import './init-space';
-import random from './random';
+// import random from './random';
 
 
 // 씬에 들어가서 데이터 다 받으면 이벤트 보내고

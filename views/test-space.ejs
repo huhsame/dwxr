@@ -22,27 +22,38 @@
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
+    <script src="/gun.js" ></script>
+    <script>
+        (() => {
+            function G(){};
+            window.G = G;
 
+            // create gun instance and make it global
+            let opt = {};
+            opt.store = RindexedDB(opt);
+            opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
+            // opt.peers = ['https://d.wxr.onl/gun'];
+            opt.peers = ['http://localhost:3000/gun'];
+            G.gun = Gun(opt);
+
+            let node= `<%=node %>`;
+            G.app = G.gun.get(node);
+            // G.getTime = new Date(Gun.state()).getTime();
+            G.getTime = function(){
+                // return  new Date(Gun.state()).getTime();
+                return Gun.state() // 이거는 소수점까지 더 세세하게 맞추네
+            }
+        })();
+    </script>
     <script src="/test.js" ></script>
     <link href="/test.css" rel="stylesheet" />
+
 
     <title>DWXR</title>
 </head>
 
 
 <body  style='margin : 0px; overflow: hidden;'>
-<script>
-    L.user = {};
-    L.user.name = '<%=user.name%>'
-    L.user.auto = '<%=user.auto%>'
-    L.user.local = '<%=user.local%>'
-    let order = '<%=user.order%>'
-    L.user.order = parseInt(order);
-
-    console.log(L.user);
-    let ongetuser = new Event('getuser');
-    window.dispatchEvent(ongetuser);
-</script>
 
 
 <div class="scene-container fixed-top">
@@ -79,7 +90,7 @@
 
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-            <div id="title" class="nav-link"> <%=user.name%></div>
+            <div id="title" class="nav-link"> <%=name%></div>
         </li>
     </ul>
 
@@ -93,17 +104,16 @@
 
 </nav>
 
-<div>
-    <button class="btn btn-primary complete-task" onclick="emitComplete()">Completed</button>
+<div class="complete-task">
+    <h2> logging ... </h2>
+<!--    <button class="btn btn-primary complete-task" onclick="emitComplete()">Completed</button>-->
 </div>
-
 
 <script>
 
 
     let onComplete = new Event('onComplete');
     function emitComplete (){
-        console.log('emit complete');
         document.dispatchEvent( onComplete );
     }
 </script>

@@ -6,6 +6,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'DWXR' });
 });
+
+
 //
 // router.get('/speed', function(req, res) {
 //   res.render('speed');

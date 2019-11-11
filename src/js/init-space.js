@@ -1,14 +1,22 @@
 import util from "./utils";
+import {createEl, createMine} from "./render-space";
+
 
 let testLog = require('./testLogs');
 
+
 let spaceID = (function setSpaceID(){
+    // 서버에서 스페이스 지정해서 주고
+    // 여기서는 받아쓰는 걸로 바꿔야겠다.
+
     if(location.pathname.startsWith('/test')){
-        return 'test' + '0915';
+        return 'test' + '1015';
     }
     let paths = location.pathname.split('/');
     return paths[paths.length -1];
 })();
+
+window.L.spaceId = spaceID;
 // 함수 정의와 동시에 실행시키면서 리턴값 저장
 
 (function setPath(){
@@ -16,6 +24,7 @@ let spaceID = (function setSpaceID(){
     G.scene = G.space.get('scene');
     G.assets = G.space.get('assets');
     G.objects = G.space.get('objects');
+    G.mine = G.space.get('mine');
 })();
 
 
@@ -68,14 +77,16 @@ let syncMaterial = function ( data, key ){
 // 그리고 이게 초기화단계인지  아니면 그냥 인터랙션하느 단계인지 표시해주고싶다.
 
 // subscribe
-G.objects.map().get('attributes').get('material').on(function receiveMaterial(data, key){
+G.mine.map().get('attributes').get('material').on(function receiveMaterial(data, key){
     console.log(data, key);
     this.back(2).once( syncMaterial );
 
 })
 
-G.objects.map().get('attributes').get('position').on( function receivePosition(data, key){
 
+G.mine.map().get('attributes').get('position').on( function receivePosition(data, key){
+
+    if(data === undefined) return;
     if(!location.pathname.startsWith('/test')){
         this.back(2).once( syncPosition );
         return;
@@ -85,8 +96,12 @@ G.objects.map().get('attributes').get('position').on( function receivePosition(d
     this.back(2).once(function pushSubLog(data, key) {
         subLog.publisher = key;
     });
+
     let id = subLog.publisher;
     let el = document.querySelector('#'+id);
+    if(el === null || el === undefined){
+     this.back(2).once( createMine );
+    }
     if(el){
         let object = el.object3D;
         if( object !== undefined ) {
@@ -99,3 +114,5 @@ G.objects.map().get('attributes').get('position').on( function receivePosition(d
     L.subLogs.push(subLog);
 
 });
+
+G.mine.map().once(createMine);

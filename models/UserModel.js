@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const SpeedLogSchema = new Schema({
-    user: String,
+const UserSchema = new Schema({
+    name: String,
     timestamp: Date,
     timestampKR: String,
     userAgent: String,
     isp: {
         ip: String,
-        org: String,
-        city: String,
-        region: String,
-        country: String,
-        postal: String,
         loc: {
             lat: Number,
             long: Number
@@ -26,4 +21,4 @@ const SpeedLogSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('speedLog', SpeedLogSchema);
+module.exports = mongoose.model('user', UserSchema);

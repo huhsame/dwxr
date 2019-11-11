@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 let app = require('../app');
+let fs = require('fs');
+let path = require('path');
 let debug = require('debug')('dwxr:server');
-require('dotenv').config();
 let http = require('http');
+let https = require('https');
 let Gun = require('gun');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const mongoose = require('mongoose');
 
 var indexRouter = require('../routes/index');
 var spacesRouter = require('../routes/spaces');
@@ -16,23 +15,28 @@ var speedRouter = require('../routes/speed');
 var apiRouter = require('../routes/api');
 
 
-//database
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGO_URI_LOCAL, { useNewUrlParser: true, keepAlive: true,useUnifiedTopology: true, keepAliveInitialDelay: 300000 })
-    .then(() => {console.log('Connected ot database...')})
-    .catch(err => console.error(err));
+app.use(Gun.serve);
 
-// session
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
+let testPort = 3000;
+let httpPort = 80;
+let httpsPort = 443;
 
-    store: new MongoStore({
-        mongooseConnection: mongoose.connection,
-        ttl: 30*60 // 30 mins
-    })
-}));
+let port = normalizePort(process.env.PORT || httpsPort);
+app.set('port', port); // for https server
+
+let httpServer = http.createServer(function (request, response) {
+    response.writeHead(302, {'Location': 'https://d.wxr.onl'+request.url});
+    response.end();
+}).listen(httpPort, function() {
+    console.log(' redirected server running at https://d.wxr.onl');
+});
+
+let options = {
+    key: fs.readFileSync(path.join(__dirname,process.env.KEY)),
+    cert: fs.readFileSync(path.join(__dirname,process.env.CERT)),
+    passphrase: process.env.PASSPHRASE,
+    agent: false
+};
 
 // Routes
 app.use('/', indexRouter);
@@ -42,35 +46,7 @@ app.use('/api', apiRouter);
 app.use('/speed', speedRouter);
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    console.log('createError', res);
-    next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
-
-app.use(Gun.serve);
-
-let testPort = 3000;
-let httpPort = 80;
-let httpsPort = 443;
-
-let port = normalizePort(process.env.PORT || testPort);
-
-app.set('port', port);
-let testServer =  http.createServer(app);
-let server = testServer;
-
+let server =  https.createServer(options, app);
 server.listen( port );
 
 let gun = Gun({	file: 'data', web: server });
@@ -117,7 +93,6 @@ function onError(error) {
             throw error;
     }
 }
-
 
 function onListening() {
     let addr = server.address();

@@ -3,20 +3,23 @@ const PubLogModel = require('../models/PubLogModel');
 module.exports = {
     create: (req, res) => {
 
-        let user = req.session.user? req.session.user.name: 'unknown';
-        let pubLog = new PubLogModel({
-            transmittedAt: req.body.transmittedAt,
-            publisher: user,
-            data: {
-                id: req.body.data.id,
-                position: {
-                    x: req.body.data.position.x,
-                    y: req.body.data.position.y,
-                    z: req.body.data.position.z
-                }
-            },
-        });
+        // let dataId = Date.now() + Math.floor(Math.random()*10000);
 
+        let userid = req.session.user? req.session.user.name: 'unknown';
+        let pubLog = new PubLogModel({
+            // dataId: req.body.dataId,
+            transmittedAt: req.body.transmittedAt,
+            publisher: userid,
+            // data: {
+            //     id: req.body.data.id, // publisher
+            //     position: {
+            //         x: req.body.data.position.x,
+            //         y: req.body.data.position.y,
+            //         z: req.body.data.position.z
+            //     }
+            // },
+            data: req.body.data,
+        });
         pubLog.save()
             .then(result => {
                 res.json({ success: true, result: result});
@@ -24,7 +27,6 @@ module.exports = {
             .catch( err => {
                 res.json({ success: false, result: err});
             });
-
     },
 
     insertMany: (req, res) => {
