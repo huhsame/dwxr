@@ -4,15 +4,65 @@ let app = require('../app');
 let fs = require('fs');
 let path = require('path');
 let debug = require('debug')('dwxr:server');
+require('dotenv').config();
+
 let http = require('http');
 let https = require('https');
 let Gun = require('gun');
+
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const mongoose = require('mongoose');
 
 var indexRouter = require('../routes/index');
 var spacesRouter = require('../routes/spaces');
 var testsRouter = require('../routes/tests');
 var speedRouter = require('../routes/speed');
 var apiRouter = require('../routes/api');
+
+//database
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGO_URI_LOCAL, { useNewUrlParser: true, keepAlive: true,useUnifiedTopology: true, keepAliveInitialDelay: 300000 })
+    .then(() => {console.log('Connected ot database...')})
+    .catch(err => console.error(err));
+
+// session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+
+    store: new MongoStore({
+        mongooseConnection: mongoose.connection,
+        ttl: 30*60 // 30 mins
+    })
+}));
+
+// Routes
+app.use('/', indexRouter);
+app.use('/space', spacesRouter);
+app.use('/test', testsRouter);
+app.use('/api', apiRouter);
+app.use('/speed', speedRouter);
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    console.log('createError', res);
+    next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+
 
 
 app.use(Gun.serve);
