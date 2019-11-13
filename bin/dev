@@ -65,7 +65,7 @@ let testPort = 3000;
 let httpPort = 80;
 let httpsPort = 443;
 
-let port = normalizePort(process.env.PORT || testPort);
+let port = normalizePort(process.env.PORT_LOCAL || testPort);
 
 app.set('port', port);
 let testServer =  http.createServer(app);
