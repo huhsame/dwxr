@@ -54,6 +54,10 @@ function Rail(){
             railEl.setAttribute('position', this.getRailPosition(i));
             sceneEl.appendChild(railEl);
         }
+
+        let event_onrails = new Event('onrails');
+        document.dispatchEvent(event_onrails);
+
     }
 
 

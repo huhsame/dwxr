@@ -31,7 +31,7 @@ L.user = {};
 let D = function(){};
 window.D = D;
 
-let createMyObject = function ( user ){
+let createMyObject = async function (user) {
     let sceneEl = document.querySelector('a-scene');
 
     let myObject = {};
@@ -44,12 +44,11 @@ let createMyObject = function ( user ){
         // material: {color:'green'},
     };
     let myEl = document.createElement('a-cone');
-    let myRailEl = document.querySelector('#rail-'+user.rail);
-    let position = Rail.getRailPosition(user.rail);
+    let position = Rail.getRailPosition(user.order);
     let d = 0.5;
     // position.copy(myRailEl.object3D.position);
-    position.x = -5+d;
-    position.y = d/2;
+    position.x = -5 + d;
+    position.y = d / 2;
     // position.setZ(myRailEl.object3D.position.z);
     myObject.attributes.position = position;
     // myObject.attributes.scale = {x:d,y:d,z:d};
@@ -63,13 +62,14 @@ let createMyObject = function ( user ){
     myEl.setAttribute('mixin', 'red cone half');
     // myEl.setAttribute('color', 'red');
     // myEl.setAttribute('scale', d+' '+d+' '+d);
-    myEl.setAttribute('text-label',{text: user.name});
     sceneEl.appendChild(myEl);
 
     putObject(myObject);
 
-    function putObject( object){
-        let obj = G.mine.get( object.id ).put({id: 'temp'});
+
+
+    function putObject(object) {
+        let obj = G.mine.get(object.id).put({id: 'temp'});
 
         obj.get('id').put(object.id);
         // obj.get('parent').put(object.parent);
@@ -87,12 +87,14 @@ let createMyObject = function ( user ){
         obj.once(console.log);
         obj.get('id').put(object.id);
 
-        G.scene.get('children').set( obj );
+        G.scene.get('children').set(obj);
 
     }
 
+
+
     // if(L.user.auto === true){
-        locateByTime(); // 왜 안움직이죠 ?
+    locateByTime(); // 왜 안움직이죠 ?
     // }
 
 }
@@ -125,14 +127,30 @@ function uploadLog(){
     testLog.uploadLogs();
 }
 function logging(){
-    let sec = 10;
+    let sec = 60 * 10;
     setInterval( uploadLog,  sec * 1000);
 }
 
 
+document.addEventListener('onrails',function(){
+    // 내이름 상대방 이름 다 적어야하는데
+    // 흐음.. 그러게..
+    // 일단 내꺼는 여기서
+    // 상대방꺼는 render-space에서
+
+    // 상대방꺼는 두종류
+    // 미리 들어와있는애들, 새로 들어오는 애들
+
+
+    console.log(L.user.order);
+    let myRailEl = document.querySelector('#rail-' + L.user.order);
+    myRailEl.setAttribute('text-label', {text: L.user.name});
+
+})
 
 window.onload = async function () {
-    await Rail.createRails();
+    // await Rail.createRails();
+
     // console.log(L.user);
 
     // socket.emit('join', L.spaceId, function afterJoin(){
@@ -175,13 +193,12 @@ window.addEventListener('onuser', function(e){
     let pid = e.detail.pid;
     console.log('['+pid + '] is connected.');
 
+    // Pid  저장시키고 session 에 있는 유저정보 받아
     jq.ajax({
         url: location.origin + '/api/pid/create',
         type: 'POST',
         data: {pid: pid},
-        success: async function (data) {
-            console.log('[' + pid + '] is stored.')
-        },
+        success: startCreating,
         error: function (jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);
             console.log(textStatus)
@@ -189,7 +206,13 @@ window.addEventListener('onuser', function(e){
         }
     });
 
-    L.user = e.detail
-    console.log(L.user);
-    // createMyObject(L.user);
 });
+
+let startCreating =  async function (data) {
+    // console.log('[' + pid + '] is stored.')
+    console.log(data)
+    L.user = await data.user;
+    Rail.createRails();
+    createMyObject(L.user);
+    logging();
+}

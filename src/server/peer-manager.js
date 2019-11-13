@@ -18,7 +18,7 @@ function PeerManager(){
     };
 
     peerManager.onClose = function(pid){
-        let index = peers.indexOf(pid);
+        let index = this.peers.indexOf(pid);
         if(index === -1) return;
         this.peers.splice(index, 1);
         this.log(this.peers)

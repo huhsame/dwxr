@@ -3,23 +3,25 @@ const PidModel = require('../models/PidModel');
 module.exports = {
     create: (req, res) => {
         console.log('pid controls');
-        // res.json('test');
-
-        let userId = req.session.user? req.session.user.name: 'unknown';
-        console.log(userId);
-        let peerId = req.body.pid;
-        console.log(peerId);
+        if(! req.session.user){
+            res.json({success: false, msg: 'no user in session.'})
+            return;
+        }
+        let user = req.session.user;
+        user.pid = req.body.pid;
+        // let peerId = req.body.pid;
+        // console.log(peerId);
         let pid = new PidModel({
-            userId: userId,
-            peerId: peerId
+            userId: user.name,
+            peerId: user.pid
         });
 
         pid.save()
             .then(result => {
-                res.json({ success: true, result: result, pid: peerId});
+                res.json({ success: true, result: result, user: user});
             })
             .catch( err => {
-                res.json({ success: false, result: err});
+                res.json({ success: false, msg: err});
             });
 
 

@@ -38,7 +38,8 @@ export function createMine(data, key){
             }
             // console.log(key);
             el.setAttribute(key, value);
-        });        el.setAttribute('text-label', {text: data.name})
+        });
+        el.setAttribute('text-label', {text: data.name})
         document.querySelector('a-scene').appendChild(el);
 
     }
