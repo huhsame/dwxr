@@ -36,6 +36,9 @@ let syncPosition = function ( data, key ){
             this.get('attributes').get('position').once(function (data) {
                 // console.log(data);
                 if(data !== undefined){
+                    if(data.hasOwnProperty('dataId')){
+                        delete data['dataId'];
+                    }
                     object.position.copy(data);
                 }
             });
@@ -105,7 +108,10 @@ G.mine.map().get('attributes').get('position').on( function receivePosition(data
     if(el){
         let object = el.object3D;
         if( object !== undefined ) {
-                object.position.copy(data);
+            if(data.hasOwnProperty('dataId')){
+                delete data['dataId'];
+            }
+            object.position.copy(data);
         }
     }
 

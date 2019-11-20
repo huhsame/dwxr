@@ -15,23 +15,30 @@ window.addEventListener('getuser', function(){
 
 module.exports = {
     getPubLog: function (data) {
+        /**
+         * data = {position, dataId}
+         * **/
         let transmittedAt = G.getTime();
         let pubLog = {};
         pubLog.transmittedAt = transmittedAt;
         pubLog.publisher = L.user.name;
-        pubLog.uuid = util.generateUUID();
-        pubLog.data = data.x;
+        pubLog.dataId = data.dataId;
+        pubLog.data = data.position.x;
         // pubLog.data.position = {x: data.x, y: data.y, z: data.z};
 
         return pubLog;
     },
 
     getSubLog: function (data) {
+        /**
+         * data = {x, y, z, dataId}
+         **/
         let receivedAt = G.getTime()
         let subLog = {};
         subLog.receivedAt = receivedAt;
         subLog.subscriber = L.user.name;
         subLog.data = data.x;
+        subLog.dataId = data.dataId;
         // subLog.data.position = {x: data.x, y: data.y, z: data.z};
 
         return subLog;

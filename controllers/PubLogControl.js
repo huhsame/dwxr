@@ -7,7 +7,7 @@ module.exports = {
 
         let userid = req.session.user? req.session.user.name: 'unknown';
         let pubLog = new PubLogModel({
-            // dataId: req.body.dataId,
+            dataId: req.body.dataId,
             transmittedAt: req.body.transmittedAt,
             publisher: userid,
             // data: {

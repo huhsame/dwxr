@@ -16,6 +16,7 @@ import './aframe/components/textLabel'
 import './render-space';
 
 import Rail from './rail';
+import Util from './utils';
 
 // import random from './random';
 
@@ -32,6 +33,12 @@ let D = function(){};
 window.D = D;
 
 let createMyObject = async function (user) {
+    let mine = document.querySelector('#'+user.name)
+    if(mine !== null) {
+        console.log(mine);
+        return
+    }
+
     let sceneEl = document.querySelector('a-scene');
 
     let myObject = {};
@@ -58,17 +65,20 @@ let createMyObject = async function (user) {
     // myRailEl.setAttribute('text-label' , {text: L.user.name});
 
     myEl.setAttribute('id', user.name);
+
     myEl.setAttribute('position', position);
     myEl.setAttribute('mixin', 'red cone half');
     // myEl.setAttribute('color', 'red');
     // myEl.setAttribute('scale', d+' '+d+' '+d);
     sceneEl.appendChild(myEl);
 
+
     putObject(myObject);
 
 
-
     function putObject(object) {
+
+
         let obj = G.mine.get(object.id).put({id: 'temp'});
 
         obj.get('id').put(object.id);
@@ -78,7 +88,14 @@ let createMyObject = async function (user) {
         // obj.get('attributes').get('mixin').put('green cone half');
         // // obj.get('attributes').get('geometry').put({primitive: object.attributes.geometry.primitive});
         // // obj.get('attributes').get('material').get('color').put(object.attributes.material.color);
+
+        // position
+
         obj.get('attributes').get('position').put(object.attributes.position);
+        // subscribe 하는 부분도 함께 수정 해야함
+        // rendeing, init 하는 부분 모두
+
+
         // // obj.get('attributes').get('scale').put(object.attributes.scale);
         // // obj.get('attributes').get('transform-controls').put(object.attributes["transform-controls"]);
         // obj.get('attributes').get('text-label').put(object.attributes["text-label"]);
@@ -113,9 +130,14 @@ function putLocation(){
     let position = Rail.getRailPosition( user.rail);
     let axis = Rail.axis;
     position[axis] = getValueByTime();
-    obj.get('attributes').get('position').get(axis).put(position[axis]);
+    // obj.get('attributes').get('position').get(axis).put(position[axis]);
+    // for test
+    let dataId = Util.generateUUID(); // for checking data id
+    let x = position[x];
+    obj.get('attributes').get('position').put({x: x, dataId: dataId  });
 
-    let pubLog = testLog.getPubLog( position );
+    let logData = {position: position, dataId: dataId};
+    let pubLog = testLog.getPubLog( logData );
     L.pubLogs.push(pubLog);
 }
 function locateByTime(){

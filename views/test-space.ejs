@@ -32,8 +32,8 @@
             let opt = {};
             opt.store = RindexedDB(opt);
             opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-            // opt.peers = ['https://d.wxr.onl/gun'];
-            opt.peers = ['http://localhost:3000/gun'];
+            opt.peers = ['https://d.wxr.onl/gun'];
+            // opt.peers = ['http://localhost:3000/gun'];
             G.gun = Gun(opt);
 
             let node= `<%=node %>`;

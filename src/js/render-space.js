@@ -32,6 +32,9 @@ export function createMine(data, key){
             if (value.hasOwnProperty('_')) {
                 delete value['_']; // 건디비 데이터에 삽입되어있는 _ 메타데이터 제거
             }
+            if(value.hasOwnProperty('dataId')){
+                delete value['dataId'];
+            }
             if (util.checkEmpty(value)) {
                 console.log('value is empty');
                 return;
@@ -70,6 +73,9 @@ export async function createEl(data, key) {
 
         this.get('attributes').map(function (data, key) {
             if (key !== 'position')
+                if(data.hasOwnProperty('dataId')){
+                    delete data['dataId'];
+                }
                 return data;
             return undefined;
         }).on(function setAttributeFromGunData(data, key) {
@@ -90,6 +96,9 @@ export async function createEl(data, key) {
             if (value === undefined) return;
             if (value.hasOwnProperty('_')) {
                 delete value['_']; // 건디비 데이터에 삽입되어있는 _ 메타데이터 제거
+            }
+            if(value.hasOwnProperty('dataId')){
+                delete value['dataId'];
             }
             if (util.checkEmpty(value)) {
                 console.log('value is empty');

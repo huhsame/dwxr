@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const SubLogSchema = new Schema({
-    // dataId: String,
+    dataId: String,
     receivedAt: String,
     subscriber: String,
     publisher: String,

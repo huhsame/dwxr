@@ -3,10 +3,9 @@ const SubLogModel = require('../models/SubLogModel');
 module.exports = {
     create: (req, res) => {
         let user = req.session.user? req.session.user.name: 'unknown';
-        let dataId = Date.now() + Math.floor(Math.random()*10000);
 
         let subLog = new SubLogModel({
-            // dataId: req.body.data,
+            dataId: req.body.dataId,
             receivedAt: req.body.receivedAt,
             subscriber: user,
             publisher: req.body.publisher,
