@@ -35,7 +35,7 @@ window.D = D;
 let createMyObject = async function (user) {
     let mine = document.querySelector('#'+user.name)
     if(mine !== null) {
-        console.log(mine);
+        console.log( mine );
         return
     }
 
@@ -133,7 +133,7 @@ function putLocation(){
     // obj.get('attributes').get('position').get(axis).put(position[axis]);
     // for test
     let dataId = Util.generateUUID(); // for checking data id
-    let x = position[x];
+    let x = position[axis];
     obj.get('attributes').get('position').put({x: x, dataId: dataId  });
 
     let logData = {position: position, dataId: dataId};
@@ -149,10 +149,10 @@ function uploadLog(){
     testLog.uploadLogs();
 }
 function logging(){
-    let sec = 60 * 10;
+    console.log("start logging...")
+    let sec = 10;
     setInterval( uploadLog,  sec * 1000);
 }
-
 
 document.addEventListener('onrails',function(){
     // 내이름 상대방 이름 다 적어야하는데
@@ -163,14 +163,13 @@ document.addEventListener('onrails',function(){
     // 상대방꺼는 두종류
     // 미리 들어와있는애들, 새로 들어오는 애들
 
-
     console.log(L.user.order);
     let myRailEl = document.querySelector('#rail-' + L.user.order);
     myRailEl.setAttribute('text-label', {text: L.user.name});
 
 })
 
-window.onload = async function () {
+window.onload = function () {
     // await Rail.createRails();
 
     // console.log(L.user);

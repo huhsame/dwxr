@@ -105,7 +105,6 @@ module.exports = {
 
         let count = 100;
 
-        // 아 너무 내스타일이다
 
         let rSubStart = parseInt(subLogs.length / count)*count;
         let rPubStart = parseInt(pubLogs.length / count)*count;
@@ -119,6 +118,8 @@ module.exports = {
         L.total = subLogs.length + pubLogs.length + subRemainder.length + pubRemainder.length;
         L.completed = 0;
         console.log('total: ' + L.total);
+        // 어떻게 되는걸까 수학이 틀린거야 ????
+        // 어차피 중복되어도 거르면 되긴하는데
 
         this.sendLogs(subLogs, 'sub', count);
         this.sendLogs(subRemainder, 'sub', subRemainder.length);

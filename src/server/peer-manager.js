@@ -14,6 +14,7 @@ function PeerManager(){
     peerManager.peers = [];
     peerManager.onConnection = function(pid){
         this.peers.push(pid);
+        this.log(pid + ' is connected.');
         this.log(this.peers);
     };
 

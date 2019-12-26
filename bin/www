@@ -102,6 +102,7 @@ server.on('listening', onListening);
 
 
 let httpServer = http.createServer(function (request, response) {
+    // console.log(request);
     response.writeHead(302, {'Location': 'https://d.wxr.onl'+request.url});
     response.end();
 }).listen(httpPort, function() {

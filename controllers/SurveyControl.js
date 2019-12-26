@@ -9,7 +9,6 @@ module.exports = {
         res.send(JSON.stringify(data));
         // TODO 결과페이지나 끝났다는 페이지로 리다이렉트
 
-
         // let time = new Date();
         // let timeKR = moment.tz(time, "Asia/Seoul").format();
         // let name
