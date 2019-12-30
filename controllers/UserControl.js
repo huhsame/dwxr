@@ -293,42 +293,43 @@ module.exports = {
         let timeKR = moment.tz(time, "Asia/Seoul").format();
 
         console.log(req.body);
-        let data = req.body;
-        res.send(JSON.stringify(data));
+        let data = req.body; // 꼭 한번 변수에 옮겨준다음에 해야함. req.body.name 이런거는 에러
+        // res.send(JSON.stringify(data));
 
-        // // set username
-        // let name = res.body.name + digit3Random();
-        //
-        // // todo: 디비에서 find해서 이미 있으면 새로 만들어
-        // // todo: req.body 에 이름이 있으면 그이름으로 저장
-        //
-        //
-        //
-        // // set order
-        // let order = orders.sort(function(a, b){return b - a}).pop();
-        //
-        // // save user and order to session
-        // req.session.user ={};
-        // req.session.user.name = name;
-        // req.session.user.order = order;
-        //
-        // let userModel = {
-        //     name: name,
-        //     bandwidth: res.body.bandwidth,
-        //     timestamp: time,
-        //     timestampKR: timeKR,
-        // };
-        //
-        // // todo: save and then redirect test space
-        // let user = new UserModel(userModel);
-        //
-        // user.save()
-        //     .then(result => {
-        //         res.redirect('/test/speed');
-        //     })
-        //     .catch( err => {
-        //         res.json({ success: false, result: err, userModel});
-        //     });
+        // set username
+        let name = data.name + digit3Random();
+
+        // todo: 디비에서 find해서 이미 있으면 새로 만들어
+        // todo: req.body 에 이름이 있으면 그이름으로 저장
+
+
+
+        // set order
+        let order = orders.sort(function(a, b){return b - a}).pop();
+
+        // save user and order to session
+        req.session.user ={};
+        req.session.user.name = name;
+        req.session.user.order = order;
+
+        let userModel = {
+            name: name,
+            bandwidth: data.bandwidth,
+            timestamp: time,
+            timestampKR: timeKR,
+        };
+
+        // todo: save and then redirect test space
+        let user = new UserModel(userModel);
+
+        user.save()
+            .then(result => {
+                console.log({success: true, result: userModel});
+                res.redirect('/test/speed');
+            })
+            .catch( err => {
+                res.json({ success: false, result: err, userModel});
+            });
     },
 
     // todo
@@ -356,9 +357,9 @@ module.exports = {
         };
         console.log(user);
 
-        UserModel.updateOne({name: req.session.name}, user)
+        UserModel.updateOne({name: user.name}, user)
             .then(user => {
-                if(!user) res.json({success: false, result: "No user found."});
+                // if(!user) res.json({success: false, result: "No user found."});
                 res.json({success: true, user: user});
             }).catch(err=>{
             console.log('user update fail');

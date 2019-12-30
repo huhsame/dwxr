@@ -7,8 +7,8 @@ let node = 'node-' + Date.now();
 console.log('::--- gun root node : '+node +' ---::');
 
 // router.get('/', UserControl.create );
-router.get('/', function(req, res){
-  res.render('test-login'); // => UserControl.create
+router.get('/', function(req, res, next){
+  res.render('test-login'); // => setting
 });
 // 테스트 로그인 페이지 하나 만들고, 거기서 아이디나 속도정보를 받아서도
 // 폼으로 보내고
