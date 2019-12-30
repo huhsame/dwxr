@@ -248,6 +248,7 @@ for(let i = 0;i < total; i++){
     orders[i] = total-i -1;
 }
 
+
 module.exports = {
     create: (req, res) => {
         // todo: set time
@@ -258,6 +259,7 @@ module.exports = {
         // todo: 디비에서 find해서 중복 체크
         let name = createName();
         // todo: 디비에서 find해서 이미 있으면 새로 만들어
+        // todo: req.body 에 이름이 있으면 그이름으로 저장
 
 
 
@@ -283,6 +285,50 @@ module.exports = {
             .catch( err => {
                 res.json({ success: false, result: err});
             });
+    },
+
+    getset: (req, res) => {
+        // todo: set time
+        let time = new Date();
+        let timeKR = moment.tz(time, "Asia/Seoul").format();
+
+        console.log(req.body);
+        let data = req.body;
+        res.send(JSON.stringify(data));
+
+        // // set username
+        // let name = res.body.name + digit3Random();
+        //
+        // // todo: 디비에서 find해서 이미 있으면 새로 만들어
+        // // todo: req.body 에 이름이 있으면 그이름으로 저장
+        //
+        //
+        //
+        // // set order
+        // let order = orders.sort(function(a, b){return b - a}).pop();
+        //
+        // // save user and order to session
+        // req.session.user ={};
+        // req.session.user.name = name;
+        // req.session.user.order = order;
+        //
+        // let userModel = {
+        //     name: name,
+        //     bandwidth: res.body.bandwidth,
+        //     timestamp: time,
+        //     timestampKR: timeKR,
+        // };
+        //
+        // // todo: save and then redirect test space
+        // let user = new UserModel(userModel);
+        //
+        // user.save()
+        //     .then(result => {
+        //         res.redirect('/test/speed');
+        //     })
+        //     .catch( err => {
+        //         res.json({ success: false, result: err, userModel});
+        //     });
     },
 
     // todo
@@ -312,7 +358,7 @@ module.exports = {
 
         UserModel.updateOne({name: req.session.name}, user)
             .then(user => {
-                if(!user) res.json({success: false, result: "No user found."})
+                if(!user) res.json({success: false, result: "No user found."});
                 res.json({success: true, user: user});
             }).catch(err=>{
             console.log('user update fail');

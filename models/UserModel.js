@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     name: String,
+    bandwidth: Number,
     timestamp: Date,
     timestampKR: String,
     userAgent: String,
