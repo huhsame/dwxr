@@ -233,12 +233,12 @@ let animals = [
 let pickRandom = function ( array ){
     return array[Math.floor(Math.random() * array.length)];
 };
-let digit3Random = function (){
-    return Math.floor(Math.random()*(999-100+1)+100);
+let digit5Random = function (){
+    return Math.floor(Math.random()*(99999-10000+1)+10000);
 }
 
 let  createName = function (){
-    return pickRandom(animals) + digit3Random();
+    return pickRandom(animals) + digit5Random();
 }
 let users =[];
 
@@ -297,7 +297,7 @@ module.exports = {
         // res.send(JSON.stringify(data));
 
         // set username
-        let name = data.name + digit3Random();
+        let name = data.name + digit5Random();
 
         // todo: 디비에서 find해서 이미 있으면 새로 만들어
         // todo: req.body 에 이름이 있으면 그이름으로 저장
