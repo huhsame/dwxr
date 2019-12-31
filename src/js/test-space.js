@@ -108,12 +108,15 @@ let createMyObject = async function (user) {
 
     }
 
+    // locateByTime();
 
+    // 누가 한변 G.app.get('fire').put(true);
 
-    // if(L.user.auto === true){
-    locateByTime(); // 왜 안움직이죠 ?
-    // }
-
+    G.app.get('fire').on((d, k)=>{
+        if(d !== true) return;
+        locateByTime();
+    })
+    console.log('got ready')
 }
 
 function getRateByTime(){
