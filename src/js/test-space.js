@@ -1,7 +1,7 @@
 import "@babel/polyfill";
 
 
-// import './init-ddb'
+import './init-ddb';
 import 'bootstrap';
 import 'aframe';
 
