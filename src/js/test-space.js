@@ -1,7 +1,7 @@
 import "@babel/polyfill";
 
 
-import './init-ddb';
+// import './init-ddb';
 import 'bootstrap';
 import 'aframe';
 
@@ -120,8 +120,8 @@ let createMyObject = async function (user) {
 }
 
 function getRateByTime(){
-    let time = 2;
-    return (G.getTime() % (1000 * time)) / (1000* time);
+    let interval = 5;
+    return (G.getTime() % (1000 * interval)) / (1000* interval);
 }
 function getValueByTime(){
     return (Rail.width * getRateByTime()) - (Rail.width/2);

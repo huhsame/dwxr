@@ -14,6 +14,7 @@ require('gun/lib/store');
 require('gun/lib/rindexed');
 require('gun/lib/open');
 require('gun/lib/unset');
+
 //
 // (() => {
 //     function G(){};
@@ -23,18 +24,11 @@ require('gun/lib/unset');
 //     let opt = {};
 //     opt.store = RindexedDB(opt);
 //     opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-//     // opt.peers = ['https://d.wxr.onl/gun'];
-//     opt.peers = ['http://localhost:3000/gun'];
+//     opt.peers = ['https://d.wxr.onl/gun'];
+//     // opt.peers = ['http://localhost:3000/gun'];
 //     G.gun = Gun(opt);
 //
-//     let node = 'root/test1024-01';
+//     let node= `<%=node %>`;
 //     G.app = G.gun.get(node);
-//     // G.getTime = new Date(Gun.state()).getTime();
-//     G.getTime = function(){
-//         // return  new Date(Gun.state()).getTime();
-//         return Gun.state() // 이거는 소수점까지 더 세세하게 맞추네
-//     }
+//     G.getTime = ()=>Gun.state();
 // })();
-//
-//
-//
