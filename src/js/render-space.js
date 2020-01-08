@@ -19,6 +19,7 @@ export function createMine(data, key){
     if (data.visible === false) return;
     if (data.id === L.user.id) return;
     if (data.id === undefined) return;
+    if (data.order === undefined) return;
     if(data.id === 'temp') return;
 
     let el = document.querySelector('#' + data.id);
@@ -42,8 +43,9 @@ export function createMine(data, key){
             // console.log(key);
             el.setAttribute(key, value);
         });
-        el.setAttribute('text-label', {text: data.name})
-        document.querySelector('a-scene').appendChild(el);
+        let myRailEl = document.querySelector('#rail-'+data.order);
+        myRailEl.setAttribute('text-label', {text: data.id});
+\        document.querySelector('a-scene').appendChild(el);
 
     }
 

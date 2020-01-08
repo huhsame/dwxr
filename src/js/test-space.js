@@ -13,7 +13,7 @@ import './three/TransformControls';
 import './aframe/components/transformControls';
 import './aframe/components/textLabel'
 
-import './render-space';
+
 
 import Rail from './rail';
 import Util from './utils';
@@ -43,6 +43,7 @@ let createMyObject = async function (user) {
 
     let myObject = {};
     myObject.id = user.name;
+    myObject.order = user.order;
     myObject.parent = 'scene';
     myObject.tagName = 'a-entity';
     myObject.visible = true;
@@ -67,7 +68,10 @@ let createMyObject = async function (user) {
     myEl.setAttribute('id', user.name);
 
     myEl.setAttribute('position', position);
-    myEl.setAttribute('mixin', 'red cone half');
+    myEl.setAttribute('mixin', 'green cone half');
+
+
+    // myEl.setAttribute('color', Rail.selectedColors[user.order%7]);
     // myEl.setAttribute('color', 'red');
     // myEl.setAttribute('scale', d+' '+d+' '+d);
     sceneEl.appendChild(myEl);
@@ -100,9 +104,14 @@ let createMyObject = async function (user) {
         // // obj.get('attributes').get('transform-controls').put(object.attributes["transform-controls"]);
         // obj.get('attributes').get('text-label').put(object.attributes["text-label"]);
         obj.get('visible').put(object.visible);
+        console.log(object.order);
+        obj.get('order').put(object.order);
+
 
         obj.once(console.log);
         obj.get('id').put(object.id);
+
+
 
         G.scene.get('children').set(obj);
 
@@ -166,9 +175,10 @@ document.addEventListener('onrails',function(){
     // 상대방꺼는 두종류
     // 미리 들어와있는애들, 새로 들어오는 애들
 
-    console.log(L.user.order);
-    let myRailEl = document.querySelector('#rail-' + L.user.order);
-    myRailEl.setAttribute('text-label', {text: L.user.name});
+    let user = L.user;
+    let myRailEl = document.querySelector('#rail-' + user.order);
+    myRailEl.setAttribute('text-label', {text: user.name});
+    myRailEl.setAttribute('color', Rail.getSelectedColor(user.order));
 
 })
 
@@ -240,3 +250,5 @@ let startCreating =  async function (data) {
     createMyObject(L.user);
     logging();
 }
+
+import './render-space';
