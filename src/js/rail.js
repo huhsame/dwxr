@@ -18,7 +18,7 @@ function Rail(){
 
     rail.total = 20;
     const origin =  { x: 0, y: 0, z: 0};
-    rail.width = 10;
+    rail.width = 15;
     rail.axis = 'x';
 
     rail.setAttributes = function ( el, attributes ){

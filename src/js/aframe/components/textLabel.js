@@ -26,9 +26,9 @@ AFRAME.registerComponent('text-label', {
         //     textEl.setAttribute('position', position);
         //     console.log(textEl.getAttribute('position'))
         // }else{
-            textEl.setAttribute('position', '0 1 0');
+            textEl.setAttribute('position', '0 0.01 0');
         // }
-        textEl.setAttribute('rotation', '-90 0 0');
+        textEl.setAttribute('rotation', '0 0 0');
         this.el.appendChild(textEl);
         this.textEl = textEl;
 

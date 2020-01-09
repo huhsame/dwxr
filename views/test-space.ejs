@@ -23,6 +23,7 @@
     <meta name="theme-color" content="#ffffff">
 
     <script src="/gun.js" ></script>
+
     <script>
         (() => {
             function G(){};
@@ -38,13 +39,10 @@
 
             let node= `<%=node %>`;
             G.app = G.gun.get(node);
-            // G.getTime = new Date(Gun.state()).getTime();
-            G.getTime = function(){
-                // return  new Date(Gun.state()).getTime();
-                return Gun.state() // 이거는 소수점까지 더 세세하게 맞추네
-            }
+            G.getTime = ()=>Gun.state();
         })();
     </script>
+
     <script src="/test.js" ></script>
     <link href="/test.css" rel="stylesheet" />
 
@@ -61,10 +59,13 @@
     <a-scene id="scene" cursor="rayOrigin: mouse" renderer="antialias: false"  postprocessing="false" ortho embedded>
 
         <a-assets id="assets">
+            <a-asset-item id="plane-gltf" src="/objects/plane/Jet.gltf"></a-asset-item>
+            <a-mixin id="plane" gltf-model="#plane-gltf"></a-mixin>
             <a-mixin id="red" material ="color: red"></a-mixin>
             <a-mixin id="green" material ="color: green"></a-mixin>
+            <a-mixin id="grey" material ="color: grey"></a-mixin>
             <a-mixin id="cone" geometry="primitive: cone" ></a-mixin>
-            <a-mixin id="half" scale="0.5 0.5 0.5"></a-mixin>
+            <a-mixin id="adjust" scale="0.1 0.1 0.1" rotation="0 90 0"></a-mixin>
         </a-assets>
 
 
@@ -90,7 +91,18 @@
 
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-            <div id="title" class="nav-link"> <%=name%></div>
+            <div id="title" class="nav-link"> <%=name%> </div>
+            <script>
+                let title = document.querySelector('#title');
+                let name = title.textContent
+                requestAnimationFrame(function now(){
+                    requestAnimationFrame(now);
+                    let time = new Date(G.getTime());
+                    let print = name + ' -  '+time.toLocaleString() +' '+ (time.getMilliseconds()/1000).toFixed(3).slice(1);
+                    title.innerHTML = print;
+                });
+
+            </script>
         </li>
     </ul>
 

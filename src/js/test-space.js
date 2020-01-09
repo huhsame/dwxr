@@ -51,11 +51,11 @@ let createMyObject = async function (user) {
         // geometry: {primitive: 'cone'},
         // material: {color:'green'},
     };
-    let myEl = document.createElement('a-cone');
+    let myEl = document.createElement('a-entity');
     let position = Rail.getRailPosition(user.order);
     let d = 0.5;
     // position.copy(myRailEl.object3D.position);
-    position.x = -5 + d;
+    position.x = d - (Rail.width / 2);
     position.y = d / 2;
     // position.setZ(myRailEl.object3D.position.z);
     myObject.attributes.position = position;
@@ -68,7 +68,7 @@ let createMyObject = async function (user) {
     myEl.setAttribute('id', user.name);
 
     myEl.setAttribute('position', position);
-    myEl.setAttribute('mixin', 'green cone half');
+    myEl.setAttribute('mixin', 'grey plane adjust');
 
 
     // myEl.setAttribute('color', Rail.selectedColors[user.order%7]);

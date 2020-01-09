@@ -24,9 +24,9 @@ export function createMine(data, key){
 
     let el = document.querySelector('#' + data.id);
     if ((el === null) || (el === undefined)) {
-        el = document.createElement('a-cone');
+        el = document.createElement('a-entity');
         el.setAttribute('id', data.id);
-        el.setAttribute('mixin', 'green cone half')
+        el.setAttribute('mixin', 'grey plane adjust')
         this.get('attributes').get('position').once(function setAttributeFromGunData(data, key) {
             let value = data;
             if (value === undefined) return;
@@ -45,7 +45,7 @@ export function createMine(data, key){
         });
         let myRailEl = document.querySelector('#rail-'+data.order);
         myRailEl.setAttribute('text-label', {text: data.id});
-\        document.querySelector('a-scene').appendChild(el);
+        document.querySelector('a-scene').appendChild(el);
 
     }
 
