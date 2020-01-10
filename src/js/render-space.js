@@ -48,6 +48,21 @@ export function createMine(data, key){
         document.querySelector('a-scene').appendChild(el);
 
     }
+    // update rail information
+    // ajax
+    jq.ajax({
+        url: location.origin + '/api/user/getSpeed',
+        type: 'POST',
+        // data: {name: data.id},
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('[getSpeed] ajax error : ' +jqXHR);
+            console.log('[getSpeed] ajax error : ' +textStatus)
+            console.log('[getSpeed] ajax error : ' +errorThrown);
+        }
+    });
 
 }
 export async function createEl(data, key) {

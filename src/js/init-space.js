@@ -94,7 +94,6 @@ G.mine.map().get('attributes').get('position').on( function receivePosition(data
         this.back(2).once( syncPosition );
         return;
     }
-
     let subLog = testLog.getSubLog( data );
     this.back(2).once(function pushSubLog(data, key) {
         subLog.publisher = key;

@@ -389,6 +389,22 @@ module.exports = {
 
     },
 
+    getSpeed: (req, res) => {
+
+        let name = req.session.user.name;
+
+        let getUser = function (err, user){
+            console.log('[getUser] err: ' + err);
+            console.log('[getUser[ user: ' + user);
+            res.json({success: true, user: user})
+        }
+
+        // byName dosen't work. ==> findOne( condition )
+        // UserModel.findOne().byName( name ).exec( getUser );
+        UserModel.findOne({name: name}).exec( getUser );
+
+    },
+
 
 
 
