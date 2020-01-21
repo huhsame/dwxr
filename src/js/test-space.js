@@ -56,7 +56,7 @@ let createMyObject = async function (user) {
     let d = 0.5;
     // position.copy(myRailEl.object3D.position);
     position.x = d - (Rail.width / 2);
-    position.y = d / 2;
+    position.y = position.y + d / 2;
     // position.setZ(myRailEl.object3D.position.z);
     myObject.attributes.position = position;
     // myObject.attributes.scale = {x:d,y:d,z:d};
@@ -68,7 +68,7 @@ let createMyObject = async function (user) {
     myEl.setAttribute('id', user.name);
 
     myEl.setAttribute('position', position);
-    myEl.setAttribute('mixin', 'grey plane adjust');
+    myEl.setAttribute('mixin', 'plane adjust');
 
 
     // myEl.setAttribute('color', Rail.selectedColors[user.order%7]);
@@ -166,20 +166,15 @@ function logging(){
     setInterval( uploadLog,  sec * 1000);
 }
 
+// 레일이 다 완성 되었다
 document.addEventListener('onrails',function(){
-    // 내이름 상대방 이름 다 적어야하는데
-    // 흐음.. 그러게..
-    // 일단 내꺼는 여기서
-    // 상대방꺼는 render-space에서
-
-    // 상대방꺼는 두종류
-    // 미리 들어와있는애들, 새로 들어오는 애들
 
     let user = L.user;
-    let myRailEl = document.querySelector('#rail-' + user.order);
-    myRailEl.setAttribute('text-label', {text: user.name});
-    myRailEl.setAttribute('color', Rail.getSelectedColor(user.order));
+    Rail.updateSelectedRail(L.user.order);
 
+    // let myRailEl = document.querySelector('#rail-' + user.order);
+    // myRailEl.setAttribute('text-label', {text: user.name});
+    // myRailEl.setAttribute('color', Rail.getSelectedColor(user.order));
 })
 
 window.onload = function () {

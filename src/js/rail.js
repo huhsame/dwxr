@@ -21,6 +21,10 @@ function Rail(){
     rail.width = 15;
     rail.axis = 'x';
 
+    rail.interval = 1; // 레일 + 테두리 위아래
+    rail.space = 0.1; // 테두리 두
+    // interval - space = rail.width
+
     rail.setAttributes = function ( el, attributes ){
         for( let key in attributes){
             el.setAttribute( key, attributes[key])
@@ -54,18 +58,17 @@ function Rail(){
 
     rail.createRails = function( number ){
         if(!number){
-            number = rail.total;
+            number = rail.total; // default;
         }
         let sceneEl = document.querySelector('a-scene');
 
         // let number = 5;
-        let interval = 1;
-        let space = 0.1;
+
 
         let attributes = {};
         // attributes.color = 'grey'; // todo: 이거 지우고 밑에 포문에서 i 별로 색상값 매칭;
         attributes.width = this.width;
-        attributes.height = interval - space;
+        attributes.height = this.interval - this.space;
         attributes.rotation = {x: -90, y:0, z:0};
 
         for(let order = 0; order < number; order++){
@@ -80,6 +83,38 @@ function Rail(){
 
         let event_onrails = new Event('onrails');
         document.dispatchEvent(event_onrails);
+
+    };
+
+    rail.updateSelectedRail = function( order ){
+
+        // let myRailEl = document.querySelector('#rail-' + order);
+        let position = this.getRailPosition(order);
+        // let selectedPosition = position.x+" "+position.y - 5 +" "+position.z; //string
+
+        let selectedRailEl = document.createElement('a-plane');
+
+        let attributes = {};
+        attributes.id = 'rail-'+order+'-selected';
+        attributes.width = this.width + this.space;
+        attributes.height = this.interval;
+        attributes.rotation = {x: -90, y:0, z:0};
+        attributes.position = {x: position.x, y: position.y - 1, z: position.z};
+        attributes.color = 'black';
+
+        selectedRailEl = this.setAttributes(selectedRailEl, attributes);
+
+
+
+        // selectedRailEl.setAttribute('id', 'rail-'+order+'-selected');
+        // selectedRailEl.setAttribute('position', selectedPosition);
+        // selectedRailEl.setAttribute('height', this.interval);
+        // selectedRailEl.setAttribute('width', this.width + this.space);
+        // selectedRailEl.setAttribute('color', 'black');
+
+        let sceneEl = document.querySelector('a-scene');
+        sceneEl.appendChild( selectedRailEl );
+
 
     }
 

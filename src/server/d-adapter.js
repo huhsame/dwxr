@@ -16,14 +16,12 @@ function DAdapter(){
     dAdapter.emitConnection = function(peer){
 
         peerManager.onConnection(peer.id);
-
         // send data through socket
         let data ={};
         data.type = 'user';
         data.pid = peer.id;
-        // console.log(peer);
-        peer.wire.send(JSON.stringify(data));
-        // eventEmitter.emit('dconnection')
+
+        peer.send(JSON.stringify(data));
     }
 
     dAdapter.emitClose = (pid) =>{

@@ -1,8 +1,5 @@
 import util from './utils';
 
-let sceneEl = document.querySelector('a-scene');
-let assetsEl = document.createElement('a-assets');
-
 function setAttributeFromGunData(data, key){
     let value = data;
     delete value['_']; // 건디비 데이터에 삽입되어있는 _ 메타데이터 제거
@@ -19,14 +16,16 @@ export function createMine(data, key){
     if (data.visible === false) return;
     if (data.id === L.user.id) return;
     if (data.id === undefined) return;
-    if (data.order === undefined) return;
+    if ((data.order === undefined)||(data.order === null)) return;
     if(data.id === 'temp') return;
 
+    // create moving object
     let el = document.querySelector('#' + data.id);
+
     if ((el === null) || (el === undefined)) {
         el = document.createElement('a-entity');
         el.setAttribute('id', data.id);
-        el.setAttribute('mixin', 'grey plane adjust')
+        el.setAttribute('mixin', 'plane adjust');
         this.get('attributes').get('position').once(function setAttributeFromGunData(data, key) {
             let value = data;
             if (value === undefined) return;
@@ -43,19 +42,23 @@ export function createMine(data, key){
             // console.log(key);
             el.setAttribute(key, value);
         });
-        let myRailEl = document.querySelector('#rail-'+data.order);
-        myRailEl.setAttribute('text-label', {text: data.id});
         document.querySelector('a-scene').appendChild(el);
-
     }
     // update rail information
     // ajax
+    let name = data.id;
+    let order = data.order;
+    console.log(order);
     jq.ajax({
         url: location.origin + '/api/user/getSpeed',
         type: 'POST',
-        // data: {name: data.id},
-        success: function (data) {
-            console.log(data);
+        data: {name: name},
+        success: async function (data) {
+            let user = data.user;
+            // console.log(user);
+            let text = '[' + user.name + ']  Down: ' + user.speed.dl + '  Up:' + user.speed.ul;
+            let myRailEl = await document.querySelector('#rail-' + order);
+            myRailEl.setAttribute('text-label', {text: text});
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('[getSpeed] ajax error : ' +jqXHR);
@@ -64,7 +67,9 @@ export function createMine(data, key){
         }
     });
 
+
 }
+
 export async function createEl(data, key) {
     if (data.visible === false) return;
     if (data.id === L.user.id) return;
