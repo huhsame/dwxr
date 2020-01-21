@@ -391,7 +391,7 @@ module.exports = {
 
     getSpeed: (req, res) => {
 
-        let name = req.session.user.name;
+        let name = req.body.name;
 
         let getUser = function (err, user){
             console.log('[getUser] err: ' + err);
