@@ -4,14 +4,14 @@ const UserModel = require('../../models/UserModel');
 function PeerManager(){
     let peerManager = function(){};
     peerManager.peers = {};
-    peerManager.onConnection = function(peer){
+    peerManager.add = function(peer){
 
         this.peers[peer.id] = peer;
         this.log(peer.id + ' is connected.');
         this.log(this.peers);
     };
 
-    peerManager.onClose = function( wire){
+    peerManager.delete = function( wire){
 
         // console.log(peer);
 

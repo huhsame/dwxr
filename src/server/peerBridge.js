@@ -13,7 +13,7 @@ function PeerBridge(){
         }
 
         // for the peer list at server
-        peerManager.onConnection(peer);
+        peerManager.add(peer);
 
         // for every clients by socket ==> event: onuser [gun.js]
         let data ={};
@@ -25,7 +25,7 @@ function PeerBridge(){
     peerBridge.onClose = (peer) =>{
 
         // eventEmitter.emit('dclose', pid)
-        peerManager.onClose(peer.wire);
+        peerManager.delete(peer.wire);
 
 
     }
