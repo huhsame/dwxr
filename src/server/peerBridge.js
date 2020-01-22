@@ -4,7 +4,7 @@ function PeerBridge(){
     let peerBridge = function(){};
 
     // called from gun/wire.js
-    peerBridge.emitConnection = function(peer){
+    peerBridge.onConnection = function(peer){
 
         // peer의 id 를 user name 으로 설정한뒤 wire 정보 저장
         if(!peer.id){
@@ -22,10 +22,12 @@ function PeerBridge(){
         peer.wire.send(JSON.stringify(data));
     }
 
-    peerBridge.emitClose = (pid) =>{
+    peerBridge.onClose = (peer) =>{
 
         // eventEmitter.emit('dclose', pid)
-        peerManager.onClose(pid);
+        peerManager.onClose(peer.wire);
+
+
     }
 
     return peerBridge;
