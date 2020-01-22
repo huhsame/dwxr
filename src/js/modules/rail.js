@@ -9,6 +9,7 @@ function Rail(){
         '#CEE3FF',
         '#D4CDFF']; // https://www.schemecolor.com/feminine-rainbow.php
 
+    // not used now
     rail.selectedColors =['#FD5051',
         '#FFA959',
         '#FFF661',
