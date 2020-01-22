@@ -22,8 +22,8 @@ router.get('/speed', function(req, res, next) {
 });
 
 router.get('/space', function(req, res, next) {
-  let user = req.session.user;
-
+  let user = req.session.user
+  global.me = user; // to use at peer-manager
   // 예외 처리
   if((user === undefined) || (user.order === -1)){
     res.redirect('/test');

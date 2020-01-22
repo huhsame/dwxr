@@ -325,6 +325,7 @@ module.exports = {
         user.save()
             .then(result => {
                 console.log({success: true, result: userModel});
+                // global.me = userModel;
                 res.redirect('/test/speed');
             })
             .catch( err => {
@@ -394,9 +395,13 @@ module.exports = {
         let name = req.body.name;
 
         let getUser = function (err, user){
-            console.log('[getUser] err: ' + err);
-            console.log('[getUser[ user: ' + user);
-            res.json({success: true, user: user})
+
+            if(err){
+                console.log('[getUser] err: ' + err);
+                console.log('[getUser] user: ' + user);
+                return;
+            }
+            res.json({success: true, user: user});
         }
 
         // byName dosen't work. ==> findOne( condition )

@@ -11,10 +11,22 @@ const UserModel = require('../../models/UserModel');
 
 function PeerManager(){
     let peerManager = function(){};
-    peerManager.peers = [];
-    peerManager.onConnection = function(pid){
-        this.peers.push(pid);
-        this.log(pid + ' is connected.');
+    peerManager.peers = {};
+    peerManager.onConnection = function(peer){
+
+
+        // let tmp = peer.wire || {};
+        // if(peer.id){
+        //     this.peers[peer.url || peer.id] = peer;
+        // } else {
+        //     if(global.me === undefined) global.me = {name: 'default'};
+        //     tmp = peer.id = peer.id || global.me.name;
+        //     this.peers[tmp] = peer;
+        //     // this.log(this.peers[tmp]);
+        // }
+
+        this.peers[peer.id] = peer;
+        this.log(peer.id + ' is connected.');
         this.log(this.peers);
     };
 
@@ -27,7 +39,9 @@ function PeerManager(){
     };
 
     peerManager.log = function(data){
-        console.log(':Peer Manager: ' + JSON.stringify(data))
+        console.log( '-------- :Peer Manager: --------' );
+        console.log( data );
+        // console.log( '--------------------------------' );
     };
     return peerManager;
 
