@@ -1,6 +1,6 @@
 const UserModel = require('../../models/UserModel');
 
-
+// 서버에서 찍어야하는데 흠..
 function PeerManager(){
     let peerManager = function(){};
     peerManager.peers = {};
@@ -8,8 +8,8 @@ function PeerManager(){
 
         this.peers[peer.id] = peer;
         this.log(peer.id + ' is connected.');
-        this.log(this.peers);
-    };
+        this.log(this.peers, 'PEER LIST'); // 키 리스트만 뽀ㅃ아내려면 어떻게 할지 검쇼ㅐㄱ해서 넣기
+         };
 
     peerManager.delete = function( wire){
 
@@ -24,14 +24,21 @@ function PeerManager(){
         }
         delete this.peers[peerName];
         this.log(peerName +' is disconnected');
-        this.log(this.peers)
-
     };
 
-    peerManager.log = function(data){
-        console.log( '-------- :Peer Manager: --------' );
+    peerManager.log = function(data, msg){
+        let label = '-------- :Peer Manager: ';
+        if(msg !==null || msg !== undefined) label = label + msg;
+
+        console.log( label );
         console.log( data );
     };
+
+    peerManager.gunPeers = function(){
+        peerManager.gunpeers = global.gun.back('opt.peers');
+        this.log( Object.keys(this.gunpeers), 'gun peer list' );
+    }
+
     return peerManager;
 
 }
