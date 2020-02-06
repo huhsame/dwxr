@@ -10,7 +10,7 @@ let spaceID = (function setSpaceID(){
     // 여기서는 받아쓰는 걸로 바꿔야겠다.
 
     if(location.pathname.startsWith('/test')){
-        return 'test' + '1015';
+        return 'experiments'; // 모든 피어가 다 똑같아야 해. 나중에 서버에서 그 방이름 라우팅 하는 방이름
     }
     let paths = location.pathname.split('/');
     return paths[paths.length -1];
@@ -20,7 +20,8 @@ window.L.spaceId = spaceID;
 // 함수 정의와 동시에 실행시키면서 리턴값 저장
 
 (function setPath(){
-    G.space = G.app.get('spaces').get( spaceID );
+    console.log('// setPath')
+    G.space = G.app.get('spaces').get( spaceID);
     G.scene = G.space.get('scene');
     G.assets = G.space.get('assets');
     G.objects = G.space.get('objects');
@@ -120,4 +121,4 @@ G.mine.map().get('attributes').get('position').on( function receivePosition(data
 
 });
 
-G.mine.map().once(createMine);
+G.mine.map().once( createMine );

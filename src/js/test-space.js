@@ -6,7 +6,9 @@ import 'bootstrap';
 import 'aframe';
 
 import testLog from './testLogs'
+import './render-space';
 import './init-space';
+// render-space --> init-space --> test-space
 
 import './aframe/components/ortho'
 import './three/TransformControls';
@@ -191,6 +193,7 @@ window.onload = function () {
 
 };
 
+// 나갈 때
 window.onbeforeunload = function(e){
     e.preventDefault();
 
@@ -198,31 +201,24 @@ window.onbeforeunload = function(e){
     console.log(L.user);
     let obj = G.mine.get( user.name );
     obj.get('visible').put(false);
-
-    // jq.ajax({
-    //     url: location.origin + '/test/removeUser',
-    //     type: 'POST',
-    //     data: {name: L.user.name},
-    //     success: function (data) {
-    //         console.log(data);
-    //     },
-    //     error: function (jqXHR, textStatus, errorThrown) {
-    //         console.log("POST Failed: " + textStatus + ": " + errorThrown);
-    //     }
-    // });
-    // e.returnValue = 'asdfasdfas'
-
-}
+};
 
 
 
-document.addEventListener( 'onComplete', testLog.uploadLogs());
+// document.addEventListener( 'onComplete', testLog.uploadLogs());
+
+// event 'onuser' from gun.js
+// There is another listener for it at render-space.js
+
 
 window.addEventListener('onuser', function(e){
     let pid = e.detail.pid;
     console.log('['+pid + '] is connected.');
+    // undefined 로 뜨지 않았어 ?
+    // 서버에 undefined로 떳는데...
 
     // Pid  저장시키고 session 에 있는 유저정보 받아
+
     jq.ajax({
         url: location.origin + '/api/pid/create',
         type: 'POST',
@@ -234,7 +230,6 @@ window.addEventListener('onuser', function(e){
             console.log(errorThrown);
         }
     });
-
 });
 
 let startCreating =  async function (data) {
@@ -246,4 +241,3 @@ let startCreating =  async function (data) {
     logging();
 }
 
-import './render-space';

@@ -173,20 +173,24 @@ let initChildren = function(data, key){
     }
 };
 
+// event 'onuser' from gun.js
+// There is another listener for it at test-space.js
 window.addEventListener('onuser', function(){
-    // initAssets();
-    // initObjects();
 
-    // G.mine.map().once(createEl);
+    G.mine.map().get('visible').once(function receiveVisible(data, key){
+        if((data===undefined)||(data==null)) return;
+        console.log('[render-space] ' + data.id);
 
-    G.mine.map().get('visible').on(function receiveVisible(data, key){
+        if(data.id === L.user.id){
+            this.put( true );
+        }
+
         if(data === true){
-            this.back().once(createMine);
+            this.back().once( createMine );
         }else{
             this.back().once(function removeEl(data, key){
                 let el = document.querySelector('#' + data.id);
                 if( (el !== null) && (el !== undefined) ){
-                    console.log(el)
                     el.remove();
                 }
             });
@@ -194,7 +198,26 @@ window.addEventListener('onuser', function(){
 
     });
 });
-
-
+//
+// G.mine.map().get('visible').on(function receiveVisible(data, key){
+//     if((data===undefined)||(data==null)) return;
+//     console.log('[render-space] ' + data.id);
+//
+//     if(data.id === L.user.id){
+//         this.put( true );
+//     }
+//
+//     if(data === true){
+//         this.back().once( createMine );
+//     }else{
+//         this.back().once(function removeEl(data, key){
+//             let el = document.querySelector('#' + data.id);
+//             if( (el !== null) && (el !== undefined) ){
+//                 el.remove();
+//             }
+//         });
+//     }
+//
+// });
 
 

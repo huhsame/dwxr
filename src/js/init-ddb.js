@@ -15,20 +15,22 @@ require('gun/lib/rindexed');
 require('gun/lib/open');
 require('gun/lib/unset');
 
-//
-// (() => {
-//     function G(){};
-//     window.G = G;
-//
-//     // create gun instance and make it global
-//     let opt = {};
-//     opt.store = RindexedDB(opt);
-//     opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-//     opt.peers = ['https://d.wxr.onl/gun'];
-//     // opt.peers = ['http://localhost:3000/gun'];
-//     G.gun = Gun(opt);
-//
-//     let node= `<%=node %>`;
-//     G.app = G.gun.get(node);
-//     G.getTime = ()=>Gun.state();
-// })();
+
+(() => {
+    // function G(){}
+    // window.G = G;
+
+    // create gun instance and make it global
+    let opt = {};
+    opt.store = RindexedDB(opt);
+    opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
+    opt.peers = ['https://d.wxr.onl/gun'];
+    // opt.peers = ['http://localhost:3000/gun'];
+    G.gun = Gun(opt);
+
+    // let node= `<%=node %>`;
+    console.log('G.node: ' + G.node);
+    G.app = G.gun.get(G.node);
+    G.getTime = ()=>Gun.state();
+    G.peers = ()=> G.gun.back('opt.peers');
+})();
