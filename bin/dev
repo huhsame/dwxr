@@ -62,6 +62,7 @@ app.use(function(err, req, res, next) {
 
 app.use(Gun.serve);
 
+
 let testPort = 3000;
 let httpPort = 80;
 let httpsPort = 443;
@@ -75,6 +76,7 @@ let server = testServer;
 server.listen( port );
 
 let gun = Gun({	file: 'data', web: server });
+global.gun = gun;
 
 server.on('error', onError);
 server.on('listening', onListening);

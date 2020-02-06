@@ -95,6 +95,7 @@ app.use(Gun.serve);
 let server =  https.createServer(options, app);
 server.listen( port );
 let gun = Gun({	file: 'data', web: server });
+global.gun = gun;
 
 
 server.on('error', onError);
