@@ -22,25 +22,12 @@
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <script src="/gun.js" ></script>
+<!--    <script src="/gun.js" ></script>-->
 
     <script>
-        (() => {
-            function G(){};
-            window.G = G;
-
-            // create gun instance and make it global
-            let opt = {};
-            opt.store = RindexedDB(opt);
-            opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-            opt.peers = ['https://d.wxr.onl/gun'];
-            // opt.peers = ['http://localhost:3000/gun'];
-            G.gun = Gun(opt);
-
-            let node= `<%=node %>`;
-            G.app = G.gun.get(node);
-            G.getTime = ()=>Gun.state();
-        })();
+        function G(){}
+        window.G = G;
+        G.node = `<%=node %>`;
     </script>
 
     <script src="/test.js" ></script>
