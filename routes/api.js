@@ -27,7 +27,7 @@ router.post('/pid/create', PidControl.create);
 router.post('/user/update', UserControl.update);
 
 // to show speed at rail
-router.post('/user/getSpeed', UserControl.getSpeed);
+router.post('/user/getUser', UserControl.getUser);
 
 
 module.exports = router;

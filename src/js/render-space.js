@@ -50,7 +50,7 @@ export function createMine(data, key){
     let order = data.order;
     console.log(order);
     jq.ajax({
-        url: location.origin + '/api/user/getSpeed',
+        url: location.origin + '/api/user/getUser',
         type: 'POST',
         data: {name: name},
         success: async function (data) {
@@ -61,9 +61,9 @@ export function createMine(data, key){
             myRailEl.setAttribute('text-label', {text: text});
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log('[getSpeed] ajax error : ' +jqXHR);
-            console.log('[getSpeed] ajax error : ' +textStatus)
-            console.log('[getSpeed] ajax error : ' +errorThrown);
+            console.log('[getUser] ajax error : ' +jqXHR);
+            console.log('[getUser] ajax error : ' +textStatus)
+            console.log('[getUser] ajax error : ' +errorThrown);
         }
     });
 
