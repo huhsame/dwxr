@@ -28,6 +28,7 @@ router.post('/user/update', UserControl.update);
 
 // to show speed at rail
 router.post('/user/getUser', UserControl.getUser);
+router.post('/user/getMe', UserControl.getMe);
 
 
 module.exports = router;

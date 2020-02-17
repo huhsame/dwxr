@@ -31,7 +31,7 @@ router.get('/space', function(req, res, next) {
   }
   let data = user;
   data.node = node;
-  res.render('test-space', data );
+  res.render('experiment', data );
 });
 
 router.get('/survey', function(req, res, next) {
