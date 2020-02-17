@@ -16,19 +16,20 @@ require('gun/lib/open');
 require('gun/lib/unset');
 
 // initialized gunDB and return gun instance
+
+let opt = {};
+opt.store = RindexedDB(opt);
+opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
+opt.peers = ['https://d.wxr.onl/gun'];
+// opt.peers = ['http://localhost:3000/gun'];
+
+let gun = Gun(opt);
+
 function I(){
     let i = function(){};
 
-    // initialized gunDB and return gun instance
-    i.gun = function (){
-        let opt = {};
-        opt.store = RindexedDB(opt);
-        opt.localStorage = false; // Pass Gun({localStorage: false}) to disable localStorage.
-        opt.peers = ['https://d.wxr.onl/gun'];
-        // opt.peers = ['http://localhost:3000/gun'];
-        return Gun(opt);
-    }
 
+    i.gun = gun;
 
     return i;
 }

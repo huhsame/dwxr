@@ -2,6 +2,7 @@
 function Rail(){
     let rail = function(){};
 
+
     rail.colors = ['#FFBAE4',
         '#FFCED0',
         '#FFFECB',
@@ -39,14 +40,14 @@ function Rail(){
     rail.directionZ = function (i){
         return i%2 ? -1 : 1 ; // odd : -
     }
-    rail.getRailPosition = function (i) {
+    rail.getRailPosition = function ( order ) {
         // 0 1 2 3 4
         // 0 1 1 2 2
         let position ={};
         position.x = origin.x;
         position.y = origin.y;
 
-        position.z = origin.z + parseInt(this.getLine(i) * this.directionZ(i));
+        position.z = origin.z + parseInt(this.getLine( order ) * this.directionZ( order ));
 
         return position;
     };
@@ -58,14 +59,17 @@ function Rail(){
         return this.selectedColors[ Math.ceil(order/2) % this.selectedColors.length ];
     };
 
+    rail.get = function( user ){
+        // it needs user.order
+
+        return document.querySelector('#rail-' + user.order);
+    }
+
     rail.createAll = function( number ){
         if(!number){
             number = rail.total; // default;
         }
         let sceneEl = document.querySelector('a-scene');
-
-        // let number = 5;
-
 
         let attributes = {};
         // attributes.color = 'grey'; // todo: 이거 지우고 밑에 포문에서 i 별로 색상값 매칭;
@@ -75,6 +79,7 @@ function Rail(){
 
         for(let order = 0; order < number; order++){
             let railEl = document.createElement('a-plane');
+            railEl.addEventListener('loaded', this.countLoaded );
             railEl = this.setAttributes(railEl, attributes);
             railEl.setAttribute('id', 'rail-'+order);
             railEl.setAttribute('position', this.getRailPosition(order));
@@ -87,9 +92,11 @@ function Rail(){
     };
 
     rail.countLoaded = function(){
-        this.count ++;
-        if(this.count === this.total){
+
+        rail.count++;
+        if(rail.count === rail.total){
             let railsLoaded = new Event( 'railsLoaded' );
+            let sceneEl = document.querySelector('a-scene');
             sceneEl.dispatchEvent( railsLoaded );
         }
     };
