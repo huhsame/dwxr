@@ -240,6 +240,7 @@ let digit5Random = function (){
 let  createName = function (){
     return pickRandom(animals) + digit5Random();
 }
+
 let users =[];
 
 let orders = [];
@@ -247,7 +248,6 @@ let total = 100;
 for(let i = 0;i < total; i++){
     orders[i] = total-i -1;
 }
-
 
 module.exports = {
     create: (req, res) => {
@@ -374,7 +374,7 @@ module.exports = {
         // order 만 제거
         // 세션은 유지 -> 설문조사 해야하잖아
 
-        if (req.session.user !== undefined){
+        if (req.session.user === undefined){
             console.log('there is no user in session.');
             return;
         }
@@ -390,11 +390,12 @@ module.exports = {
 
     },
 
-    getSpeed: (req, res) => {
+    // 어디서 부르는거지?
+    getUser: (req, res) => {
 
         let name = req.body.name;
 
-        let getUser = function (err, user){
+        let getUserItem = function (err, user){
 
             if(err){
                 console.log('[getUser] err: ' + err);
@@ -406,9 +407,21 @@ module.exports = {
 
         // byName dosen't work. ==> findOne( condition )
         // UserModel.findOne().byName( name ).exec( getUser );
-        UserModel.findOne({name: name}).exec( getUser );
+        UserModel.findOne({name: name}).exec( getUserItem );
 
     },
+
+    getMe: (req, res) => {
+        console.log('getme!!!!!!!!!!')
+
+        if (req.session.user === undefined){
+            console.log('there is no user in session.');
+            return;
+        }
+        let user = req.session.user;
+
+        res.json({success: true, user: user});
+    }
 
 
 
