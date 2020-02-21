@@ -16,6 +16,7 @@ function PeerBridge(){
         peerManager.add(peer);
 
         // for every clients by socket ==> event: onuser [gun.js]
+        // 누군가가 들어올때마다 계속 이 함수가 실행 된다.
         let data ={};
         data.type = 'user';
         data.pid = peer.id;

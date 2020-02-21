@@ -3,6 +3,8 @@ const Util = require('./utils');
 function DL(){
     let dl = function(){};
 
+    dl.mode = true;
+
     dl.pls = []; // pub logs
     dl.sls = []; // sub logs
 
@@ -19,13 +21,14 @@ function DL(){
         this.pls.push( pl );
     }
 
-    dl.addSubLog = function ( data ){
+    // logData is from syncer.logging
+    dl.addSubLog = function ( logData ){
         let receivedAt = G.getTime();
         let sl = {};
         sl.receivedAt = receivedAt;
-        sl.sublisher = data.name;
-        sl.dataId = data.dataId;
-        sl.data = data.position.x;
+        sl.subscriber = logData.name;
+        sl.dataId = logData.dataId;
+        sl.data = logData.position.x;
 
         this.sls.push( sl );
     }

@@ -4,6 +4,7 @@ const UserModel = require('../../models/UserModel');
 function PeerManager(){
     let peerManager = function(){};
     peerManager.peers = {};
+
     peerManager.add = function(peer){
 
         this.peers[peer.id] = peer;

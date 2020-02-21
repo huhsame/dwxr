@@ -5,6 +5,8 @@ import MO from './modules/movingObject';
 import DL from './modules/dataLogger';
 import Rail from './modules/rail';
 import Util from './modules/utils';
+import Syncer from './modules/synchronizer';
+
 
 import 'bootstrap';
 
@@ -25,7 +27,7 @@ document.addEventListener('onSetGunNode', getReady );
 document.addEventListener('gotMe', getReady );
 
 setMe(); // ==> gotMe 이벤트 발생
-doBeforeLeaving(); // 이벤트 리스너 등
+
 
 function getReady(){
     readyCount ++;
@@ -33,12 +35,15 @@ function getReady(){
 }
 
 function doBeforeLeaving(){
+
+    // invisible 되는거 실행 안돼!!!!! 헤헤헤헤헤 뭐가 잘못된건지 ^^^^^^^^^^^ 슬퍼요
     window.onbeforeunload = function(e){
         e.preventDefault();
 
         // invisible
         let obj = G.mo.get( me.name );
         obj.get('visible').put( false );
+
     };
 }
 
@@ -62,6 +67,7 @@ function setMe(){
 function init(){
 
     printGreeting( me );
+    doBeforeLeaving(); // 이벤트 리스너 등
 
     // load scene
     sceneEl = document.querySelector('a-scene');
@@ -87,6 +93,7 @@ function run () {
 
     startLogging();
     getReadyTofire();
+    startSyncingGun();
 
 
     // 이닛을 마치고 나서 건디비 리스너 붙이기옴
@@ -101,9 +108,13 @@ function createObjects(){
 
 function createMyMovingObject(){
     console.log('create my moving object');
-    if(myMo !== null) return;
+    if(!(myMo === null)||(myMo === undefined)) return;
 
     myMo  = MO.create( me ); // mo means movingObject
+    if(myMo === null){
+        console.log( 'my no is null')
+        return;
+    }
     myMo.addEventListener('loaded', doAfterLoadedMyMo() ); // 내 오브젝트 렌더링하고 다른사람꺼 불러오
     sceneEl.appendChild( myMo ); // ==> loaded 이벤트 발생
 }
@@ -118,7 +129,43 @@ function bringOthers(){
     // attributes 를 채워 넣어야 하기 때문에, gun once 로 불러와야 한다.
     // gun once 는 이후에 다른애들이 입장해서 gun에 데이터 집어넣으면 실행 될거야.
 
+    // 왜? 이게 먼저 실행되는거야 ?
+    //----------1 ㅇㅣ거랑 2번이랑 사실 같은 코드인데 왜인지 두개다 실행시켜야 정상작동한다 ----------
+    G.mo.map().once(function afterGetPreUsers(data, key){
+        console.log('bring others');
+        console.log(data);
+
+        if(data.id === undefined) return;
+        if(data.order === undefined) return;
+        let user = {name: data.id, order: data.order}
+
+        if(data.visible === false){
+            if(user.name !== me.name){
+                MO.remove(user);
+                return;
+            }
+            // user name == me. name
+            // 다음 작업을 위해 현재 데이터도 바꿔주고
+            // 다른애들에게 전달해주기위해 건디비에도 저장
+
+            data.visible = true;
+            this.get('visible').put(true);
+
+        }
+
+        if(data.visible === true){
+            let moEl = MO.create(user);
+            MO.appendToScene(moEl);
+        }
+
+
+    })
+    // ---------222222222222222222-------------------
     G.mo.map().get('visible').once(function receiveVisible(data, key){
+        this.back().once(function(data, key){
+
+            // console.log('visible : '+data.id)
+        })
         if((data===undefined)||(data==null)) return;
 
         // 나머지 애들
@@ -126,8 +173,9 @@ function bringOthers(){
             this.back().once( createOtherMo );
         }else{
             this.back().once(function removeEl(data, key){
-                if(data.id === me){
-                    this.get('visible').put(true);
+                if(data.id === me.name){
+                    this.get('visible').put( true );
+                    return;
                 }
                 let notAllowedMo = document.querySelector('#' + data.id);
                 if( (notAllowedMo !== null) && (notAllowedMo !== undefined) ){
@@ -139,9 +187,10 @@ function bringOthers(){
 }
 
 function createOtherMo (data, key){
+    console.log('create other mo')
     console.log(data);
     if (data.visible === false) return;
-    if (data.id === me) return;
+    if (data.id === me.name) return;
     if (data.id === undefined) return;
     if ((data.order === undefined)||(data.order === null)) return;
     if(data.id === 'temp') return;
@@ -153,8 +202,16 @@ function createOtherMo (data, key){
     }
 
     let mo = document.querySelector('#' + user.name);
+    // console.log('other mo');
+    // console.log(mo)
     if ((mo === null) || (mo === undefined)) {
+        // console.log('create other mo');
+        // console.log(user);
         mo = MO.create( user );
+        if(mo === null){
+            console.log( 'mo is null')
+            return;
+        }
         mo.addEventListener('loaded', printGreeting( user ) );
     }
 
@@ -200,7 +257,7 @@ function locateByTime(){
 
 function putLocation(){
 
-    console.log('put location');
+    // console.log('put location');
     let obj = G.mo.get( me.name );
     let position = Rail.getRailPosition( me.order );
     let axis = Rail.axis;
@@ -220,4 +277,9 @@ function getValueByTime(){
 function getRateByTime(){
     let interval = 5;
     return (G.getTime() % (1000 * interval)) / (1000* interval);
+}
+function startSyncingGun(){
+    Syncer.MoVisible();
+    Syncer.MoPosition();
+
 }

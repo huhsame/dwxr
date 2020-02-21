@@ -10,16 +10,15 @@ function MO(){
     mo.rotation = {x:0, y:90, z:0};
 
     mo.create = ( user ) => {
-        console.log('mo.create');
+
+        if(user.name === undefined) return null;
+        if(user.order === undefined) return null;
         let object = document.querySelector('#'+user.name);
-        if(object !== null) {
-            console.log( object );
-            return;
-        }
+        if(object !== null) return null;
 
         object = document.createElement('a-entity');
         object.setAttribute('id', user.name);
-        object.setAttribute('mixin', 'plane');
+        object.setAttribute('mixin', 'airplane');
         object.setAttribute('scale', mo.scale);
         object.setAttribute('rotation', mo.rotation);
         object.setAttribute('position',  mo.getPosition( Rail.getRailPosition(user.order) ));
@@ -63,14 +62,15 @@ function MO(){
         // mine  정보를 한번에 넣지 않고 따로따로 넣는게 유리
         gunObj.get('id').put(mine.id);
         gunObj.get('attributes').get('position').put(mine.attributes.position);
-        gunObj.get('visible').put(mine.visible);
         gunObj.get('order').put(mine.order);
         gunObj.get('id').put(mine.id); // 마지막에 확인차 한번 더해줘?
-
-        G.scene.get('children').set( gunObj ); // scene 에 칠드런으로 등록해야 렌더링을 시켜줌
+        gunObj.get('visible').put(mine.visible);
+        // G.mo.open(console.log);
+        G.scene.get('children').set( gunObj ); // scene 에 칠드런으로 등록해야 렌더링을 시켜줌?
 
     }
 
+    // rp = rail position by order
     mo.getPosition = ( rp )=>{
         return {
             x: mo.r - (Rail.width / 2),
@@ -89,18 +89,33 @@ function MO(){
                 let user = data.user;
                 // console.log(user);
                 info = '[' + user.name + ']  Down: ' + user.speed.dl + '  Up:' + user.speed.ul;
-                console.log('inside: '+info);
+                return info;
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log('[getSpeed] ajax error : ' +jqXHR);
                 console.log('[getSpeed] ajax error : ' +textStatus)
                 console.log('[getSpeed] ajax error : ' +errorThrown);
+                return 'failed';
             }
+
         });
-        console.log('outside: '+info);
-        return info;
     };
+
+    mo.remove = ( user ) =>{
+        let El = document.querySelector('#' + user.name);
+        if(El !== null){
+            console.log('remove ' + user.name);
+            El.remove();
+        }
+    }
+
+    mo.appendToScene = ( el ) => {
+        if( el === null) return;
+        let sceneEl = document.querySelector('a-scene');
+        sceneEl.appendChild( el );
+    }
+
 
 
 
