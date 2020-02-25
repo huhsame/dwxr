@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/manifest.json">
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+
+
+    <script src="/usability-colorBall.js" ></script>
+    <link href="/usability-colorBall.css" rel="stylesheet" />
+
+    <script src="https://unpkg.com/aframe-environment-component@1.1.0/dist/aframe-environment-component.min.js"></script>
+
+
+
+    <title>DWXR</title>
+</head>
+
+
+<body  style='margin : 0px; overflow: hidden;'>
+
+
+
+<div class="scene-container fixed-top">
+
+    <a-scene id="scene" cursor="rayOrigin: mouse" renderer="antialias: false"  postprocessing="false" ortho embedded>
+
+        <a-entity environment="preset:starry"></a-entity>
+        <a-assets id="assets">
+
+            <a-mixin id="grey" material ="color: grey"></a-mixin>
+
+            <a-mixin id="adjust" scale="0.1 0.1 0.1" rotation="0 90 0"></a-mixin>
+        </a-assets>
+
+
+
+
+        <a-entity id= "light-directional" light="type: directional; color: #EEE; intensity: 0.5" position="-1 1 0"></a-entity>
+        <a-entity id="light-ambient" light="type: ambient; color: #CCC"></a-entity>
+
+        <a-entity id="balls"></a-entity>
+        <a-entity id="plates"></a-entity>
+
+        <!--        <a-entity rotation="90 0 0">-->
+        <a-camera ></a-camera>
+        <!--        </a-entity>-->
+
+
+    </a-scene>
+
+</div>
+
+
+<nav class="navbar sticky-top navbar-expand-md navbar-light bg-white justify-content-between">
+    <a class="navbar-brand">
+        <img id='logo'src="/images/W-1100x1100.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    </a>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <div id="title" class="nav-link"> Color Ball </div>
+            <script>
+                let title = document.querySelector('#title');
+                requestAnimationFrame(function now(){
+                    requestAnimationFrame(now);
+                    let time = new Date( G.getTime() );
+                    let print = time.toLocaleString() +' '+ (time.getMilliseconds()/1000).toFixed(3).slice(1);
+                    title.innerHTML = print;
+                });
+
+            </script>
+        </li>
+    </ul>
+</nav>
+
+<div id='gun-node' class="<%= node %>" > </div><script>
+    let nodeEl = document.querySelector('#gun-node');
+    G.node = nodeEl.className;
+    G.setSpace();
+
+</script>
+
+
+</body>
+
+</html>
+
+
+

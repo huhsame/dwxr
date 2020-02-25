@@ -87,6 +87,19 @@ router.post('/removeUser', function(req, res){
 
 });
 
+router.get('/color-ball', function(req, res, next) {
+  // let user = req.session.user
+  // global.me = user; // to use at peer-manager
+  // // 예외 처리
+  // if((user === undefined) || (user.order === -1)){
+  //   res.redirect('/test');
+  //   return;
+  // }
+  let data = {};
+  data.node = node;
+  res.render('usability-colorBall', data );
+});
+
 
 
 module.exports = router;

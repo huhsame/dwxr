@@ -11,6 +11,7 @@ module.exports = {
         space: ['@babel/polyfill', './src/js/space.js'],
         'gun': ['@babel/polyfill', './src/js/init-ddb.js'],
         'experiment':['@babel/polyfill', './src/js/experiment.js','./src/scss/app.scss'],
+        'usability-colorBall':['@babel/polyfill', './src/js/usability-colorBall.js','./src/scss/app.scss'],
         'test':['@babel/polyfill', './src/js/test-space.js','./src/scss/app.scss'],
         'test-random':['@babel/polyfill', './src/js/test-space-random.js','./src/scss/app.scss'],
         'test-auto':['./src/js/test-auto.js'],
