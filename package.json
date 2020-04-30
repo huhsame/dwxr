@@ -23,7 +23,7 @@
     "gps-distance": "0.0.4",
     "gun": "^0.2019.413",
     "http-errors": "~1.6.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mongoose": "^5.6.10",
     "morgan": "~1.9.1",
     "node-webcrypto-ossl": "^1.0.47",
